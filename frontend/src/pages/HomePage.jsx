@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const HomePage = () => {
+    useEffect(() => {
+        const setBgElements = document.querySelectorAll('.set-bg');
+        setBgElements.forEach(element => {
+            const bg = element.getAttribute('data-setbg');
+            element.style.backgroundImage = `url(${bg})`;
+        });
+    }, []);
     return (
         <div>
             <section className="categories">
@@ -8,7 +15,7 @@ const HomePage = () => {
                     <div className="row">
                         <div className="col-lg-6 p-0">
                             <div className="categories__item categories__large__item set-bg"
-                                style={{ backgroundImage: 'url(./src/assets/img/categories/category-1.jpg)' }} data-setbg="./src/assets/img/categories/category-1.jpg">
+                                data-setbg="./src/assets/img/categories/category-1.jpg">
                                 <div className="categories__text">
                                     <h1>Women’s fashion</h1>
                                     <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
@@ -20,7 +27,7 @@ const HomePage = () => {
                         <div className="col-lg-6">
                             <div className="row">
                                 <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/categories/category-2.jpg)' }} data-setbg="./src/assets/img/categories/category-2.jpg">
+                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-2.jpg">
                                         <div className="categories__text">
                                             <h4>Men’s fashion</h4>
                                             <p>358 items</p>
@@ -29,7 +36,7 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/categories/category-3.jpg)' }} data-setbg="./src/assets/img/categories/category-3.jpg">
+                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-3.jpg">
                                         <div className="categories__text">
                                             <h4>Kid’s fashion</h4>
                                             <p>273 items</p>
@@ -38,7 +45,7 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/categories/category-4.jpg)' }} data-setbg="./src/assets/img/categories/category-4.jpg">
+                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-4.jpg">
                                         <div className="categories__text">
                                             <h4>Cosmetics</h4>
                                             <p>159 items</p>
@@ -47,7 +54,7 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/categories/category-5.jpg)' }} data-setbg="./src/assets/img/categories/category-5.jpg">
+                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-5.jpg">
                                         <div className="categories__text">
                                             <h4>Accessories</h4>
                                             <p>792 items</p>
@@ -82,7 +89,7 @@ const HomePage = () => {
                     <div className="row property__gallery">
                         <div className="col-lg-3 col-md-4 col-sm-6 mix women">
                             <div className="product__item">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-1.jpg)' }} data-setbg="./src/assets/img/product/product-1.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-1.jpg">
                                     <div className="label new">New</div>
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-1.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -104,7 +111,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix men">
                             <div className="product__item">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-2.jpg)' }} data-setbg="./src/assets/img/product/product-2.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-2.jpg">
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-2.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                         <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -125,7 +132,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix accessories">
                             <div className="product__item">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-3.jpg)' }} data-setbg="./src/assets/img/product/product-3.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-3.jpg">
                                     <div className="label stockout">out of stock</div>
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-3.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -147,7 +154,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
                             <div className="product__item">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-4.jpg)' }} data-setbg="./src/assets/img/product/product-4.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-4.jpg">
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-4.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                         <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -168,7 +175,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix kid">
                             <div className="product__item">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-5.jpg)' }} data-setbg="./src/assets/img/product/product-5.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-5.jpg">
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-5.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                         <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -189,7 +196,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
                             <div className="product__item sale">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-6.jpg)' }} data-setbg="./src/assets/img/product/product-6.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-6.jpg">
                                     <div className="label sale">Sale</div>
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-6.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -211,7 +218,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
                             <div className="product__item">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-7.jpg)' }} data-setbg="./src/assets/img/product/product-7.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-7.jpg">
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-7.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                         <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -232,7 +239,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
                             <div className="product__item sale">
-                                <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-8.jpg)' }} data-setbg="./src/assets/img/product/product-8.jpg">
+                                <div className="product__item__pic set-bg" data-setbg="./src/assets/img/product/product-8.jpg">
                                     <div className="label">Sale</div>
                                     <ul className="product__hover">
                                         <li><a href="./src/assets/img/product/product-8.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -255,7 +262,7 @@ const HomePage = () => {
                     </div>
                 </div>
             </section>
-            <section className="banner set-bg" style={{ backgroundImage: 'url(./src/assets/img/banner/banner-1.jpg)' }} data-setbg="./src/assets/img/banner/banner-1.jpg">
+            <section className="banner set-bg" data-setbg="./src/assets/img/banner/banner-1.jpg">
                 <div className="container">
                     <div className="row">
                         <div className="col-xl-7 col-lg-8 m-auto">
@@ -534,7 +541,7 @@ const HomePage = () => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/instagram/insta-1.jpg)' }} data-setbg="./src/assets/img/instagram/insta-1.jpg">
+                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-1.jpg">
                                 <div className="instagram__text">
                                     <i className="fa fa-instagram" />
                                     <a href="#">@ ashion_shop</a>
@@ -542,7 +549,7 @@ const HomePage = () => {
                             </div>
                         </div>
                         <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/instagram/insta-2.jpg)' }} data-setbg="./src/assets/img/instagram/insta-2.jpg">
+                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-2.jpg">
                                 <div className="instagram__text">
                                     <i className="fa fa-instagram" />
                                     <a href="#">@ ashion_shop</a>
@@ -550,7 +557,7 @@ const HomePage = () => {
                             </div>
                         </div>
                         <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/instagram/insta-3.jpg)' }} data-setbg="./src/assets/img/instagram/insta-3.jpg">
+                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-3.jpg">
                                 <div className="instagram__text">
                                     <i className="fa fa-instagram" />
                                     <a href="#">@ ashion_shop</a>
@@ -558,7 +565,7 @@ const HomePage = () => {
                             </div>
                         </div>
                         <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/instagram/insta-4.jpg)' }} data-setbg="./src/assets/img/instagram/insta-4.jpg">
+                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-4.jpg">
                                 <div className="instagram__text">
                                     <i className="fa fa-instagram" />
                                     <a href="#">@ ashion_shop</a>
@@ -566,7 +573,7 @@ const HomePage = () => {
                             </div>
                         </div>
                         <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/instagram/insta-5.jpg)' }} data-setbg="./src/assets/img/instagram/insta-5.jpg">
+                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-5.jpg">
                                 <div className="instagram__text">
                                     <i className="fa fa-instagram" />
                                     <a href="#">@ ashion_shop</a>
@@ -574,7 +581,7 @@ const HomePage = () => {
                             </div>
                         </div>
                         <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" style={{ backgroundImage: 'url(./src/assets/img/instagram/insta-6.jpg)' }} data-setbg="./src/assets/img/instagram/insta-6.jpg">
+                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-6.jpg">
                                 <div className="instagram__text">
                                     <i className="fa fa-instagram" />
                                     <a href="#">@ ashion_shop</a>
