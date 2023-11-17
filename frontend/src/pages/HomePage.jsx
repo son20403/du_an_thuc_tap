@@ -1,11 +1,45 @@
 import React, { useEffect } from 'react';
-
+import Instagram from '../layouts/Instagram';
+import $ from 'jquery'
+import mixitup from 'mixitup'
 const HomePage = () => {
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
             const bg = element.getAttribute('data-setbg');
             element.style.backgroundImage = `url(${bg})`;
+        });
+    }, []);
+    useEffect(() => {
+        $('.filter__controls li').on('click', function () {
+            $('.filter__controls li').removeClass('active');
+            $(this).addClass('active');
+        });
+        if ($('.property__gallery').length > 0) {
+            var containerEl = document.querySelector('.property__gallery');
+            var mixer = mixitup(containerEl);
+        }
+        //Canvas Menu
+        $(".canvas__open").on('click', function () {
+            $(".offcanvas-menu-wrapper").addClass("active");
+            $(".offcanvas-menu-overlay").addClass("active");
+        });
+
+        $(".offcanvas-menu-overlay, .offcanvas__close").on('click', function () {
+            $(".offcanvas-menu-wrapper").removeClass("active");
+            $(".offcanvas-menu-overlay").removeClass("active");
+        });
+        $('.image-popup').magnificPopup({
+            type: 'image'
+        });
+        $(".nice-scroll").niceScroll({
+            cursorborder: "",
+            cursorcolor: "#dddddd",
+            boxzoom: false,
+            cursorwidth: 5,
+            background: 'rgba(0, 0, 0, 0.2)',
+            cursorborderradius: 50,
+            horizrailenabled: false
         });
     }, []);
     return (
@@ -262,37 +296,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </section>
-            <section className="banner set-bg" data-setbg="./src/assets/img/banner/banner-1.jpg">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-xl-7 col-lg-8 m-auto">
-                            <div className="banner__slider owl-carousel">
-                                <div className="banner__item">
-                                    <div className="banner__text">
-                                        <span>The Chloe Collection</span>
-                                        <h1>The Project Jacket</h1>
-                                        <a href="#">Shop now</a>
-                                    </div>
-                                </div>
-                                <div className="banner__item">
-                                    <div className="banner__text">
-                                        <span>The Chloe Collection</span>
-                                        <h1>The Project Jacket</h1>
-                                        <a href="#">Shop now</a>
-                                    </div>
-                                </div>
-                                <div className="banner__item">
-                                    <div className="banner__text">
-                                        <span>The Chloe Collection</span>
-                                        <h1>The Project Jacket</h1>
-                                        <a href="#">Shop now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section className="trend spad">
                 <div className="container">
                     <div className="row">
@@ -537,62 +540,8 @@ const HomePage = () => {
                     </div>
                 </div>
             </section>
-            <div className="instagram">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-1.jpg">
-                                <div className="instagram__text">
-                                    <i className="fa fa-instagram" />
-                                    <a href="#">@ ashion_shop</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-2.jpg">
-                                <div className="instagram__text">
-                                    <i className="fa fa-instagram" />
-                                    <a href="#">@ ashion_shop</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-3.jpg">
-                                <div className="instagram__text">
-                                    <i className="fa fa-instagram" />
-                                    <a href="#">@ ashion_shop</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-4.jpg">
-                                <div className="instagram__text">
-                                    <i className="fa fa-instagram" />
-                                    <a href="#">@ ashion_shop</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-5.jpg">
-                                <div className="instagram__text">
-                                    <i className="fa fa-instagram" />
-                                    <a href="#">@ ashion_shop</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                            <div className="instagram__item set-bg" data-setbg="./src/assets/img/instagram/insta-6.jpg">
-                                <div className="instagram__text">
-                                    <i className="fa fa-instagram" />
-                                    <a href="#">@ ashion_shop</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Instagram></Instagram>
         </div>
-
     );
 };
 

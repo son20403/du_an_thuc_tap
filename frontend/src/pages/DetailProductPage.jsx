@@ -1,11 +1,49 @@
 import React, { useEffect } from 'react';
-
+import Instagram from '../layouts/Instagram';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from "react-slick";
+import mixitup from 'mixitup'
+import $ from 'jquery'
 const DetailProductPage = () => {
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+        // ...Thêm các tùy chọn khác tại đây
+    };
     useEffect(() => {
-        const setBgElements = document.querySelectorAll('.set-bg');
-        setBgElements.forEach(element => {
-            const bg = element.getAttribute('data-setbg');
-            element.style.backgroundImage = `url(${bg})`;
+        $('.filter__controls li').on('click', function () {
+            $('.filter__controls li').removeClass('active');
+            $(this).addClass('active');
+        });
+        if ($('.property__gallery').length > 0) {
+            var containerEl = document.querySelector('.property__gallery');
+            var mixer = mixitup(containerEl);
+        }
+        //Canvas Menu
+        $(".canvas__open").on('click', function () {
+            $(".offcanvas-menu-wrapper").addClass("active");
+            $(".offcanvas-menu-overlay").addClass("active");
+        });
+
+        $(".offcanvas-menu-overlay, .offcanvas__close").on('click', function () {
+            $(".offcanvas-menu-wrapper").removeClass("active");
+            $(".offcanvas-menu-overlay").removeClass("active");
+        });
+        $('.image-popup').magnificPopup({
+            type: 'image'
+        });
+        $(".nice-scroll").niceScroll({
+            cursorborder: "",
+            cursorcolor: "#dddddd",
+            boxzoom: false,
+            cursorwidth: 5,
+            background: 'rgba(0, 0, 0, 0.2)',
+            cursorborderradius: 50,
+            horizrailenabled: false
         });
     }, []);
     return (
@@ -15,26 +53,14 @@ const DetailProductPage = () => {
                     <div className="row">
                         <div className="col-lg-6">
                             <div className="product__details__pic">
-                                <div className="product__details__pic__left product__thumb nice-scroll">
-                                    <a className="pt active" href="#product-1">
-                                        <img src="./src/assets/img/product/details/thumb-1.jpg" alt />
-                                    </a>
-                                    <a className="pt" href="#product-2">
-                                        <img src="./src/assets/img/product/details/thumb-2.jpg" alt />
-                                    </a>
-                                    <a className="pt" href="#product-3">
-                                        <img src="./src/assets/img/product/details/thumb-3.jpg" alt />
-                                    </a>
-                                    <a className="pt" href="#product-4">
-                                        <img src="./src/assets/img/product/details/thumb-4.jpg" alt />
-                                    </a>
-                                </div>
                                 <div className="product__details__slider__content">
-                                    <div className="product__details__pic__slider owl-carousel">
-                                        <img data-hash="product-1" className="product__big__img" src="./src/assets/img/product/details/product-1.jpg" alt />
-                                        <img data-hash="product-2" className="product__big__img" src="./src/assets/img/product/details/product-3.jpg" alt />
-                                        <img data-hash="product-3" className="product__big__img" src="./src/assets/img/product/details/product-2.jpg" alt />
-                                        <img data-hash="product-4" className="product__big__img" src="./src/assets/img/product/details/product-4.jpg" alt />
+                                    <div className="product__details__pic__slider">
+                                        <Slider {...settings}>
+                                            <img data-hash="product-1" className="product__big__img" src="./src/assets/img/product/details/product-1.jpg" alt />
+                                            <img data-hash="product-2" className="product__big__img" src="./src/assets/img/product/details/product-3.jpg" alt />
+                                            <img data-hash="product-3" className="product__big__img" src="./src/assets/img/product/details/product-2.jpg" alt />
+                                            <img data-hash="product-4" className="product__big__img" src="./src/assets/img/product/details/product-4.jpg" alt />
+                                        </Slider>
                                     </div>
                                 </div>
                             </div>
@@ -280,7 +306,7 @@ const DetailProductPage = () => {
                     </div>
                 </div>
             </section>
-
+            <Instagram></Instagram>
         </div>
     );
 };

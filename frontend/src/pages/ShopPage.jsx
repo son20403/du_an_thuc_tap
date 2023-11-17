@@ -1,6 +1,41 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import Instagram from '../layouts/Instagram';
+import $ from 'jquery'
+import mixitup from 'mixitup'
+import '../func/main'
 const ShopPage = () => {
+    useEffect(() => {
+        $('.filter__controls li').on('click', function () {
+            $('.filter__controls li').removeClass('active');
+            $(this).addClass('active');
+        });
+        if ($('.property__gallery').length > 0) {
+            var containerEl = document.querySelector('.property__gallery');
+            var mixer = mixitup(containerEl);
+        }
+        //Canvas Menu
+        $(".canvas__open").on('click', function () {
+            $(".offcanvas-menu-wrapper").addClass("active");
+            $(".offcanvas-menu-overlay").addClass("active");
+        });
+
+        $(".offcanvas-menu-overlay, .offcanvas__close").on('click', function () {
+            $(".offcanvas-menu-wrapper").removeClass("active");
+            $(".offcanvas-menu-overlay").removeClass("active");
+        });
+        $('.image-popup').magnificPopup({
+            type: 'image'
+        });
+        $(".nice-scroll").niceScroll({
+            cursorborder: "",
+            cursorcolor: "#dddddd",
+            boxzoom: false,
+            cursorwidth: 5,
+            background: 'rgba(0, 0, 0, 0.2)',
+            cursorborderradius: 50,
+            horizrailenabled: false
+        });
+    }, []);
     return (
         <div>
             <section className="shop spad">
@@ -218,7 +253,7 @@ const ShopPage = () => {
                             <div className="row">
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-1.jpg)' }} data-setbg="img/shop/shop-1.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-1.jpg">
                                             <div className="label new">New</div>
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-1.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -233,7 +268,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-2.jpg)' }} data-setbg="img/shop/shop-2.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-2.jpg">
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-2.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                                 <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -247,7 +282,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-3.jpg)' }} data-setbg="img/shop/shop-3.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-3.jpg">
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-3.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                                 <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -261,7 +296,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-4.jpg)' }} data-setbg="img/shop/shop-4.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-4.jpg">
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-4.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                                 <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -275,7 +310,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item sale">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-5.jpg)' }} data-setbg="img/shop/shop-5.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-5.jpg">
                                             <div className="label">Sale</div>
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-5.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -290,7 +325,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-6.jpg)' }} data-setbg="img/shop/shop-6.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-6.jpg">
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-6.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                                 <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -304,7 +339,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-2.jpg)' }} data-setbg="img/shop/shop-7.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-7.jpg">
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-7.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
                                                 <li><a href="#"><span className="icon_bag_alt" /></a></li>
@@ -320,7 +355,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-7.jpg)' }} data-setbg="img/shop/shop-8.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-8.jpg">
                                             <div className="label stockout stockblue">Out Of Stock</div>
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-8.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -337,7 +372,7 @@ const ShopPage = () => {
                                 </div>
                                 <div className="col-lg-4 col-md-6">
                                     <div className="product__item sale">
-                                        <div className="product__item__pic set-bg" style={{ backgroundImage: 'url(./src/assets/img/product/product-8.jpg)' }} data-setbg="img/shop/shop-9.jpg">
+                                        <div className="product__item__pic set-bg" data-setbg="./src/assets/img/shop/shop-9.jpg">
                                             <div className="label">Sale</div>
                                             <ul className="product__hover">
                                                 <li><a href="img/shop/shop-9.jpg" className="image-popup"><span className="arrow_expand" /></a></li>
@@ -365,7 +400,7 @@ const ShopPage = () => {
                     </div>
                 </div>
             </section>
-
+            <Instagram></Instagram>
         </div>
     );
 };
