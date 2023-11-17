@@ -1,11 +1,49 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import Search from './Search';
+import $ from 'jquery'
+import '../func/main'
+const navLink = [
+    {
+        title: 'Trang Chủ',
+        to: '/',
+    },
+    {
+        title: 'Thời Trang Nam',
+        id: '#men',
+        to: '/#men'
+    },
+    {
+        title: 'Thời Trang Nữ',
+        id: '#women',
+        to: '/#women'
 
+    },
+    {
+        title: 'Cửa hàng',
+        to: '/shop',
+    },
+    {
+        title: 'Liên hệ',
+        to: '/about',
+    },
+]
 const Header = () => {
+    useEffect(() => {
+
+        $('.search-switch').on('click', function () {
+            $('.search-model').fadeIn(400);
+        });
+
+        $('.search-close-switch').on('click', function () {
+            $('.search-model').fadeOut(400, function () {
+                $('#search-input').val('');
+            });
+        });
+    }, []);
     return (
         <div>
-            {/* <div id="preloder">
-                <div className="loader" />
-            </div> */}
+            <Search></Search>
             <div className="offcanvas-menu-overlay" />
             <div className="offcanvas-menu-wrapper">
                 <div className="offcanvas__close">+</div>
@@ -38,34 +76,37 @@ const Header = () => {
                         <div className="col-xl-6 col-lg-7">
                             <nav className="header__menu">
                                 <ul>
-                                    <li className="active"><a href="./index.html">Home</a></li>
-                                    <li><a href="#">Women’s</a></li>
-                                    <li><a href="#">Men’s</a></li>
-                                    <li><a href="./shop.html">Shop</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul className="dropdown">
-                                            <li><a href="./product-details.html">Product Details</a></li>
-                                            <li><a href="./shop-cart.html">Shop Cart</a></li>
-                                            <li><a href="./checkout.html">Checkout</a></li>
-                                            <li><a href="./blog-details.html">Blog Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="./blog.html">Blog</a></li>
-                                    <li><a href="./contact.html">Contact</a></li>
+                                    {navLink.map(nav =>
+                                    (
+                                        !nav.id ? <li key={nav.title}>
+                                            <NavLink to={nav.to}
+                                                style={({ isActive, isPending }) => {
+                                                    return {
+                                                        color: isActive ? "#ca1515" : "",
+                                                    };
+                                                }}
+                                                className={({ active }) => active ? '!text-red-700' : ''}>
+                                                {nav.title}
+                                            </NavLink>
+                                        </li> :
+                                            <li key={nav.id}>
+                                                <NavLink to={nav.to}>
+                                                    {nav.title}
+                                                </NavLink>
+                                            </li>
+                                    )
+                                    )}
                                 </ul>
                             </nav>
                         </div>
                         <div className="col-lg-3">
                             <div className="header__right">
                                 <div className="header__right__auth">
-                                    <a href="#">Login</a>
-                                    <a href="#">Register</a>
+                                    <Link to={'/login'}>Login</Link>
+                                    <Link to={'/register'}>Register</Link>
                                 </div>
                                 <ul className="header__right__widget">
                                     <li><span className="icon_search search-switch" /></li>
-                                    <li><a href="#"><span className="icon_heart_alt" />
-                                        <div className="tip">2</div>
-                                    </a></li>
                                     <li><a href="#"><span className="icon_bag_alt" />
                                         <div className="tip">2</div>
                                     </a></li>
