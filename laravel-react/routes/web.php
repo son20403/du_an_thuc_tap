@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DanhMucController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::group(['prefix'=> 'admin'], function () {
+    Route::get('/', function () {
+        return view('admin.page.home.index');
+    }); // trang chu admin
+    
+    Route::group(['prefix' => '/danh-muc'], function () {
+        Route::get('/', [DanhMucController::class,'index']); // danh sach quan ly danh muc
+        Route::post('/', [DanhMucController::class,'ThemDanhMuc']); // them danh muc
+    });
+
+});// admin
