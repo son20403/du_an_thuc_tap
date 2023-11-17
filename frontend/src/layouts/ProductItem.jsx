@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
+import useCurrencyFormat from '../hooks/useCurrencyFormat';
 
 const ProductItem = (
     {
         anh_sp = './src/assets/img/product/product-1.jpg',
         ten_sp = 'Buttons tweed blazer',
-        gia = '$ 59.0'
+        gia = 0
     }
 ) => {
+    const formattedAmount = useCurrencyFormat(gia);
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
@@ -33,7 +35,7 @@ const ProductItem = (
                         <i className="fa fa-star" />
                         <i className="fa fa-star" />
                     </div>
-                    <div className="product__price">{gia}</div>
+                    <div className="product__price">{formattedAmount}</div>
                 </div>
             </div>
         </div>
