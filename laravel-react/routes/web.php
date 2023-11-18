@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.page.home.index');
+});
+Route::get('/admin/hoadon', function () {
+    return view('admin.page.hoadon.index');
 });
