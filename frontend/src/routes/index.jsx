@@ -13,6 +13,7 @@ import ShopPage from "../pages/ShopPage";
 import CheckoutPage from "../pages/CheckoutPage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
+import ListPostSearch from "../pages/ListProductSearch";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
                 element: <HomePage></HomePage>
             },
             {
-                path: '/detail',
+                path: '/detail/:slug',
                 element: <DetailProductPage></DetailProductPage>
             },
             {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <LoginPage></LoginPage>
+            },
+            {
+                path: '/search',
+                element: <ListPostSearch></ListPostSearch>
             },
         ]
     },
