@@ -1,6 +1,6 @@
 @extends('admin.share.layout')
-@section('tieu_de_trang')
-  Home
+@section('tieudetrang')
+  Home Admin
 @endsection
 @section('noidung')
 <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
