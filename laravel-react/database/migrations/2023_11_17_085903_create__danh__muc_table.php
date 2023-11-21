@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('ten_danh_muc');
             $table->string('ten_danh_muc_slug');
-            $table->boolean('is_delete')->default(true);
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });
     }

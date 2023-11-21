@@ -12,12 +12,17 @@ class DanhMucController extends Controller
 {
     public function index()
     {
-        $data_danhmuc = DanhMucModel::orderBy('id', 'desc')->paginate(10);
+        return view('admin.page.DanhMuc.QuanLyDanhMuc');
+    }
+
+    public function HienThiDanhMuc() {
+        $data_danhmuc = DanhMucModel::all();
+        $compact = compact('data_danhmuc');
 
         if ($data_danhmuc->isEmpty()) {
-			return view('admin.page.DanhMuc.QuanLyDanhMuc', compact('data_danhmuc'));
+			return response()->json( $compact );
         } else {
-            return view('admin.page.DanhMuc.QuanLyDanhMuc', compact('data_danhmuc'));
+            return response()->json( $compact );
         }
     }
 
@@ -30,13 +35,17 @@ class DanhMucController extends Controller
         // return response()->json(['success' => true, 'message' => 'Dữ liệu hợp lệ.']);
     }
 
-    public function XoaDanhMuc($id) {
-        DanhMucModel::where('id', $id)->update(
+    public function XoaDanhMuc(Request $request) {
+        DanhMucModel::where('id', $request->id)->update(
             [
-                'is_delete' => 0
+                'is_delete' => 1
             ]
         );     
-        return redirect('/admin/danh-muc')->with('success','success');
+        return response()->json([
+            'status'    =>      true,
+            'message'   =>      'Đã xóa liên hệ thành công !'
+        ]);
+        // return redirect('/admin/danh-muc')->with('success','success');
     }
 
     public function CapNhatDanhMuc($id, DanhMucRequest $request) {
@@ -46,6 +55,6 @@ class DanhMucController extends Controller
         DanhMucModel::where('id', $id)->update(
             $data 
         );        
-        return redirect('admin/danhmuc')->with('success','success');
+        return redirect('admin/danh-muc')->with('success','success');
     }
 }

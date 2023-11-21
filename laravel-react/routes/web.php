@@ -18,24 +18,25 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix'=> 'admin'], function () {
+
     Route::get('/', function () {
         return view('admin.page.home.index');
-    }); // trang chu admin
+    }); // url/admin
 
     Route::group(['prefix' => '/danh-muc'], function () {
-        Route::get('/', [DanhMucController::class,'index']); // danh sach quan ly danh muc
-        Route::post('/', [DanhMucController::class,'ThemDanhMuc']); // them danh muc
-        Route::get('/xoa/{id}', [DanhMucController::class,'XoaDanhMuc']); // xoa danh muc
-        Route::post('/cap-nhat/{id}', [DanhMucController::class,'CapNhatDanhMuc']); // cap nhat danh muc
-
-    });
+        Route::get('/', [DanhMucController::class,'index']); 
+        Route::get('/du-lieu', [DanhMucController::class,'HienThiDanhMuc']); // url/admin/danh-muc/du-lieu
+        Route::post('/', [DanhMucController::class,'ThemDanhMuc']); 
+        Route::post('/xoa', [DanhMucController::class,'XoaDanhMuc']); 
+        Route::post('/cap-nhat/{id}', [DanhMucController::class,'CapNhatDanhMuc']); 
+    }); 
 
     Route::group(['prefix' => '/the-loai'], function () {
-        Route::get('/', [TheLoaiController::class,'index']); // danh sach quan ly the loai
-        Route::post('/', [TheLoaiController::class,'ThemTheLoai']); // them the loai
-        Route::get('/xoa/{id}', [TheLoaiController::class,'XoaTheLoai']); // xoa the loai
-        Route::post('/cap-nhat/{id}', [TheLoaiController::class,'CapNhatTheLoai']); // cap nhat the loai
-
+        Route::get('/', [TheLoaiController::class,'index']); 
+        Route::get('/du-lieu', [TheLoaiController::class,'HienThiTheLoai']); // url/admin/the-loa/du-lieu
+        Route::post('/', [TheLoaiController::class,'ThemTheLoai']); 
+        Route::post('/xoa', [TheLoaiController::class,'XoaTheLoai']); 
+        Route::post('/cap-nhat/{id}', [TheLoaiController::class,'CapNhatTheLoai']); 
     });
 
 });// admin

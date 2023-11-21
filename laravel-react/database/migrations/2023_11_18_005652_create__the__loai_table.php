@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ten_the_loai');
             $table->string('ten_the_loai_slug');
             $table->bigInteger('ma_danh_muc');
-            $table->boolean('is_delete')->default(true);
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });
     }

@@ -7,19 +7,26 @@ use App\Http\Requests\TheLoaiRequest;
 use App\Models\DanhMucModel;
 use App\Models\TheLoaiModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class TheLoaiController extends Controller
 {
     //
     public function index()
     {
-        $data_theloai = TheLoaiModel::orderBy('id', 'desc')->paginate(10);
+        return view('admin.page.TheLoai.QuanLyTheLoai');
+    }
+
+    public function HienThiTheLoai() {
+        $data_theloai = TheLoaiModel::all();
         $data_danhmuc = DanhMucModel::all();
+        $compact = compact('data_danhmuc', 'data_theloai');
 
         if ($data_theloai->isEmpty()) {
-			return view('admin.page.TheLoai.QuanLyTheLoai', compact('data_theloai', 'data_danhmuc'));
+			return response()->json( $compact );
         } else {
-            return view('admin.page.TheLoai.QuanLyTheLoai', compact('data_theloai', 'data_danhmuc'));
+            return response()->json( $compact );
         }
     }
 
@@ -33,13 +40,18 @@ class TheLoaiController extends Controller
         // return response()->json(['success' => true, 'message' => 'Dữ liệu hợp lệ.']);
     }
 
-    public function XoaTheLoai($id) {
-        TheLoaiModel::where('id', $id)->update(
+    public function XoaTheLoai(Request $request) {
+           
+        TheLoaiModel::where('id', $request->id)->update(
             [
-                'is_delete' => 0
+                'is_delete' => 1
             ]
         );     
-        return redirect('/admin/the-loai')->with('success','success');
+        return response()->json([
+            'status'    =>      true,
+            'message'   =>      'Đã xóa liên hệ thành công !'
+        ]);
+        // return redirect('/admin/the-loai')->with('success','success');
     }
 
     public function CapNhatTheLoai($id, TheLoaiRequest $request) {
