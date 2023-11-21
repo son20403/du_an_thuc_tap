@@ -1,28 +1,27 @@
 @extends('admin.share.layout')
 
 @section('tieudetrang')
-Quan Ly Danh Muc
+Quan Ly The Loai
 @endsection
 
 @section('noidung')
-<main id="app" v-cloak>
+<main id="app">
 
   <div class="col-md-12 mb-3 mt-3">
     <div class="modal-category">
       <!-- Button trigger modal -->
       <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-        Thêm Danh Mục
+        Thêm The Loai
       </button>
-
       <!-- Modal them danh muc-->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
-            <form enctype="multipart/form-data" method="post" action="{{asset('/admin/danh-muc')}}" id="danhmucForm">@csrf
+            <form enctype="multipart/form-data" method="post" action="{{asset('/admin/the-loai')}}">@csrf
               <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Thêm Danh Mục</h3>
+                <h3 class="modal-title" id="exampleModalLabel">Thêm The Loai</h3>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -30,12 +29,26 @@ Quan Ly Danh Muc
 
               <div class="modal-body">
                 <label class="block text-sm">
-                  <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
-                  <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_danh_muc"
+                  <span class="text-gray-700 dark:text-gray-400">Tên The Loai</span>
+                  <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_the_loai"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                  <div id="ten_danh_muc_error" class="error"></div>
+                  <div id="ten_the_loai_error" class="error"></div>
                   <span class="text-danger">
-                    @error('ten_danh_muc')
+                    @error('ten_the_loai')
+                    {{$message}}
+                    @enderror
+                  </span>
+                </label>
+                <label class="block text-sm">
+                  <span class="text-gray-700 dark:text-gray-400">Tên Danh Muc</span>
+                  <select name="ma_danh_muc">
+                  
+                    <option v-for="(danhmuc, index) in data_danhmuc" :value="danhmuc.id">@{{ danhmuc.ten_danh_muc }}</option>
+                  
+                  </select>
+                  <div id="ma_danh_muc_error" class="error"></div>
+                  <span class="text-danger">
+                    @error('ma_danh_muc')
                     {{$message}}
                     @enderror
                   </span>
@@ -44,9 +57,9 @@ Quan Ly Danh Muc
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                <button type="submit" id="submitBtn"
+                <button type="submit" 
                   class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                  Thêm Danh Mục
+                  Thêm The Loai
                 </button>
               </div>
             </form>
@@ -64,39 +77,40 @@ Quan Ly Danh Muc
           <tr
             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             <th class="px-4 py-3">#</th>
-            <th class="px-4 py-3">Tên danh mục</th>
+            <th class="px-4 py-3">Tên Thể Loại</th>
+            <th class="px-4 py-3">Tên Danh Mục</th>
             <th class="px-4 py-3">Thao tác</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-
-          <tr v-for="(value, key) in data_danhmuc" class="text-gray-700 dark:text-gray-400" v-if="value.is_delete == 0">
-            <!-- <div v-if="value.is_delete !== 0"> -->
-              
-            <td class="px-4 py-3" >
-              @{{ key + 1 }}
+          
+          <tr v-for="(theloai, key) in data_theloai" class="text-gray-700 dark:text-gray-400" v-if="theloai.is_delete == 0">
+            <td class="px-4 py-3">
+            @{{ key + 1 }}
+            </td> 
+            <td class="px-4 py-3 text-sm">
+            @{{ theloai ? theloai.ten_the_loai : 'Không có tên danh mục' }}
             </td>
             <td class="px-4 py-3 text-sm">
-              @{{ value ? value.ten_danh_muc : 'Không có tên danh mục' }}
+            <span v-for="(danhmuc, index) in data_danhmuc" v-if="theloai.ma_danh_muc === danhmuc.id">
+              @{{ danhmuc.ten_danh_muc }}
+            </span>
             </td>
             <td class="px-4 py-3 text-xs">
               <a class="btn btn-primary trigger-modal" name="btn_edit" href="#" data-bs-toggle="modal"
                 data-bs-target="#ModalEdit">Edit</a>
-              <!-- <a class="btn btn-danger btn_delete" name="btn_delete" data-bs-toggle="modal"
-                                        data-bs-target="#confirmationModal"
-                :href="'{{asset('/admin/danh-muc/xoa')}}/'+ value.id">Xoa
-              </a> -->
-              <button v-on:click="xoa_danh_muc = value" class="btn btn-danger" data-bs-toggle="modal"
-                data-bs-target="#confirmationModal">Xóa</button>
+              <button v-on:click="xoa_the_loai = theloai" class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#confirmationModal">Xóa
+              </button>
               <!-- Modal cap nhat-->
               <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEditLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                   <div class="modal-content">
                     <form enctype="multipart/form-data" method="post"
-                      :action="'{{asset('/admin/danh-muc/cap-nhat')}}/'+ value.id">@csrf
+                      :action="'{{asset('/admin/the-loai/cap-nhat')}}/' + theloai.id">@csrf
                       <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Cập Nhật Danh Mục</h3>
+                        <h3 class="modal-title" id="exampleModalLabel">Cập Nhật The Loai</h3>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -104,31 +118,46 @@ Quan Ly Danh Muc
     
                       <div class="modal-body">
                         <label class="block text-sm">
-                          <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
-                          <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_danh_muc"
-                            :value="value.ten_danh_muc || ''"
+                          <span class="text-gray-700 dark:text-gray-400">Tên The Loai</span>
+                          <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_the_loai"
+                            :value="theloai.ten_the_loai"
                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                          <div id="ten_danh_muc_error" class="error"></div>
+                          <div id="ten_the_loai_error" class="error"></div>
                           <span class="text-danger">
-                            
+                            @error('ten_the_loai')
+                            {{$message}}
+                            @enderror
+                          </span>
+                        </label>
+
+                        <label class="block text-sm">
+                          <span class="text-gray-700 dark:text-gray-400">Tên Danh Muc</span>
+                          <select name="ma_danh_muc">
+                          
+                            <option v-for="(danhmuc, index) in data_danhmuc" :value="danhmuc.id">@{{ danhmuc.ten_danh_muc }}</option>
+                          
+                          </select>
+                          <div id="ma_danh_muc_error" class="error"></div>
+                          <span class="text-danger">
+                            @error('ma_danh_muc')
+                            {{$message}}
+                            @enderror
                           </span>
                         </label>
                       </div>
+                      
     
                       <div class="modal-footer mt-3">
                         <button type="submit" id="submitBtn"
                           class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                          Cập Nhật Danh Mục
+                          Cập Nhật The Loai
                         </button>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
-            </td> 
-
-            <!-- </div>
-            <div v-else></div> -->
+            </td>
           </tr>
 
         </tbody>
@@ -181,31 +210,32 @@ Quan Ly Danh Muc
     </div>
   </div>
 
-  
-<!-- MODAL DELETE -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Xác Nhận Xoá Dữ Liệu</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Bạn có chắc muốn xoá dữ liệu này không?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-        <button type="button" class="btn btn-danger" v-on:click="kich_hoat_xoa_danh_muc()" data-bs-dismiss="modal">Xoá</button>
+  <!-- MODAL DELETE -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Xác Nhận Xoá Dữ Liệu</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Bạn có chắc muốn xoá dữ liệu này không?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+          <button type="button" class="btn btn-danger" v-on:click="kich_hoat_xoa_the_loai()" data-bs-dismiss="modal">Xoá</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
 </main>
 
-@endsection
 
+</main>
+@endsection
 @section('js')
 
 <script>
@@ -213,24 +243,25 @@ Quan Ly Danh Muc
     el: '#app',
     data: {
       data_danhmuc: [],
-      xoa_danh_muc:{},
+      data_theloai: [],
+      xoa_the_loai:{},
     },
     created() {
       this.GetData();
     },
-    
     methods: {
-      // hien thi danh sach danh muc
+      // hien thi danh sach the loai
       GetData() {
         axios
-          .get('/admin/danh-muc/du-lieu')
+          .get('/admin/the-loai/du-lieu')
           .then((res) => {
             this.data_danhmuc = res.data.data_danhmuc;
+            this.data_theloai = res.data.data_theloai;
           });
       },
-      kich_hoat_xoa_danh_muc() {
+      kich_hoat_xoa_the_loai() {
         axios
-          .post('/admin/danh-muc/xoa', this.xoa_danh_muc)
+          .post('/admin/the-loai/xoa', this.xoa_the_loai)
           .then((res) => {
             if (res.data.status) {
               const message = "Dữ liệu đã được xoá thành công!";

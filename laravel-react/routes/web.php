@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DanhMucController;
+use App\Http\Controllers\Admin\SanPhamController;
 use App\Http\Controllers\Admin\TheLoaiController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,14 @@ Route::group(['prefix'=> 'admin'], function () {
         Route::post('/', [TheLoaiController::class,'ThemTheLoai']); 
         Route::post('/xoa', [TheLoaiController::class,'XoaTheLoai']); 
         Route::post('/cap-nhat/{id}', [TheLoaiController::class,'CapNhatTheLoai']); 
+    });
+
+    Route::group(['prefix' => '/san-pham'], function () {
+        Route::get('/', [SanPhamController::class,'index']); 
+        Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
+        Route::post('/', [SanPhamController::class,'ThemSanPham']); 
+        Route::post('/xoa', [SanPhamController::class,'XoaSanPham']); 
+        Route::post('/cap-nhat/{id}', [SanPhamController::class,'CapNhatSanPham']); 
     });
 
 });// admin
