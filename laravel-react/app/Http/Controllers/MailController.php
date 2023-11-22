@@ -15,8 +15,9 @@ class MailController extends Controller
         ]);
 
         $details = [
-            'title' => 'Lấy lại mật khẩu',
-            'body' => $request['body']
+            'title' => 'Bạn đã yêu cầu lấy mật khẩu mới! Đây là mật khẩu mới của bạn.',
+            'body' => $request['body'],
+            'password'=>$request['password']
         ];
 
         Mail::to($validatedData['email'])->send(new SendMail($details));

@@ -23,11 +23,10 @@ const ForgotPassword = () => {
             const response = await fetch('http://127.0.0.1:8000/csrf-token');
             const data = await response.json();
             const csrfToken = data.csrf_token;
-            console.log("🚀 ~ file: ForgotPassword.jsx:26 ~ fetchCsrfToken ~ csrfToken:", csrfToken)
-
+            const randomPassword = generateRandomPassword(12);
             const dataToSend = {
                 email: email,
-                subject: 'Lấy lại mật khẩu',
+                password: randomPassword,
                 body: 'Đây là mật khẩu mới của bạn'
             };
 
@@ -49,7 +48,16 @@ const ForgotPassword = () => {
             console.error('Lỗi khi lấy CSRF token hoặc gửi email:', error);
         }
     }
+    function generateRandomPassword(length) {
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?";
+        let password = "";
 
+        for (let i = 0; i < length; ++i) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset[randomIndex];
+        }
+        return password;
+    }
 
     return (
         <section className="container">
@@ -68,7 +76,6 @@ const ForgotPassword = () => {
                 </div>
             </div>
         </section>
-
     );
 };
 
