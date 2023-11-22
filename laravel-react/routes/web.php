@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\DanhMucController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MailController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,3 +30,9 @@ Route::group(['prefix'=> 'admin'], function () {
     });
 
 });// admin
+Route::get('/csrf-token', function() {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+Route::post('/send-email', [MailController::class, 'sendEmail']);
+
+
