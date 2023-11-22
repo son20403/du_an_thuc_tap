@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import RegisterPage from './RegisterPage'
+
 const LoginPage = () => {
   return (
     <div>  <section>
