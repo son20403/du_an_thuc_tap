@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CapNhatTheLoaiRequest;
 use App\Http\Requests\TheLoaiRequest;
 use App\Models\DanhMucModel;
 use App\Models\TheLoaiModel;
@@ -31,13 +32,14 @@ class TheLoaiController extends Controller
     }
 
     public function ThemTheLoai(TheLoaiRequest $request) {
-        $data = $request->all();
+        $data =  $request->all();
         $data['ten_the_loai_slug'] = Str::slug($data['ten_the_loai']);
-
-        // dd($data_danhmuc);
         TheLoaiModel::create($data);
-        return redirect('/admin/the-loai')->with('success','success');
-        // return response()->json(['success' => true, 'message' => 'Dữ liệu hợp lệ.']);
+        return response()->json([
+            'status'    =>  true,
+            'message'   =>  'Thêm thành công'
+        ]);
+        
     }
 
     public function XoaTheLoai(Request $request) {
@@ -49,18 +51,20 @@ class TheLoaiController extends Controller
         );     
         return response()->json([
             'status'    =>      true,
-            'message'   =>      'Đã xóa liên hệ thành công !'
+            'message'   =>      'Đã xóa thành công !'
         ]);
-        // return redirect('/admin/the-loai')->with('success','success');
     }
 
-    public function CapNhatTheLoai($id, TheLoaiRequest $request) {
+    public function CapNhatTheLoai(CapNhatTheLoaiRequest $request) {
         $data = $request->all();
-        $data = $request->except('_token');
         $data['ten_the_loai_slug'] = Str::slug($data['ten_the_loai']);
-        TheLoaiModel::where('id', $id)->update(
-            $data 
-        );        
-        return redirect('admin/the-loai')->with('success','success');
+
+        $TheLoai = TheLoaiModel::where('id', $request->id)->first();
+        $TheLoai->update($data);
+
+        return response()->json([
+            'status'    =>  true,
+            'message'   =>  'Cap nhat thành công'
+        ]);       
     }
 }

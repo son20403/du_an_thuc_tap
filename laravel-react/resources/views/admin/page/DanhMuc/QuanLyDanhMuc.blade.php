@@ -16,40 +16,34 @@ Quan Ly Danh Muc
       </button>
 
       <!-- Modal them danh muc-->
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="ModalEditLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
-            <form enctype="multipart/form-data" method="post" action="{{asset('/admin/danh-muc')}}" id="danhmucForm">@csrf
-              <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Thêm Danh Mục</h3>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+            <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLabel">Cập Nhật Danh Mục</h3>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
 
-              <div class="modal-body">
-                <label class="block text-sm">
-                  <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
-                  <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_danh_muc"
-                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                  <div id="ten_danh_muc_error" class="error"></div>
-                  <span class="text-danger">
-                    @error('ten_danh_muc')
-                    {{$message}}
-                    @enderror
-                  </span>
-                </label>
-              </div>
+            <div class="modal-body">
+              <label class="block text-sm">
+                <label>Ngày sinh</label>
+                <input v-model="add_danh_muc.ten_danh_muc" type="text" class="form-control"
+                  placeholder="Nhập vào Họ và tên">
+                <div v-if="errors.ten_danh_muc" class="alert alert-warning">
+                  @{{ errors.ten_danh_muc[0] }}
+                </div>
+              </label>
+            </div>
 
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                <button type="submit" id="submitBtn"
-                  class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                  Thêm Danh Mục
-                </button>
-              </div>
-            </form>
+            <div class="modal-footer mt-3">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button v-on:click="them_danh_muc()" type="button" class="btn btn-primary">
+                Cập Nhật Danh Mục
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -72,20 +66,16 @@ Quan Ly Danh Muc
 
           <tr v-for="(value, key) in data_danhmuc" class="text-gray-700 dark:text-gray-400" v-if="value.is_delete == 0">
             <!-- <div v-if="value.is_delete !== 0"> -->
-              
-            <td class="px-4 py-3" >
+
+            <td class="px-4 py-3">
               @{{ key + 1 }}
             </td>
             <td class="px-4 py-3 text-sm">
               @{{ value ? value.ten_danh_muc : 'Không có tên danh mục' }}
             </td>
             <td class="px-4 py-3 text-xs">
-              <a class="btn btn-primary trigger-modal" name="btn_edit" href="#" data-bs-toggle="modal"
-                data-bs-target="#ModalEdit">Edit</a>
-              <!-- <a class="btn btn-danger btn_delete" name="btn_delete" data-bs-toggle="modal"
-                                        data-bs-target="#confirmationModal"
-                :href="'{{asset('/admin/danh-muc/xoa')}}/'+ value.id">Xoa
-              </a> -->
+              <button v-on:click="cap_nhat(value)" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#ModalEdit">Edit</button>
               <button v-on:click="xoa_danh_muc = value" class="btn btn-danger" data-bs-toggle="modal"
                 data-bs-target="#confirmationModal">Xóa</button>
               <!-- Modal cap nhat-->
@@ -93,42 +83,35 @@ Quan Ly Danh Muc
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                   <div class="modal-content">
-                    <form enctype="multipart/form-data" method="post"
-                      :action="'{{asset('/admin/danh-muc/cap-nhat')}}/'+ value.id">@csrf
-                      <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Cập Nhật Danh Mục</h3>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-    
-                      <div class="modal-body">
-                        <label class="block text-sm">
-                          <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
-                          <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_danh_muc"
-                            :value="value.ten_danh_muc || ''"
-                            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                          <div id="ten_danh_muc_error" class="error"></div>
-                          <span class="text-danger">
-                            
-                          </span>
-                        </label>
-                      </div>
-    
-                      <div class="modal-footer mt-3">
-                        <button type="submit" id="submitBtn"
-                          class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                          Cập Nhật Danh Mục
-                        </button>
-                      </div>
-                    </form>
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel">Cập Nhật Danh Mục</h3>
+                      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="modal-body">
+                      <label class="block text-sm">
+                        <label>Ngày sinh</label>
+                        <input v-model="edit_danh_muc.ten_danh_muc" type="text" class="form-control"
+                          placeholder="Nhập vào Họ và tên">
+                        <div v-if="errors.ten_danh_muc" class="alert alert-warning">
+                          @{{ errors.ten_danh_muc[0] }}
+                        </div>
+                      </label>
+                    </div>
+
+                    <div class="modal-footer mt-3">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button v-on:click="cap_nhat_danh_muc()" type="button" class="btn btn-primary">
+                        Cập Nhật Danh Mục
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </td> 
+            </td>
 
-            <!-- </div>
-            <div v-else></div> -->
           </tr>
 
         </tbody>
@@ -181,27 +164,29 @@ Quan Ly Danh Muc
     </div>
   </div>
 
-  
-<!-- MODAL DELETE -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Xác Nhận Xoá Dữ Liệu</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Bạn có chắc muốn xoá dữ liệu này không?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-        <button type="button" class="btn btn-danger" v-on:click="kich_hoat_xoa_danh_muc()" data-bs-dismiss="modal">Xoá</button>
+
+  <!-- MODAL DELETE -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Xác Nhận Xoá Dữ Liệu</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Bạn có chắc muốn xoá dữ liệu này không?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+          <button type="button" class="btn btn-danger" v-on:click="kich_hoat_xoa_danh_muc()"
+            data-bs-dismiss="modal">Xoá</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </main>
 
 @endsection
@@ -213,12 +198,15 @@ Quan Ly Danh Muc
     el: '#app',
     data: {
       data_danhmuc: [],
-      xoa_danh_muc:{},
+      xoa_danh_muc: {},
+      add_danh_muc: {},
+      edit_danh_muc: {},      
+      errors: {},
     },
     created() {
       this.GetData();
     },
-    
+
     methods: {
       // hien thi danh sach danh muc
       GetData() {
@@ -227,6 +215,9 @@ Quan Ly Danh Muc
           .then((res) => {
             this.data_danhmuc = res.data.data_danhmuc;
           });
+      },
+      cap_nhat(value) {
+        this.edit_danh_muc = value; // Tạo một bản sao của user để tránh ảnh hưởng trực tiếp đến dữ liệu người dùng
       },
       kich_hoat_xoa_danh_muc() {
         axios
@@ -240,9 +231,57 @@ Quan Ly Danh Muc
               toastr.error('Có lỗi không mong muốn!');
             }
           })
-      }
+      },
+
+      them_danh_muc() {
+        axios
+          .post('/admin/danh-muc', this.add_danh_muc)
+          .then((res) => {
+            console.log(res.data); // In ra response từ server để xem có lỗi gì không
+
+            if (res.data.status) {
+              toastr.success(res.data.message);
+              this.GetData();
+              // Tắt modal xác nhận
+              $('#exampleModal').modal('hide');
+            } else {
+              toastr.error('Có lỗi không mong muốn! 1');
+            }
+          })
+          .catch((error) => {
+            if (error && error.response.data && error.response.data.errors) {
+              this.errors = error.response.data.errors;
+            } else {
+              toastr.error('Có lỗi không mong muốn! 2');
+            }
+          })
+      },
+
+      cap_nhat_danh_muc() {
+        axios
+          .post('/admin/danh-muc/cap-nhat', this.edit_danh_muc)
+          .then((res) => {
+            console.log(res.data); // In ra response từ server để xem có lỗi gì không
+
+            if (res.data.status) {
+              toastr.success(res.data.message);
+              this.GetData();
+              // Tắt modal xác nhận
+              $('#ModalEdit').modal('hide');
+            } else {
+              toastr.error('Có lỗi không mong muốn! 1');
+            }
+          })
+          .catch((error) => {
+            if (error && error.response.data && error.response.data.errors) {
+              this.errors = error.response.data.errors;
+            } else {
+              toastr.error('Có lỗi không mong muốn! 2');
+            }
+          })
+      },
     },
-    
+
   });
 </script>
 

@@ -1,66 +1,101 @@
 @extends('admin.share.layout')
 
 @section('tieudetrang')
-Quan Ly The Loai
+Quan Ly Sản Phẩm
 @endsection
 
 @section('noidung')
 <main id="app">
 
-  <div class="col-md-12 mb-3 mt-3">
+  <div class="col-md-12 mb-3">
     <div class="modal-category">
       <!-- Button trigger modal -->
-      <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-        Thêm The Loai
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Thêm Sản Phẩm
       </button>
-      <!-- Modal them danh muc-->
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+
+      <!-- Modal -->
+      <div class="modal fade bd-example-modal-xl" id="exampleModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
-            <form enctype="multipart/form-data" method="post" action="{{asset('/admin/the-loai')}}">@csrf
+            <form id="sanphamForm" method="post" action="/admin/san-pham" enctype="multipart/form-data">@csrf
               <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Thêm The Loai</h3>
+                <h3 class="modal-title" id="exampleModalLabel">Thêm Sản Phẩm</h3>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
 
-              <div class="modal-body">
-                <label class="block text-sm">
-                  <span class="text-gray-700 dark:text-gray-400">Tên The Loai</span>
-                  <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_the_loai"
-                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                  <div id="ten_the_loai_error" class="error"></div>
-                  <span class="text-danger">
-                    @error('ten_the_loai')
-                    {{$message}}
-                    @enderror
-                  </span>
-                </label>
-                <label class="block text-sm">
-                  <span class="text-gray-700 dark:text-gray-400">Tên Danh Muc</span>
-                  <select name="ma_danh_muc">
-                  
-                    <option v-for="(danhmuc, index) in data_danhmuc" :value="danhmuc.id">@{{ danhmuc.ten_danh_muc }}</option>
-                  
-                  </select>
-                  <div id="ma_danh_muc_error" class="error"></div>
-                  <span class="text-danger">
-                    @error('ma_danh_muc')
-                    {{$message}}
-                    @enderror
-                  </span>
-                </label>
+              <div class="modal-body row">
+                <!-- ---------------- -->
+                <div class="col-md-9">
+                  <div class="col-md-12 p-1 form-group-item">
+                    <label>Tên Sản Phẩm</label>
+                    <input name="ten_san_pham" type="text" class="form-control" placeholder="Nhập vào Tên Sản Phẩm"
+                      required>
+                  </div>
+
+                  <div class="form-group col-md-12 p-1 form-group-item">
+                    <label>Mô Tả</label>
+                    <textarea name="mo_ta" id="mo_ta" class="form-control" cols="30" rows="10"></textarea>
+                  </div>
+                </div>
+                <!-- --------------- -->
+                <div class="col-md-3">
+                  <div class="col-md-12 p-1 form-group-item">
+                    <label>Mã Loại Sản Phẩm</label>
+                    <select name="ma_the_loai" class="form-control" required>
+                      <option value=""> _ _ _ Chon Mã Loại Sản Phẩm _ _ _</option>
+                      @foreach($data_Loaisanpham as $Loaisanpham)
+                      <option value="{{$Loaisanpham->id}}">
+                        {{$Loaisanpham->ten_the_loai}} - (Danh muc : @foreach($data_danhmuc as $danhmuc)
+                        @if($danhmuc->id == $Loaisanpham->ma_danh_muc) {{$danhmuc->ten_danh_muc}} @endif @endforeach)
+                      </option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-md-12 p-1 form-group-item">
+                    <label>Số Lượng</label>
+                    <input name="so_luong" type="number" class="form-control" placeholder="Nhập Số Lượng" required>
+                  </div>
+                  <div class="col-md-12 p-1 form-group-item">
+                    <label>Giá Bán</label>
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-usd"></span>
+                      </div>
+                      <input name="gia_san_pham" type="number" class="form-control form-icon-trailing"
+                        placeholder="Nhập Giá Bán" required>
+                    </div>
+                  </div>
+                  <div class="col-md-12 p-1 form-group-item">
+                    <label>Giảm giá</label>
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+                      </div>
+                      <input name="giam_gia_san_pham" type="number" class="form-control" placeholder="Nhập Giảm giá">
+                    </div>
+                  </div>
+                  <div class="col-md-12 p-1 form-group-item">
+                    <label>Đặt Biệt</label>
+                    <select name="dat_biet" class="form-control" required>
+                      <option value=""> _ _ _ Chon Loại Đặt Biệt _ _ _</option>
+                      <option value="0">Khong</option>
+                      <option value="1">Co</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-12 p-1">
+                    <label>Ảnh Sản Phẩm</label>
+                    <input id="hinh_anh" class="form-control" type="file" accept="image/*" name="hinh_anh[]" multiple
+                      required>
+                  </div>
+                </div>
               </div>
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                <button type="submit" 
-                  class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                  Thêm The Loai
-                </button>
+                <button type="submit" class="btn btn-submit btn-primary">Thêm Sản Phẩm</button>
               </div>
             </form>
           </div>
@@ -77,204 +112,366 @@ Quan Ly The Loai
           <tr
             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             <th class="px-4 py-3">#</th>
+            <th class="px-4 py-3">Tên Sản Phẩm</th>
+            <th class="px-4 py-3">Hình Ảnh</th>
+            <th class="px-4 py-3">Giá Sản Phẩm</th>
+            <th class="px-4 py-3">Số Lượng</th>
             <th class="px-4 py-3">Tên Thể Loại</th>
-            <th class="px-4 py-3">Tên Danh Mục</th>
+            <th class="px-4 py-3">Ten Danh Muc</th>
+            <th class="px-4 py-3">Mô Tả</th>
+            <th class="px-4 py-3">Trạng Thái</th>
             <th class="px-4 py-3">Thao tác</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-          
-          <tr v-for="(theloai, key) in data_theloai" class="text-gray-700 dark:text-gray-400" v-if="theloai.is_delete == 0">
+          @if($data_sanpham->isEmpty())
+          <tr class="text-gray-700 dark:text-gray-400">
+            <td class="align-middle text-center text-nowrap" colspan="11">Không có dữ liệu</td>
+          </tr>
+          @else
+          @foreach($data_sanpham as $sanpham)
+          @if ($sanpham->is_delete == 0)
+          <tr class="text-gray-700 dark:text-gray-400">
             <td class="px-4 py-3">
-            @{{ key + 1 }}
-            </td> 
-            <td class="px-4 py-3 text-sm">
-            @{{ theloai ? theloai.ten_the_loai : 'Không có tên danh mục' }}
+              {{$sanpham->id}}
             </td>
-            <td class="px-4 py-3 text-sm">
-            <span v-for="(danhmuc, index) in data_danhmuc" v-if="theloai.ma_danh_muc === danhmuc.id">
-              @{{ danhmuc.ten_danh_muc }}
-            </span>
+            <td class="px-4 py-3">
+              {{$sanpham->ten_san_pham}}
             </td>
-            <td class="px-4 py-3 text-xs">
-              <a class="btn btn-primary trigger-modal" name="btn_edit" href="#" data-bs-toggle="modal"
-                data-bs-target="#ModalEdit">Edit</a>
-              <button v-on:click="xoa_the_loai = theloai" class="btn btn-danger" data-bs-toggle="modal"
-                data-bs-target="#confirmationModal">Xóa
-              </button>
-              <!-- Modal cap nhat-->
-              <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEditLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                  <div class="modal-content">
-                    <form enctype="multipart/form-data" method="post"
-                      :action="'{{asset('/admin/the-loai/cap-nhat')}}/' + theloai.id">@csrf
-                      <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Cập Nhật The Loai</h3>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-    
-                      <div class="modal-body">
-                        <label class="block text-sm">
-                          <span class="text-gray-700 dark:text-gray-400">Tên The Loai</span>
-                          <input placeholder="Nhập vào Tên Danh Mục" type="text" name="ten_the_loai"
-                            :value="theloai.ten_the_loai"
-                            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                          <div id="ten_the_loai_error" class="error"></div>
-                          <span class="text-danger">
-                            @error('ten_the_loai')
-                            {{$message}}
-                            @enderror
-                          </span>
-                        </label>
+            <td class="px-4 py-3">
+              <!-- -- Kiểm tra xem sản phẩm có hình ảnh hay không -- -->
+              @php
+              $hasImages = false;
+              @endphp
 
-                        <label class="block text-sm">
-                          <span class="text-gray-700 dark:text-gray-400">Tên Danh Muc</span>
-                          <select name="ma_danh_muc">
-                          
-                            <option v-for="(danhmuc, index) in data_danhmuc" :value="danhmuc.id">@{{ danhmuc.ten_danh_muc }}</option>
-                          
-                          </select>
-                          <div id="ma_danh_muc_error" class="error"></div>
-                          <span class="text-danger">
-                            @error('ma_danh_muc')
-                            {{$message}}
-                            @enderror
-                          </span>
-                        </label>
-                      </div>
-                      
-    
-                      <div class="modal-footer mt-3">
-                        <button type="submit" id="submitBtn"
-                          class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                          Cập Nhật The Loai
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+              @foreach ($HinhAnh as $hinhanh)
+              @if ($hinhanh && $hinhanh->ma_san_pham == $sanpham->id)
+              <img height="100" src="{{ asset('img/') }}/{{$hinhanh->hinh_anh}}" title="{{$hinhanh->hinh_anh}}">
+              @php
+              $hasImages = true;
+              @endphp
+              @endif
+              @endforeach
+
+              @if (!$hasImages)
+              <p>Không có hình ảnh cho sản phẩm này.</p>
+              @endif
+            </td>
+            <td class="px-4 py-3">
+              {{$sanpham->gia_san_pham}}
+            </td>
+            <td class="px-4 py-3">
+              {{$sanpham->so_luong}}
+            </td>
+            <td class="px-4 py-3">
+              @foreach ($data_Loaisanpham as $Loaisanpham)
+              @if ($Loaisanpham->id == $sanpham->ma_the_loai)
+              {{$Loaisanpham->ten_the_loai}}
+              @endif
+              @endforeach
+            </td>
+            <td class="px-4 py-3 text-sm">
+              {{$sanpham->ten_danh_muc}}
+            </td>
+            <td class="px-4 py-3 text-sm">
+              {!!$sanpham->mo_ta!!}
+            </td>
+            <td class="px-4 py-3 text-sm">
+              <div class="form-check form-switch">
+                <input class="form-check-input" onclick="toggleStatus(<?php echo $sanpham->id; ?>)" type="checkbox"
+                  @if($sanpham->trang_thai == 1) checked @endif role="switch" id="flexSwitchCheckDefault">
               </div>
             </td>
-          </tr>
+            <td class="px-4 py-3 text-xs">
+              <!-- Button trigger modal -->
+              <a class="btn btn-primary trigger-modal" name="btn_edit" href="#" data-bs-toggle="modal"
+                data-bs-target="#ModalEdit{{$sanpham->id}}">Edit</a>
+              <a class="btn btn-danger btn_delete trigger-modal" name="btn_delete"
+                href="san-pham/xoasanpham/{{$sanpham->id}}">Xoa</a>
+            </td>
+            <div class="modal fade" id="ModalEdit{{$sanpham->id}}" tabindex="-1" role="dialog"
+              aria-labelledby="ModalEditLabel" aria-hidden="true">
 
+              <div class="modal-dialog modal-xl">
+
+                <div class="modal-content">
+                  <form id="validate_update" method="post" action="san-pham/capnhatsanpham/{{$sanpham->id}}"
+                    enctype="multipart/form-data">@csrf
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel_update">Cap Nhat Sản Phẩm</h3>
+                      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="card m-3">
+
+                      <div class="card-header text-center">
+                        <h3>Danh Sách Hình Ảnh</h3>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="row">
+                          @foreach($data_hinhanh as $hinhanh)
+                          @if($hinhanh->ma_san_pham == $sanpham->id)
+                          <div class="col-md-3">
+                            <div>
+                              <img src="{{asset('img')}}/{{$hinhanh->hinh_anh}}" width="100" title="image">
+                            </div>
+                            <div class="text-center">
+                              <a class="btn btn-danger btn_delete"
+                                onclick="deleteImg(<?php echo $hinhanh->id; ?>)">xoa</a>
+                            </div>
+                          </div>
+                          @endif
+                          @endforeach
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card m-3">
+                      <div class="card-header text-center">
+                        <h3>Thong Tin Sản Phẩm</h3>
+                      </div>
+
+                      <div class="modal-body row">
+                        <!-- ---------------- -->
+                        <div class="col-md-9">
+                          <div class="col-md-12 p-1 form-group-item">
+                            <label>Tên Sản Phẩm</label>
+                            <input name="ten_san_pham" type="text" class="form-control"
+                              placeholder="Nhập vào Tên Sản Phẩm" value="{{$sanpham->ten_san_pham}}" required>
+                          </div>
+
+                          <div class="form-group col-md-12 p-1 form-group-item">
+                            <label>Mô Tả</label>
+                            <textarea name="mo_ta" id="update_mo_ta" class="form-control ckeditor" cols="30" rows="10" required>
+                              {{$sanpham->mo_ta}}
+                            </textarea>
+                          </div>
+                        </div>
+                        <!-- --------------- -->
+                        <div class="col-md-3">
+                          <div class="col-md-12 p-1 form-group-item">
+                            <label>Mã Loại Sản Phẩm</label>
+                            <select name="ma_the_loai" class="form-control">
+                              @foreach($data_Loaisanpham as $Loaisanpham)
+                              <option value="{{$Loaisanpham->id}}" @if($Loaisanpham->id == $sanpham->ma_the_loai)
+                                selected="selected"; @endif>
+                                {{$Loaisanpham->ten_the_loai}} - (Danh muc : @foreach($data_danhmuc as $danhmuc)
+                                @if($danhmuc->id == $Loaisanpham->ma_danh_muc) {{$danhmuc->ten_danh_muc}} @endif @endforeach)
+                              </option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-md-12 p-1 form-group-item">
+                            <label>Số Lượng</label>
+                            <input name="so_luong" type="number" class="form-control" placeholder="Nhập Số Lượng"
+                              value="{{$sanpham->so_luong}}" required>
+                          </div>
+                          <div class="col-md-12 p-1 form-group-item">
+                            <label>Giá Bán</label>
+                            <div class="input-group">
+                              <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-usd"></span>
+                              </div>
+                              <input name="gia_san_pham" type="number" class="form-control" placeholder="Nhập Giá Bán"
+                                value="{{$sanpham->gia_san_pham}}" required>
+                            </div>
+                          </div>
+                          <div class="col-md-12 p-1 form-group-item">
+                            <label>Giảm giá</label>
+                            <div class="input-group">
+                              <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+                              </div>
+                              <input name="giam_gia_san_pham" type="number" class="form-control"
+                                placeholder="Nhập Giảm giá" value="{{$sanpham->giam_gia_san_pham}}">
+                            </div>
+                          </div>
+                          <div class="col-md-12 p-1 form-group-item">
+                            <label>Đặt Biệt</label>
+                            <select name="dat_biet" class="form-control" required>
+                              <option value="0" @if($sanpham->dat_biet == 0) selected="selected"; @endif>Khong</option>
+                              <option value="1" @if($sanpham->dat_biet == 1) selected="selected"; @endif>Co</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-12 p-1">
+                            <label>Ảnh Sản Phẩm</label>
+                            <div class="input-group">
+                              <input id="hinh_anh_update" class="form-control" type="file" accept="image/*"
+                                name="hinh_anh[]" multiple>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                        <button type="submit" class="btn btn-submit btn-primary">Cap Nhat Sản Phẩm</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+
+          </tr>
+          @endif
+          @endforeach
+          @endif
         </tbody>
+
       </table>
     </div>
 
-    <div
-      class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-      <span class="flex items-center col-span-3">
-        Showing 21-30 of 100
-      </span>
-      <span class="col-span-2"></span>
-      <!-- Pagination -->
-      <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-        <nav aria-label="Table navigation">
-          <ul class="inline-flex items-center">
-            <li>
-              <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
-                aria-label="Previous">
-                <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                  <path
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clip-rule="evenodd" fill-rule="evenodd"></path>
-                </svg>
-              </button>
-            </li>
-            <li>
-              <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                1
-              </button>
-            </li>
-            <li>
-              <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                2
-              </button>
-            </li>
-            <li>
-              <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
-                aria-label="Next">
-                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                  <path
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd" fill-rule="evenodd"></path>
-                </svg>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </span>
-    </div>
   </div>
 
-  <!-- MODAL DELETE -->
-  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Xác Nhận Xoá Dữ Liệu</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Bạn có chắc muốn xoá dữ liệu này không?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-          <button type="button" class="btn btn-danger" v-on:click="kich_hoat_xoa_the_loai()" data-bs-dismiss="modal">Xoá</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- {{-- Hiển thị thông báo thành công --}} -->
+  @if(Session::has('success'))
+  <script>
+    toastr.success("{{ Session::get('success') }}");
+  </script>
+  @endif
 
-</main>
-
+  <!-- {{-- Hiển thị thông báo lỗi --}} -->
+  @if(Session::has('error'))
+  <script>
+    toastr.error("{{ Session::get('error') }}");
+  </script>
+  @endif
 
 </main>
 @endsection
 @section('js')
 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- toggle status -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-  new Vue({
-    el: '#app',
-    data: {
-      data_danhmuc: [],
-      data_theloai: [],
-      xoa_the_loai:{},
-    },
-    created() {
-      this.GetData();
-    },
-    methods: {
-      // hien thi danh sach the loai
-      GetData() {
-        axios
-          .get('/admin/the-loai/du-lieu')
-          .then((res) => {
-            this.data_danhmuc = res.data.data_danhmuc;
-            this.data_theloai = res.data.data_theloai;
-          });
-      },
-      kich_hoat_xoa_the_loai() {
-        axios
-          .post('/admin/the-loai/xoa', this.xoa_the_loai)
-          .then((res) => {
-            if (res.data.status) {
-              const message = "Dữ liệu đã được xoá thành công!";
-              toastr.success(message);
-              this.GetData();
-            } else {
-              toastr.error('Có lỗi không mong muốn!');
-            }
-          })
+  function toggleStatus(id) {
+    var id = id;
+    $.ajax({
+      url: "/admin/san-pham/toggleStatus",
+      type: "get",
+      data: { idsta: id },
+      success: function ($trangthai) {
+        if ($trangthai == 1) {
+          swal("Da bat trang thai!", "", "success");
+        } else {
+          swal("Da tat trang thai!", "", "success");
+        }
       }
-    },
-    
+    });
+  }
+
+  function deleteImg(id) {
+    var id = id;
+    $.ajax({
+      url: "/admin/xoahinhanh",
+      type: "get",
+      data: { idImg: id },
+      success: function () {
+        // console.log("it Works");
+        // fetchcategory();
+        swal("Xoa hinh anh thanh cong!", "", "success");
+        window.location.replace("./san-pham");
+      }
+    });
+  }
+</script>
+
+
+
+<!-- validation -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#sanphamForm').validate({
+      reles: {
+        'ten_san_pham': {
+          required: true,
+        },
+        'ma_loai': {
+          required: true,
+        },
+        'gia_san_pham': {
+          required: true,
+        },
+        'giam_gia_san_pham': {
+          required: true,
+        },
+        'hinh_anh[]': {
+          required: true,
+        },
+        'so_luong': {
+          required: true,
+        },
+        'luot_xem': {
+          required: true,
+        },
+        'dat_biet': {
+          required: true,
+        },
+        'mo_ta': {
+          required: true,
+        },
+      },
+      messages: {
+        'ten_san_pham': "Vui lòng không được bỏ trống tên sản phẩm.",
+        'ma_loai': "Vui lòng không được bỏ trống mã loại.",
+        'gia_san_pham': "Vui lòng không được bỏ trống giá sản phẩm.",
+        'giam_gia_san_pham': "Vui lòng không được bỏ trống giảm giá sản phẩm.",
+        'hinh_anh[]': "Vui lòng không được bỏ trống hình ảnh sản phẩm.",
+        'so_luong': "Vui lòng không được bỏ trống số lượng sản phẩm.",
+        'luot_xem': "Vui lòng không được bỏ trống lượt xem.",
+        'dat_biet': "Vui lòng không được bỏ trống đặt biệt.",
+        'mo_ta': "Vui lòng không được bỏ trống mô tả sản phẩm.",
+      },
+      errorElement: "em",
+      errorPlacement: function (error, element) {
+        // Add the `help-block` class to the error element
+        error.addClass("help-block");
+
+        if (element.prop("type") === "checkbox") {
+          error.insertAfter(element.parent("label"));
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).parents(".form-group-item").addClass("has-error").removeClass("has-success");
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).parents(".form-group-item").addClass("has-success").removeClass("has-error");
+      }
+    });
   });
+</script>
+
+
+<script>
+  const delBtnEl = document.querySelectorAll(".btn_delete");
+  delBtnEl.forEach(function (delBtn) {
+    delBtn.addEventListener("click", function (event) {
+      const message = confirm("Bạn có chắc muốn xoá dữ liệu này không?");
+      if (message == false) {
+        event.preventDefault();
+      }
+    });
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+  CKEDITOR.replace('mo_ta')
+  CKEDITOR.replace('update_mo_ta'); // replace name mô tả
 </script>
 
 @endsection
