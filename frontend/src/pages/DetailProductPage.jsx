@@ -14,10 +14,6 @@ const DetailProductPage = () => {
   const [dataProducts, setDataProducts] = useState([]);
   const [detailProduct, setDetailProduct] = useState({});
   const [listSimilarProduct, setListSimilarProduct] = useState([]);
-  console.log(
-    "ðŸš€ ~ file: DetailProductPage.jsx:16 ~ DetailProductPage ~ listSimilarProduct:",
-    listSimilarProduct
-  );
   useEffect(() => {
     setDataProducts(products);
   }, [products]);
@@ -47,7 +43,6 @@ const DetailProductPage = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // ...ThÃªm cÃ¡c tÃ¹y chá»n khÃ¡c táº¡i Ä‘Ã¢y
   };
   useEffect(() => {
     $(".filter__controls li").on("click", function () {
@@ -238,16 +233,6 @@ const DetailProductPage = () => {
                     <a
                       className="nav-link"
                       data-toggle="tab"
-                      href="#tabs-2"
-                      role="tab"
-                    >
-                      Specification
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      data-toggle="tab"
                       href="#tabs-3"
                       role="tab"
                     >
@@ -259,26 +244,6 @@ const DetailProductPage = () => {
                   <div className="tab-pane active" id="tabs-1" role="tabpanel">
                     <h6>Description</h6>
                     <p>{detailProduct?.mota}</p>
-                  </div>
-                  <div className="tab-pane" id="tabs-2" role="tabpanel">
-                    <h6>Specification</h6>
-                    <p>
-                      Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-                      aut odit aut loret fugit, sed quia consequuntur magni
-                      dolores eos qui ratione voluptatem sequi nesciunt loret.
-                      Neque porro lorem quisquam est, qui dolorem ipsum quia
-                      dolor si. Nemo enim ipsam voluptatem quia voluptas sit
-                      aspernatur aut odit aut loret fugit, sed quia ipsu
-                      consequuntur magni dolores eos qui ratione voluptatem
-                      sequi nesciunt. Nulla consequat massa quis enim.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                      Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                      natoque penatibus et magnis dis parturient montes,
-                      nascetur ridiculus mus. Donec quam felis, ultricies nec,
-                      pellentesque eu, pretium quis, sem.
-                    </p>
                   </div>
                   <div className="tab-pane" id="tabs-3" role="tabpanel">
                     <h6>Reviews ( 2 )</h6>
@@ -318,6 +283,7 @@ const DetailProductPage = () => {
                   anh_sp={product.anh_sp}
                   gia={product.gia}
                   ten_sp={product.ten_sp}
+                  slug={product.slug}
                 ></ProductItem>
               ))}
           </div>
