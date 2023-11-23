@@ -186,9 +186,35 @@ Quan Ly Sản Phẩm
               <!-- Button trigger modal -->
               <a class="btn btn-primary trigger-modal" name="btn_edit" href="#" data-bs-toggle="modal"
                 data-bs-target="#ModalEdit{{$sanpham->id}}">Edit</a>
-              <a class="btn btn-danger btn_delete trigger-modal" name="btn_delete"
-                href="san-pham/xoasanpham/{{$sanpham->id}}">Xoa</a>
+              <!-- <a class="btn btn-danger btn_delete trigger-modal" name="btn_delete"
+              href="san-pham/xoasanpham/{{$sanpham->id}}">Xoa</a> -->
+              <input type="hidden" id="xoasanpham" value="{{$sanpham->id}}">
+              <button class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#confirmationModal{{$sanpham->id}}">Xóa</button>
             </td>
+            <!-- MODAL DELETE -->
+            <div class="modal fade" id="confirmationModal{{$sanpham->id}}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xác Nhận Xoá Dữ Liệu</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Bạn có chắc muốn xoá dữ liệu này không?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                    <button type="button" class="btn btn-danger" onclick="kich_hoat_xoa_san_pham({{$sanpham->id}})"
+                      data-bs-dismiss="modal">Xoá</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="modal fade" id="ModalEdit{{$sanpham->id}}" tabindex="-1" role="dialog"
               aria-labelledby="ModalEditLabel" aria-hidden="true">
 
@@ -246,7 +272,8 @@ Quan Ly Sản Phẩm
 
                           <div class="form-group col-md-12 p-1 form-group-item">
                             <label>Mô Tả</label>
-                            <textarea name="mo_ta" id="update_mo_ta" class="form-control ckeditor" cols="30" rows="10" required>
+                            <textarea name="mo_ta" id="update_mo_ta" class="form-control ckeditor" cols="30" rows="10"
+                              required>
                               {{$sanpham->mo_ta}}
                             </textarea>
                           </div>
@@ -260,7 +287,8 @@ Quan Ly Sản Phẩm
                               <option value="{{$Loaisanpham->id}}" @if($Loaisanpham->id == $sanpham->ma_the_loai)
                                 selected="selected"; @endif>
                                 {{$Loaisanpham->ten_the_loai}} - (Danh muc : @foreach($data_danhmuc as $danhmuc)
-                                @if($danhmuc->id == $Loaisanpham->ma_danh_muc) {{$danhmuc->ten_danh_muc}} @endif @endforeach)
+                                @if($danhmuc->id == $Loaisanpham->ma_danh_muc) {{$danhmuc->ten_danh_muc}} @endif
+                                @endforeach)
                               </option>
                               @endforeach
                             </select>
@@ -354,6 +382,7 @@ Quan Ly Sản Phẩm
 <!-- toggle status -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+
   function toggleStatus(id) {
     var id = id;
     $.ajax({
@@ -362,10 +391,24 @@ Quan Ly Sản Phẩm
       data: { idsta: id },
       success: function ($trangthai) {
         if ($trangthai == 1) {
-          swal("Da bat trang thai!", "", "success");
+          toastr.success("Da bat trang thai!");
         } else {
-          swal("Da tat trang thai!", "", "success");
+          toastr.success("Da tat trang thai!");
         }
+      }
+    });
+  }
+
+  function kich_hoat_xoa_san_pham(id) {
+    var id = id;
+    // console.log(id);
+    $.ajax({
+      url: "/admin/san-pham/xoasanpham",
+      type: "get",
+      data: { idsp: id },
+      success: function () {
+        toastr.success("Sản phẩm đã được xoá thành công!");
+        window.location.replace("./san-pham");
       }
     });
   }
@@ -379,7 +422,7 @@ Quan Ly Sản Phẩm
       success: function () {
         // console.log("it Works");
         // fetchcategory();
-        swal("Xoa hinh anh thanh cong!", "", "success");
+        toastr.successl("Xoa hinh anh thanh cong!");
         window.location.replace("./san-pham");
       }
     });
@@ -456,18 +499,6 @@ Quan Ly Sản Phẩm
   });
 </script>
 
-
-<script>
-  const delBtnEl = document.querySelectorAll(".btn_delete");
-  delBtnEl.forEach(function (delBtn) {
-    delBtn.addEventListener("click", function (event) {
-      const message = confirm("Bạn có chắc muốn xoá dữ liệu này không?");
-      if (message == false) {
-        event.preventDefault();
-      }
-    });
-  });
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
 <script>
   CKEDITOR.replace('mo_ta')

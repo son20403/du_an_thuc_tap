@@ -25,8 +25,8 @@ class SanPhamController extends Controller
 
         $HinhAnh = [];
 		foreach ($data_sanpham as $sanpham) {
-            dd ($sanpham->HinhAnhModel);
 			$sanpham->mo_ta = Str::limit($sanpham->mo_ta, $limit = 30, $end = '...');
+			
 			$hinhAnh = HinhAnhModel::where('ma_san_pham', $sanpham->id)->first();
 			$HinhAnh[] = $hinhAnh;
 			
@@ -41,24 +41,24 @@ class SanPhamController extends Controller
 			$sanpham->ten_danh_muc = $ten_danh_muc;
 		} 
 
-		// if ($data_sanpham->isEmpty()) {
-		// 	return view(
-		// 		'admin.page.SanPham.QuanLySanPham',
-		// 		compact('data_sanpham', 'data_Loaisanpham', 'HinhAnh', 'data_hinhanh', 'data_danhmuc')
-		// 	);
-		// } else {
-		// 	if (!empty($HinhAnh)) {
-		// 		return view(
-		// 			'admin.page.SanPham.QuanLySanPham',
-		// 			compact('data_sanpham', 'data_Loaisanpham', 'HinhAnh', 'data_hinhanh', 'data_danhmuc')
-		// 		);
-		// 	} else {
-		// 		return view(
-		// 			'admin.page.SanPham.QuanLySanPham',
-		// 			compact('data_sanpham', 'data_Loaisanpham', 'HinhAnh', 'data_hinhanh', 'data_danhmuc')
-		// 		);
-		// 	}
-		// }
+		if ($data_sanpham->isEmpty()) {
+			return view(
+				'admin.page.SanPham.QuanLySanPham',
+				compact('data_sanpham', 'data_Loaisanpham', 'HinhAnh', 'data_hinhanh', 'data_danhmuc')
+			);
+		} else {
+			if (!empty($HinhAnh)) {
+				return view(
+					'admin.page.SanPham.QuanLySanPham',
+					compact('data_sanpham', 'data_Loaisanpham', 'HinhAnh', 'data_hinhanh', 'data_danhmuc')
+				);
+			} else {
+				return view(
+					'admin.page.SanPham.QuanLySanPham',
+					compact('data_sanpham', 'data_Loaisanpham', 'HinhAnh', 'data_hinhanh', 'data_danhmuc')
+				);
+			}
+		}
 
 	}
 
@@ -93,16 +93,18 @@ class SanPhamController extends Controller
 
 	}
 
-	public function xoa_sanpham($id)
+	public function xoa_sanpham()
 	{
-		SanPhamModel::where('id', $id)->update(
+        $id = $_GET['idsp'];
+        $xoa = SanPhamModel::find($id);
+		$xoa->update(
 			[
 					'is_delete' => 1,
 			]
 	    );
-        Session::flash('success', 'Sản phẩm đã được xoá thành công.!');
+        // Session::flash('success', 'Sản phẩm đã được xoá thành công.!');
 
-		return redirect('admin/san-pham');
+		// return redirect('admin/san-pham');
 	}
 
 	public function cn_sanpham_($id, Request $request)

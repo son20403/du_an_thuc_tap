@@ -51,7 +51,7 @@ Route::group(['prefix'=> 'admin'], function () {
 
         Route::get('/', [SanphamController::class, 'sanpham']);
         Route::post('/', [SanphamController::class, 'them_sanpham']);
-        Route::get('/xoasanpham/{id}', [SanphamController::class, 'xoa_sanpham']);
+        Route::get('/xoasanpham', [SanphamController::class, 'xoa_sanpham']);
         Route::post('/capnhatsanpham/{id}', [SanphamController::class, 'cn_sanpham_']);
         Route::get('/toggleStatus', [SanphamController::class, 'toggleStatus']);
     });

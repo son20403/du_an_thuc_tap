@@ -93,7 +93,7 @@ Quan Ly The Loai
             <td class="px-4 py-3 text-xs">
               <button v-on:click="cap_nhat(theloai)" class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#ModalEdit">Edit</button>
-              <button v-on:click="xoa_danh_muc = theloai" class="btn btn-danger" data-bs-toggle="modal"
+              <button v-on:click="xoa_the_loai = theloai" class="btn btn-danger" data-bs-toggle="modal"
                 data-bs-target="#confirmationModal">Xóa</button>
 
               <!-- Modal cap nhat-->
