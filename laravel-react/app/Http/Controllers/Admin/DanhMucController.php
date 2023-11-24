@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CapNhatDanhMucRequest;
 use App\Http\Requests\DanhMucRequest;
 use App\Models\DanhMucModel;
 use Illuminate\Support\Str;
@@ -12,40 +13,53 @@ class DanhMucController extends Controller
 {
     public function index()
     {
-        $data_danhmuc = DanhMucModel::orderBy('id', 'desc')->paginate(10);
+        return view('admin.page.DanhMuc.QuanLyDanhMuc');
+    }
+
+    public function HienThiDanhMuc() {
+        $data_danhmuc = DanhMucModel::all();
+        $compact = compact('data_danhmuc');
 
         if ($data_danhmuc->isEmpty()) {
-			return view('admin.page.DanhMuc.QuanLyDanhMuc', compact('data_danhmuc'));
+			return response()->json( $compact );
         } else {
-            return view('admin.page.DanhMuc.QuanLyDanhMuc', compact('data_danhmuc'));
+            return response()->json( $compact );
         }
     }
 
     public function ThemDanhMuc(DanhMucRequest $request) {
-        $data_danhmuc = $request->all();
-        $data_danhmuc['ten_danh_muc_slug'] = Str::slug($data_danhmuc['ten_danh_muc']);
-        // dd($data_danhmuc);
-        DanhmucModel::create($data_danhmuc);
-        return redirect('/admin/danh-muc')->with('success','success');
-        // return response()->json(['success' => true, 'message' => 'Dữ liệu hợp lệ.']);
+        $data =  $request->all();
+        $data['ten_danh_muc_slug'] = Str::slug($data['ten_danh_muc']);
+        DanhmucModel::create($data);
+        return response()->json([
+            'status'    =>  true,
+            'message'   =>  'Thêm thành công'
+        ]);
     }
 
-    public function XoaDanhMuc($id) {
-        DanhMucModel::where('id', $id)->update(
+    public function XoaDanhMuc(Request $request) {
+        DanhMucModel::where('id', $request->id)->update(
             [
-                'is_delete' => 0
+                'is_delete' => 1
             ]
         );     
-        return redirect('/admin/danh-muc')->with('success','success');
+        return response()->json([
+            'status'    =>      true,
+            'message'   =>      'Đã xóa liên hệ thành công !'
+        ]);
+        // return redirect('/admin/danh-muc')->with('success','success');
     }
 
-    public function CapNhatDanhMuc($id, DanhMucRequest $request) {
+    public function CapNhatDanhMuc(CapNhatDanhMucRequest $request) {
         $data = $request->all();
-        $data = $request->except('_token');
         $data['ten_danh_muc_slug'] = Str::slug($data['ten_danh_muc']);
-        DanhMucModel::where('id', $id)->update(
-            $data 
-        );        
-        return redirect('admin/danhmuc')->with('success','success');
+
+        $DanhMuc = DanhMucModel::where('id', $request->id)->first();
+        $DanhMuc->update($data);  
+              
+        return response()->json([
+            'status'    =>  true,
+            'message'   =>  'Cap nhat thành công'
+        ]);          
     }
 }
