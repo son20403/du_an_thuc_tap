@@ -15,10 +15,6 @@ const DetailProductPage = () => {
   const [dataProducts, setDataProducts] = useState([]);
   const [detailProduct, setDetailProduct] = useState({});
   const [listSimilarProduct, setListSimilarProduct] = useState([]);
-  console.log(
-    "ðŸš€ ~ file: DetailProductPage.jsx:16 ~ DetailProductPage ~ listSimilarProduct:",
-    listSimilarProduct
-  );
   useEffect(() => {
     setDataProducts(products);
   }, [products]);
@@ -48,7 +44,6 @@ const DetailProductPage = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // ...ThÃªm cÃ¡c tÃ¹y chá»n khÃ¡c táº¡i Ä‘Ã¢y
   };
   useEffect(() => {
     $(".filter__controls li").on("click", function () {
@@ -261,16 +256,6 @@ const DetailProductPage = () => {
                       role="tab"
                     >
                       Description
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      data-toggle="tab"
-                      href="#tabs-2"
-                      role="tab"
-                    >
-                      Specification
                     </a>
                   </li>
                   <li className="nav-item">
@@ -611,6 +596,7 @@ const DetailProductPage = () => {
                   anh_sp={product.anh_sp}
                   gia={product.gia}
                   ten_sp={product.ten_sp}
+                  slug={product.slug}
                 ></ProductItem>
               ))}
           </div>
