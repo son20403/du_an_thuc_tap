@@ -24,16 +24,16 @@ Route::get('/baiviet', [BaiVietController::class, 'index'])->name('baiviet.index
 Route::get('/baiviet/{id}', [BaiVietController::class, 'show'])->name('baiviet.show');
 
 // Thêm bài viết mới
-Route::post('baiviet', [BaiVietController::class, 'store'])->name('baiviet.store');
-
+Route::post('/baiviet', [BaiVietController::class, 'store'])->name('baiviet.store');
+Route::post('/baiviet/create', [BaiVietController::class, 'create'])->name('baiviet.create');
 // Cập nhật thông tin bài viết theo id
 # Sử dụng put nếu cập nhật toàn bộ các trường
-Route::put('baiviet/{id}', [BaiVietController::class, 'update'])->name('baiviet.update');
+Route::put('/baiviet/{id}', [BaiVietController::class, 'update'])->name('baiviet.update');
 # Sử dụng patch nếu cập nhật 1 vài trường
-Route::patch('baiviet/{id}', [BaiVietController::class, 'update'])->name('baiviet.update');
+Route::patch('/baiviet/{id}', [BaiVietController::class, 'update'])->name('baiviet.update');
 
 // Xóa bài viết theo id
-Route::delete('baiviet/{id}', [BaiVietController::class, 'destroy'])->name('baiviet.destroy');
+Route::delete('/baiviet/{id}', [BaiVietController::class, 'destroy'])->name('baiviet.destroy');
 
 
 

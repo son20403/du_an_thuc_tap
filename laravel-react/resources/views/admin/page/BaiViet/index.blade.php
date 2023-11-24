@@ -1,5 +1,8 @@
-@extends('AdminRocker.share.master')
-@section('noi_dung')
+@extends('admin.share.layout')
+@section('tieu_de_trang')
+Bài Viết
+@endsection
+@section('noidung')
 <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
   Danh Sách Bài Viết
 </h4>
@@ -9,7 +12,7 @@
   </button>
 
   <!-- Modal -->
-  @include('AdminRocker/page/BaiViet/thembaiviet')
+  @include('admin/page/BaiViet/thembaiviet')
 </div>
 
 
@@ -105,9 +108,9 @@
           </td>
         </tr>
         <!-- Modal cập nhật-->
-        @include('AdminRocker/page/BaiViet/capnhat')
+        @include('admin/page/BaiViet/capnhat')
         <!-- modal show -->
-        @include('AdminRocker/page/BaiViet/show')
+        @include('admin/page/BaiViet/show')
         @endforeach
       </tbody>
     </table>
@@ -117,7 +120,7 @@
       </svg>
     </a> -->
   </div>
-  <div>{{$data_baiviet->links('AdminRocker.page.BaiViet.custom')}}</div>
+  <div>{{$data_baiviet->links('admin.page.BaiViet.custom')}}</div>
 
 </div>
 

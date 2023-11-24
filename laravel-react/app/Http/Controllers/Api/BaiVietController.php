@@ -21,9 +21,11 @@ class BaiVietController extends Controller
 
         foreach ($data_tintuc as $baiviet) {
             $user = KhachHangModel::find($baiviet->ma_khach_hang);
-            $baiviet->ma_khach_hang = $user->ho_va_ten;
+            $baiviet['ho_va_ten'] = $user->ho_va_ten;
         }
         return response()->json(array('status'=> 'success','data_tintuc'=> $data_tintuc),200);
+
+        // return BaivietModel::all();
     }
 
     /**
@@ -67,7 +69,7 @@ class BaiVietController extends Controller
         //
         $baiviet = BaivietModel::find($id);
         $user = KhachHangModel::find($baiviet->ma_khach_hang);
-        $baiviet->ma_khach_hang = $user->ho_va_ten;
+        $baiviet['ho_va_ten'] = $user->ho_va_ten;
         return response()->json(array('status'=> 'success','baiviet'=> $baiviet),200);
     }
 
@@ -82,28 +84,30 @@ class BaiVietController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id,BaivietModel $capnhat )
     {
         $capnhat = BaivietModel::find($id);
         
         
-        $data_capnhat= $request->all();
-        $data_capnhat['ten_bai_viet_slug'] = Str::slug($data_capnhat['ten_bai_viet']);
+        // $data_capnhat= $request->all();
 
-        $capnhat->ten_bai_viet=$data_capnhat['ten_bai_viet'];
-        $capnhat->ten_bai_viet_slug=$data_capnhat['ten_bai_viet_slug'];
-        $capnhat->mo_ta_ngan=$data_capnhat['mo_ta_ngan'];
-        $capnhat->noi_dung=$data_capnhat['noi_dung'];
-        $capnhat->loai_tin=$data_capnhat['loai_tin'];
+        // $data_capnhat['ten_bai_viet_slug'] = Str::slug($data_capnhat['ten_bai_viet']);
 
-        $get_image = $request->file('hinh_anh');
-        $get_name_image = $get_image->getClientOriginalName();
-        $images = Image::make($get_image->getRealPath());
-        $images->save(public_path('img/' . $get_name_image));
+        // $capnhat->ten_bai_viet=$data_capnhat['ten_bai_viet'];
+        // $capnhat->ten_bai_viet_slug=$data_capnhat['ten_bai_viet_slug'];
+        // $capnhat->mo_ta_ngan=$data_capnhat['mo_ta_ngan'];
+        // $capnhat->noi_dung=$data_capnhat['noi_dung'];
+        // // $capnhat->loai_tin=$data_capnhat['loai_tin'];
 
-        $capnhat->hinh_anh=$get_name_image;
+        // // $get_image = $request->file('hinh_anh');
+        // // $get_name_image = $get_image->getClientOriginalName();
+        // // $images = Image::make($get_image->getRealPath());
+        // // $images->save(public_path('img/' . $get_name_image));
 
-        $capnhat->save();
+        // // $capnhat->hinh_anh=$get_name_image;
+        // $capnhat= $request->all();
+
+        $capnhat->save( $request->all());
         return response()->json(['message'=> 'tạo bài viết ', 
         'baiviet' => $capnhat]);
     }
@@ -114,9 +118,14 @@ class BaiVietController extends Controller
     public function destroy(string $id)
     {
         $xoa_baiviet = BaivietModel::find($id);
-		if ($xoa_baiviet == null)
-			return '<script type ="text/JavaScript">alert("Lỗi!");</script>';
-		$xoa_baiviet->delete();
+		if ($xoa_baiviet == null){
+            return '<script type ="text/JavaScript">alert("Lỗi!");</script>';
+        }else{
+            $xoa_baiviet->delete();
+            return response()->json(['message'=> 'Xoá bài viết ' ]);
+        }
+			
+		
 
     }
 

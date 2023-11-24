@@ -22,6 +22,7 @@ class BaivietModel extends Model
         "hinh_anh",
         "rating",
         "hien_thi",
+        "loai_tin",
         "created_at",
         "updated_at",
     ];
