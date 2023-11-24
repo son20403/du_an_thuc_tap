@@ -1,8 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
   return (
     <div>  <section>
+  
     <div className="container mt-5 ">
       <div className="row justify-content-center ">
         <div className="col-md-6">
@@ -33,9 +35,8 @@ const LoginPage = () => {
             <div className="form-group">
               <p className="float-right">
                 Chưa có tài khoản?{' '}
-                <a href="registerr.html" className="text-danger ">
-                  Đăng kí ngay
-                </a>
+             
+                <Link to= '/RegisterPage' className="text-danger" > Đăng kí ngay </Link>
               </p>
             </div>
             <button type="submit" className="btn btn-danger ">

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import useCurrencyFormat from '../hooks/useCurrencyFormat';
+import { Link } from 'react-router-dom';
 
 const ProductItem = (
     {
         anh_sp = './src/assets/img/product/product-1.jpg',
         ten_sp = 'Buttons tweed blazer',
-        gia = 0
+        gia = 0,
+        slug = ''
     }
 ) => {
     const formattedAmount = useCurrencyFormat(gia);
@@ -23,7 +25,7 @@ const ProductItem = (
                     <div className="label new">New</div>
                     <ul className="product__hover">
                         <li><a href={anh_sp} className="image-popup"><span className="arrow_expand" /></a></li>
-                        <li><a href="#"><span className="icon_bag_alt" /></a></li>
+                        <li><Link to={`/detail/${slug}`}><span className="icon_bag_alt" /></Link></li>
                     </ul>
                 </div>
                 <div className="product__item__text">

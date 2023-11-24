@@ -15,6 +15,7 @@ import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import ListPostSearch from "../pages/ListProductSearch";
 import ForgotPassword from "../pages/ForgotPassword";
+import ListProductCategory from "../pages/ListProductCategory";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <LoginPage></LoginPage>
+            },
+            {
+                path: '/category/:slug',
+                element: <ListProductCategory></ListProductCategory>
             },
             {
                 path: '/search',
