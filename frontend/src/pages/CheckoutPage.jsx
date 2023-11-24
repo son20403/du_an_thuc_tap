@@ -2,21 +2,17 @@ import React, { useState } from "react";
 
 const CheckoutPage = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
     lastName: "",
-    country: "",
+    firstName: "",
     address: "",
     townCity: "",
-    countryState: "",
-    postcode: "",
     phone: "",
     email: "",
     createAccount: false,
-    accountPassword: "",
-    note: false,
-    orderNotes: "",
+    checkPayment: false,
+    paypal: false,
   });
-  const handlePlaceOrder = () => {};
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -29,9 +25,42 @@ const CheckoutPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Add your logic for form submission here
-    console.log("Form submitted!");
-    console.log("Form data:", formData);
+    console.log("Biểu mẫu đã được gửi!");
+    console.log("Dữ liệu biểu mẫu:", formData);
+  };
+
+  const [cartItems, setCartItems] = useState([
+    { id: 1, name: "Chain buck bag", price: 300.0 },
+    { id: 2, name: "Zip-pockets pebbled tote briefcase", price: 170.0 },
+    { id: 3, name: "Black jean", price: 170.0 },
+    { id: 4, name: "Cotton shirt", price: 110.0 },
+  ]);
+
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
+  const total = subtotal;
+
+  const handlePlaceOrder = () => {
+    // Thêm logic xử lý khi đặt hàng
+    console.log("Đơn đặt hàng đã được xác nhận!");
+    console.log("Danh sách sản phẩm:", cartItems);
+    console.log("Tổng cộng:", total);
+
+    if (formData.checkPayment) {
+      console.log("Đã chọn thanh toán Séc");
+      //...
+    }
+
+    if (formData.paypal) {
+      console.log("Đã chọn thanh toán PayPal");
+      // ...
+    }
+  };
+
+  const handlePlaceOrderClick = () => {
+    // Gọi hàm xử lý khi đặt hàng ở đây...
+    handlePlaceOrder();
+    // Nếu cần thêm hành động khác khi nhấp vào nút "Đặt hàng", thêm ở đây
+    console.log("Người dùng đã nhấp vào nút Đặt hàng!");
   };
 
   return (
@@ -41,7 +70,8 @@ const CheckoutPage = () => {
           <div className="col-lg-12">
             <h6 className="coupon__link">
               <span className="icon_tag_alt"></span>
-              <a href="#">Have a coupon?</a> Click here to enter your code.
+              <a href="#"> Có phiếu giảm giá?</a> Nhấn vào đây để nhập mã của
+              bạn.
             </h6>
           </div>
         </div>
@@ -53,19 +83,7 @@ const CheckoutPage = () => {
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="checkout__form__input">
                     <p>
-                      First Name <span>*</span>
-                    </p>
-                    <input
-                      type="text"
-                      name="firstName"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6 col-md-6 col-sm-6">
-                  <div className="checkout__form__input">
-                    <p>
-                      Last Name <span>*</span>
+                      Họ<span>*</span>
                     </p>
                     <input
                       type="text"
@@ -74,35 +92,33 @@ const CheckoutPage = () => {
                     />
                   </div>
                 </div>
+                <div className="col-lg-6 col-md-6 col-sm-6">
+                  <div className="checkout__form__input">
+                    <p>
+                      Tên <span>*</span>
+                    </p>
+                    <input
+                      type="text"
+                      name="firstName"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
                 <div className="col-lg-12">
                   <div className="checkout__form__input">
                     <p>
-                      Country <span>*</span>
+                      Địa chỉ <span>*</span>
                     </p>
                     <input
                       type="text"
-                      name="country"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="checkout__form__input">
-                    <p>
-                      Address <span>*</span>
-                    </p>
-                    <input
-                      type="text"
-                      placeholder="Street Address"
+                      placeholder="địa chỉ"
                       name="address"
                       onChange={handleInputChange}
                     />
-                    <input
-                      type="text"
-                      placeholder="Apartment. suite, unite ect ( optional )"
-                    />
                   </div>
                   <div className="checkout__form__input">
                     <p>
-                      Town/City <span>*</span>
+                      Thị trấn/Thành phố <span>*</span>
                     </p>
                     <input
                       type="text"
@@ -110,31 +126,11 @@ const CheckoutPage = () => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  <div className="checkout__form__input">
-                    <p>
-                      Country/State <span>*</span>
-                    </p>
-                    <input
-                      type="text"
-                      name="countryState"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="checkout__form__input">
-                    <p>
-                      Postcode/Zip <span>*</span>
-                    </p>
-                    <input
-                      type="text"
-                      name="postcode"
-                      onChange={handleInputChange}
-                    />
-                  </div>
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="checkout__form__input">
                     <p>
-                      Phone <span>*</span>
+                      SDT <span>*</span>
                     </p>
                     <input
                       type="text"
@@ -155,125 +151,78 @@ const CheckoutPage = () => {
                     />
                   </div>
                 </div>
-                <div className="col-lg-12">
-                  <div className="checkout__form__checkbox">
-                    <label htmlFor="acc">
-                      Create an account?
-                      <input
-                        type="checkbox"
-                        id="acc"
-                        name="createAccount"
-                        onChange={handleInputChange}
-                      />
-                      <span className="checkmark"></span>
-                    </label>
-                    <p>
-                      Create an account by entering the information below. If
-                      you are a returning customer, login at the top of the
-                      page.
-                    </p>
-                  </div>
-                  {formData.createAccount && (
-                    <div className="checkout__form__input">
-                      <p>
-                        Account Password <span>*</span>
-                      </p>
-                      <input
-                        type="password"
-                        name="accountPassword"
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  )}
-                  <div className="checkout__form__checkbox">
-                    <label htmlFor="note">
-                      Note about your order, e.g, special note for delivery
-                      <input
-                        type="checkbox"
-                        id="note"
-                        name="note"
-                        onChange={handleInputChange}
-                      />
-                      <span className="checkmark"></span>
-                    </label>
-                  </div>
-                  {formData.note && (
-                    <div className="checkout__form__input">
-                      <p>
-                        Order notes <span>*</span>
-                      </p>
-                      <input
-                        type="text"
-                        placeholder="Note about your order, e.g, special note for delivery"
-                        name="orderNotes"
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
             <div className="col-lg-4">
               <div className="checkout__order">
-                <h5>Your order</h5>
+                <h5>đơn đặt hàng của bạn</h5>
                 <div className="checkout__order__product">
                   <ul>
                     <li>
-                      <span className="top__text">Product</span>
-                      <span className="top__text__right">Total</span>
+                      <span className="top__text">Sản phẩm</span>
+                      <span className="top__text__right">Thành tiền</span>
                     </li>
-                    <li>
-                      01. Chain buck bag <span>$ 300.0</span>
-                    </li>
-                    <li>
-                      02. Zip-pockets pebbled
-                      <br /> tote briefcase <span>$ 170.0</span>
-                    </li>
-                    <li>
-                      03. Black jean <span>$ 170.0</span>
-                    </li>
-                    <li>
-                      04. Cotton shirt <span>$ 110.0</span>
-                    </li>
+                    {cartItems.map((item) => (
+                      <li key={item.id}>
+                        {item.name} <span>${item.price}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <div className="checkout__order__total">
                   <ul>
                     <li>
-                      Subtotal <span>$ 750.0</span>
+                      Tổng phụ <span>${subtotal.toFixed(2)}</span>
                     </li>
                     <li>
-                      Total <span>$ 750.0</span>
+                      Thành tiền <span>${total.toFixed(2)}</span>
                     </li>
                   </ul>
                 </div>
+
                 <div className="checkout__order__widget">
                   <label htmlFor="o-acc">
-                    Create an account?
-                    <input type="checkbox" id="o-acc" />
+                    Tạo một tài khoản?
+                    <input
+                      type="checkbox"
+                      id="o-acc"
+                      name="createAccount"
+                      onChange={handleInputChange}
+                    />
                     <span className="checkmark"></span>
                   </label>
                   <p>
-                    Create an account by entering the information below. If you
-                    are a returning customer, login at the top of the page.
+                    Tạo tài khoản am bằng cách nhập thông tin bên dưới. nếu bạn
+                    là thông tin đăng nhập của khách hàng thường xuyên ở đầu
+                    trang.
                   </p>
                   <label htmlFor="check-payment">
-                    Cheque payment
-                    <input type="checkbox" id="check-payment" />
+                    Thanh toán séc
+                    <input
+                      type="checkbox"
+                      id="check-payment"
+                      name="checkPayment" // Kết nối với formData
+                      onChange={handleInputChange}
+                    />
                     <span className="checkmark"></span>
                   </label>
                   <label htmlFor="paypal">
                     PayPal
-                    <input type="checkbox" id="paypal" />
+                    <input
+                      type="checkbox"
+                      id="paypal"
+                      name="paypal" // Kết nối với formData
+                      onChange={handleInputChange}
+                    />
                     <span className="checkmark"></span>
                   </label>
                 </div>
                 <button
                   type="submit"
                   className="site-btn"
-                  onClick={handlePlaceOrder}
+                  onClick={handlePlaceOrderClick}
                 >
-                  Place order
+                  Đặt hàng
                 </button>
               </div>
             </div>
