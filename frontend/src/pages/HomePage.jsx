@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
 import ProductItem from '../layouts/ProductItem';
+import categories from '../data/category';
+import products from '../data/products';
+import { Link } from 'react-router-dom';
 const HomePage = () => {
+    const [dataCategories, setDataCategories] = useState([]);
+    const [dataProducts, setDataProducts] = useState([]);
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
@@ -11,6 +16,12 @@ const HomePage = () => {
             element.style.backgroundImage = `url(${bg})`;
         });
     }, []);
+    useEffect(() => {
+        setDataCategories(categories)
+    }, [categories]);
+    useEffect(() => {
+        setDataProducts(products)
+    }, [products]);
     useEffect(() => {
         $('.filter__controls li').on('click', function () {
             $('.filter__controls li').removeClass('active');
@@ -52,51 +63,25 @@ const HomePage = () => {
                             <div className="categories__item categories__large__item set-bg"
                                 data-setbg="./src/assets/img/categories/category-1.jpg">
                                 <div className="categories__text">
-                                    <h1>Women’s fashion</h1>
-                                    <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
-                                        edolore magna aliquapendisse ultrices gravida.</p>
-                                    <a href="#">Shop now</a>
+                                    <h1>{dataCategories[0]?.ten_danh_muc}</h1>
+                                    <Link to={`/category/${dataCategories[0]?.slug}`}>Shop now</Link>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6">
                             <div className="row">
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-2.jpg">
-                                        <div className="categories__text">
-                                            <h4>Men’s fashion</h4>
-                                            <p>358 items</p>
-                                            <a href="#">Shop now</a>
+                                {dataCategories?.slice(1).map(((cate, index) => (
+                                    <div key={cate.id} className="col-lg-6 col-md-6 col-sm-6 p-0">
+                                        <div className="categories__item set-bg" data-setbg={`./src/assets/img/categories/category-${index + 2}.jpg`}>
+                                            <div className="categories__text">
+                                                <h4>{cate.ten_danh_muc}</h4>
+                                                <p>358 items</p>
+                                                <Link to={`/category/${cate.slug}`}>Shop now</Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-3.jpg">
-                                        <div className="categories__text">
-                                            <h4>Kid’s fashion</h4>
-                                            <p>273 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-4.jpg">
-                                        <div className="categories__text">
-                                            <h4>Cosmetics</h4>
-                                            <p>159 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-5.jpg">
-                                        <div className="categories__text">
-                                            <h4>Accessories</h4>
-                                            <p>792 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                )))
+                                }
                             </div>
                         </div>
                     </div>
@@ -122,14 +107,10 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div className="row property__gallery">
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
+                        {dataProducts.slice(0, 8)?.map((prod) => (
+                            <ProductItem key={prod} anh_sp={prod.anh_sp} gia={prod.gia} ten_sp={prod.ten_sp}
+                                slug={prod.slug} />
+                        ))}
                     </div>
                 </div>
             </section>
