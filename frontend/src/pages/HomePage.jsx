@@ -1,9 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
 import ProductItem from '../layouts/ProductItem';
+import categories from '../data/category';
+import products from '../data/products';
+import { Link } from 'react-router-dom';
+import TrendItem from '../layouts/TrendItem';
+import CategoryHomeItem from '../layouts/CategoryHomeItem';
 const HomePage = () => {
+    const [dataCategories, setDataCategories] = useState([]);
+    const [dataProducts, setDataProducts] = useState([]);
+    useEffect(() => {
+        setDataCategories(categories)
+    }, [categories]);
+    useEffect(() => {
+        setDataProducts(products)
+    }, [products]);
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
@@ -52,51 +65,17 @@ const HomePage = () => {
                             <div className="categories__item categories__large__item set-bg"
                                 data-setbg="./src/assets/img/categories/category-1.jpg">
                                 <div className="categories__text">
-                                    <h1>Women’s fashion</h1>
-                                    <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
-                                        edolore magna aliquapendisse ultrices gravida.</p>
-                                    <a href="#">Shop now</a>
+                                    <h1 className='font-mono'>Welcome to Ashion Shop</h1>
+                                    <Link to={`/shop`}>Xem ngay</Link>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6">
                             <div className="row">
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-2.jpg">
-                                        <div className="categories__text">
-                                            <h4>Men’s fashion</h4>
-                                            <p>358 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-3.jpg">
-                                        <div className="categories__text">
-                                            <h4>Kid’s fashion</h4>
-                                            <p>273 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-4.jpg">
-                                        <div className="categories__text">
-                                            <h4>Cosmetics</h4>
-                                            <p>159 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 col-sm-6 p-0">
-                                    <div className="categories__item set-bg" data-setbg="./src/assets/img/categories/category-5.jpg">
-                                        <div className="categories__text">
-                                            <h4>Accessories</h4>
-                                            <p>792 items</p>
-                                            <a href="#">Shop now</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                {dataCategories?.slice(1).map(((cate, index) => (
+                                    <CategoryHomeItem key={cate.id + index} cate={cate} index={index}></CategoryHomeItem>
+                                )))
+                                }
                             </div>
                         </div>
                     </div>
@@ -107,12 +86,12 @@ const HomePage = () => {
                     <div className="row">
                         <div className="col-lg-4 col-md-4">
                             <div className="section-title">
-                                <h4>New product</h4>
+                                <h4>Sản phẩm mới</h4>
                             </div>
                         </div>
                         <div className="col-lg-8 col-md-8">
                             <ul className="filter__controls">
-                                <li className="active" data-filter="*">All</li>
+                                <li className="active" data-filter="*">Tất cả</li>
                                 <li data-filter=".women">Women’s</li>
                                 <li data-filter=".men">Men’s</li>
                                 <li data-filter=".kid">Kid’s</li>
@@ -122,14 +101,10 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div className="row property__gallery">
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
-                        <ProductItem></ProductItem>
+                        {dataProducts.slice(0, 8)?.map((prod) => (
+                            <ProductItem key={prod.id} anh_sp={prod.anh_sp} gia={prod.gia} ten_sp={prod.ten_sp}
+                                slug={prod.slug} />
+                        ))}
                     </div>
                 </div>
             </section>
@@ -139,166 +114,31 @@ const HomePage = () => {
                         <div className="col-lg-4 col-md-4 col-sm-6">
                             <div className="trend__content">
                                 <div className="section-title">
-                                    <h4>Hot Trend</h4>
+                                    <h4>Nổi bật</h4>
                                 </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/ht-1.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Chain bucket bag</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/ht-2.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Pendant earrings</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/ht-3.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Cotton T-Shirt</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
+                                {dataProducts.slice(8, 11)?.map((prod) => (
+                                    <TrendItem key={prod.id} product={prod} />
+                                ))}
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-6">
                             <div className="trend__content">
                                 <div className="section-title">
-                                    <h4>Best seller</h4>
+                                    <h4>Giảm giá</h4>
                                 </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/bs-1.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Cotton T-Shirt</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/bs-2.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Zip-pockets pebbled tote <br />briefcase</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/bs-3.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Round leather bag</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
+                                {dataProducts.slice(11, 14)?.map((prod) => (
+                                    <TrendItem key={prod.id} product={prod} />
+                                ))}
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-6">
                             <div className="trend__content">
                                 <div className="section-title">
-                                    <h4>Feature</h4>
+                                    <h4>Yêu thích</h4>
                                 </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/f-1.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Bow wrap skirt</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/f-2.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Metallic earrings</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
-                                <div className="trend__item">
-                                    <div className="trend__item__pic">
-                                        <img src="./src/assets/img/trend/f-3.jpg" alt />
-                                    </div>
-                                    <div className="trend__item__text">
-                                        <h6>Flap cross-body bag</h6>
-                                        <div className="rating">
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                            <i className="fa fa-star" />
-                                        </div>
-                                        <div className="product__price">$ 59.0</div>
-                                    </div>
-                                </div>
+                                {dataProducts.slice(14, 17)?.map((prod) => (
+                                    <TrendItem key={prod.id} product={prod} />
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -309,7 +149,7 @@ const HomePage = () => {
                     <div className="row">
                         <div className="col-lg-6 p-0">
                             <div className="discount__pic">
-                                <img src="./src/assets/img/discount.jpg" alt />
+                                <img src="./src/assets/img/discount.jpg" />
                             </div>
                         </div>
                         <div className="col-lg-6 p-0">

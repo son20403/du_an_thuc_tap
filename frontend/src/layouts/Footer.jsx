@@ -8,16 +8,16 @@ const Footer = () => {
                     <div className="col-lg-4 col-md-6 col-sm-7">
                         <div className="footer__about">
                             <div className="footer__logo">
-                                <a href="./index.html"><img src="./src/assets/img/logo.png" alt /></a>
+                                <a href="./index.html"><img src="../src/assets/img/logo.png" alt /></a>
                             </div>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                                 cilisis.</p>
                             <div className="footer__payment">
-                                <a href="#"><img src="./src/assets/img/payment/payment-1.png" alt /></a>
-                                <a href="#"><img src="./src/assets/img/payment/payment-2.png" alt /></a>
-                                <a href="#"><img src="./src/assets/img/payment/payment-3.png" alt /></a>
-                                <a href="#"><img src="./src/assets/img/payment/payment-4.png" alt /></a>
-                                <a href="#"><img src="./src/assets/img/payment/payment-5.png" alt /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-1.png" alt /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-2.png" alt /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-3.png" alt /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-4.png" alt /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-5.png" alt /></a>
                             </div>
                         </div>
                     </div>
