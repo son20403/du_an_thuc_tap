@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Search from "./Search";
 import $ from "jquery";
-import "../func/main";
-
 const navLink = [
   {
     title: "Trang Chủ",
@@ -40,6 +38,15 @@ const Header = () => {
         $("#search-input").val("");
       });
     });
+    $(".canvas__open").on('click', function () {
+      $(".offcanvas-menu-wrapper").addClass("active");
+      $(".offcanvas-menu-overlay").addClass("active");
+    });
+
+    $(".offcanvas-menu-overlay, .offcanvas__close").on('click', function () {
+      $(".offcanvas-menu-wrapper").removeClass("active");
+      $(".offcanvas-menu-overlay").removeClass("active");
+    });
   }, []);
   return (
     <div>
@@ -65,14 +72,47 @@ const Header = () => {
           </li>
         </ul>
         <div className="offcanvas__logo">
-          <a href="./index.html">
-            <img src="./src/assets/img/logo.png" alt />
-          </a>
+          <Link to={'/'}>
+            <img src="../src/assets/img/logo.png" />
+          </Link>
         </div>
-        <div id="mobile-menu-wrap" />
+        <div id="mobile-menu-wrap" >
+          <div className="slicknav_menu"><a href="#" aria-haspopup="true" role="button" tabIndex={0} className="slicknav_btn slicknav_collapsed" style={{}}><span className="slicknav_menutxt">MENU</span><span className="slicknav_icon"><span className="slicknav_icon-bar" /><span className="slicknav_icon-bar" /><span className="slicknav_icon-bar" /></span></a><nav className="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu" style={{ display: 'none' }}>
+            <ul>
+              {navLink.map((nav) =>
+                !nav.id ? (
+                  <li key={nav.title}>
+                    <NavLink
+                      to={nav.to}
+                      style={({ isActive, isPending }) => {
+                        return {
+                          color: isActive ? "#ca1515" : "",
+                        };
+                      }}
+                      className={({ active }) =>
+                        active ? "!text-red-700" : ""
+                      }
+                    >
+                      {nav.title}
+                    </NavLink>
+                  </li>
+                ) : (
+                  <li key={nav.id}>
+                    <NavLink to={nav.to}>{nav.title}</NavLink>
+                  </li>
+                )
+              )}
+            </ul>
+          </nav></div>
+
+        </div>
         <div className="offcanvas__auth">
-          <a href="#">Login</a>
-          <a href="#">Register</a>
+          {!isLoggedIn ? (
+            <>
+              <Link to={"/login"}>Đăng nhập</Link>
+              <Link to={"/register"}>Đăng ký</Link>
+            </>
+          ) : null}
         </div>
       </div>
       <header className="header">
@@ -80,9 +120,9 @@ const Header = () => {
           <div className="row">
             <div className="col-xl-3 col-lg-2">
               <div className="header__logo">
-                <a href="./index.html">
-                  <img src="./src/assets/img/logo.png" alt />
-                </a>
+                <Link to={'/'}>
+                  <img src="../src/assets/img/logo.png" />
+                </Link>
               </div>
             </div>
             <div className="col-xl-6 col-lg-7">
@@ -119,8 +159,8 @@ const Header = () => {
                 <div className="header__right__auth">
                   {!isLoggedIn ? (
                     <>
-                      <Link to={"/login"}>Login</Link>
-                      <Link to={"/register"}>Register</Link>
+                      <Link to={"/login"}>Đăng nhập</Link>
+                      <Link to={"/register"}>Đăng ký</Link>
                     </>
                   ) : null}
                 </div>

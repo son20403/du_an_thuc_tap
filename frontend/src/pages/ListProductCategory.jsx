@@ -41,9 +41,6 @@ const ListProductCategory = () => {
             $(".offcanvas-menu-wrapper").removeClass("active");
             $(".offcanvas-menu-overlay").removeClass("active");
         });
-        $('.image-popup').magnificPopup({
-            type: 'image'
-        });
         $(".nice-scroll").niceScroll({
             cursorborder: "",
             cursorcolor: "#dddddd",
@@ -67,20 +64,13 @@ const ListProductCategory = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 col-md-12">
+                            <h1 className='text-2xl font-medium mb-10'>Danh sách sản phẩm</h1>
                             <div className="row">
                                 {listProducts && listProducts.length > 0
                                     ? listProducts.map((product) => (
                                         <ProductItem key={product} anh_sp={product.anh_sp} gia={product.gia}
                                             ten_sp={product.ten_sp} slug={product.slug} />
-                                    )) : ('Không có sản phẩm')}
-                                <div className="col-lg-12 text-center">
-                                    <div className="pagination__option">
-                                        <a href="#">1</a>
-                                        <a href="#">2</a>
-                                        <a href="#">3</a>
-                                        <a href="#"><i className="fa fa-angle-right" /></a>
-                                    </div>
-                                </div>
+                                    )) : <div className='col-lg-12 text-center'>Không có sản phẩm nào</div>}
                             </div>
                         </div>
                     </div>

@@ -10,10 +10,13 @@ import products from "../data/products";
 import useCurrencyFormat from "../hooks/useCurrencyFormat";
 import ProductItem from "../layouts/ProductItem";
 import { Dialog, Transition } from "@headlessui/react";
+import categories from "../data/category";
 const DetailProductPage = () => {
   const { slug } = useParams();
   const [dataProducts, setDataProducts] = useState([]);
   const [detailProduct, setDetailProduct] = useState({});
+  const [dataCategories, setDataCategories] = useState([]);
+  const [detailCategory, setDetailCategory] = useState({});
   const [listSimilarProduct, setListSimilarProduct] = useState([]);
   useEffect(() => {
     setDataProducts(products);
@@ -22,7 +25,7 @@ const DetailProductPage = () => {
     setDetailProduct(
       dataProducts?.filter((product) => product.slug === slug)[0]
     );
-  }, [dataProducts]);
+  }, [dataProducts, slug]);
   useEffect(() => {
     setListSimilarProduct(
       dataProducts?.filter(
@@ -30,6 +33,12 @@ const DetailProductPage = () => {
       )
     );
   }, [dataProducts, detailProduct]);
+  useEffect(() => {
+    setDataCategories(categories)
+  }, [categories]);
+  useEffect(() => {
+    setDetailCategory(dataCategories?.find((cate) => cate.id === detailProduct?.ma_loai))
+  }, [dataCategories, detailProduct]);
   const formattedAmount = useCurrencyFormat(detailProduct?.gia);
   useEffect(() => {
     const setBgElements = document.querySelectorAll(".set-bg");
@@ -38,13 +47,6 @@ const DetailProductPage = () => {
       element.style.backgroundImage = `url(${bg})`;
     });
   }, [detailProduct]);
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   useEffect(() => {
     $(".filter__controls li").on("click", function () {
       $(".filter__controls li").removeClass("active");
@@ -114,134 +116,36 @@ const DetailProductPage = () => {
               <div className="product__details__pic">
                 <div className="product__details__slider__content">
                   <div className="product__details__pic__slider">
-                    <Slider {...settings}>
-                      <img
-                        data-hash="product-1"
-                        className="product__big__img"
-                        src={detailProduct?.anh_sp}
-                        alt
-                      />
-                      <img
-                        data-hash="product-2"
-                        className="product__big__img"
-                        src={detailProduct?.anh_sp}
-                        alt
-                      />
-                      <img
-                        data-hash="product-3"
-                        className="product__big__img"
-                        src={detailProduct?.anh_sp}
-                        alt
-                      />
-                      <img
-                        data-hash="product-4"
-                        className="product__big__img"
-                        src={detailProduct?.anh_sp}
-                        alt
-                      />
-                    </Slider>
+                    <img
+                      data-hash="product-1"
+                      className="product__big__img"
+                      src={detailProduct?.anh_sp}
+                      alt
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-lg-6">
-              <div className="product__details__text">
+              <div className="product__details__text flex flex-col gap-y-5">
                 <h3>
                   {detailProduct?.ten_sp}{" "}
-                  <span>Brand: SKMEIMore Men Watches from SKMEI</span>
+                  <span>Loại: {detailCategory?.ten_danh_muc}</span>
                 </h3>
-                <div className="rating">
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <span>( 138 reviews )</span>
-                </div>
                 <div className="product__details__price">
                   {formattedAmount} <span>{formattedAmount}</span>
                 </div>
                 <p>{detailProduct?.mota}</p>
                 <div className="product__details__button">
                   <div className="quantity">
-                    <span>Quantity:</span>
+                    <span>Số lượng:</span>
                     <div className="pro-qty">
                       <input type="text" defaultValue={1} />
                     </div>
                   </div>
                   <a href="#" className="cart-btn">
-                    <span className="icon_bag_alt" /> Add to cart
+                    <span className="icon_bag_alt" /> Thêm vào giỏ hàng
                   </a>
-                  <ul>
-                    <li>
-                      <a href="#">
-                        <span className="icon_heart_alt" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span className="icon_adjust-horiz" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="product__details__widget">
-                  <ul>
-                    <li>
-                      <span>Availability:</span>
-                      <div className="stock__checkbox">
-                        <label htmlFor="stockin">
-                          In Stock
-                          <input type="checkbox" id="stockin" />
-                          <span className="checkmark" />
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <span>Available color:</span>
-                      <div className="color__checkbox">
-                        <label htmlFor="red">
-                          <input
-                            type="radio"
-                            name="color__radio"
-                            id="red"
-                            defaultChecked
-                          />
-                          <span className="checkmark" />
-                        </label>
-                        <label htmlFor="black">
-                          <input type="radio" name="color__radio" id="black" />
-                          <span className="checkmark black-bg" />
-                        </label>
-                        <label htmlFor="grey">
-                          <input type="radio" name="color__radio" id="grey" />
-                          <span className="checkmark grey-bg" />
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <span>Available size:</span>
-                      <div className="size__btn">
-                        <label htmlFor="xs-btn" className="active">
-                          <input type="radio" id="xs-btn" />
-                          xs
-                        </label>
-                        <label htmlFor="s-btn">
-                          <input type="radio" id="s-btn" />s
-                        </label>
-                        <label htmlFor="m-btn">
-                          <input type="radio" id="m-btn" />m
-                        </label>
-                        <label htmlFor="l-btn">
-                          <input type="radio" id="l-btn" />l
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <span>Promotions:</span>
-                      <p>Free shipping</p>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -255,7 +159,7 @@ const DetailProductPage = () => {
                       href="#tabs-1"
                       role="tab"
                     >
-                      Description
+                      Mô tả
                     </a>
                   </li>
                   <li className="nav-item">
@@ -265,34 +169,14 @@ const DetailProductPage = () => {
                       href="#tabs-3"
                       role="tab"
                     >
-                      Reviews ( 2 )
+                      Bình luận ( 2 )
                     </a>
                   </li>
                 </ul>
                 <div className="tab-content">
                   <div className="tab-pane active" id="tabs-1" role="tabpanel">
-                    <h6>Description</h6>
+                    <h6>Mô tả</h6>
                     <p>{detailProduct?.mota}</p>
-                  </div>
-                  <div className="tab-pane" id="tabs-2" role="tabpanel">
-                    <h6>Specification</h6>
-                    <p>
-                      Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-                      aut odit aut loret fugit, sed quia consequuntur magni
-                      dolores eos qui ratione voluptatem sequi nesciunt loret.
-                      Neque porro lorem quisquam est, qui dolorem ipsum quia
-                      dolor si. Nemo enim ipsam voluptatem quia voluptas sit
-                      aspernatur aut odit aut loret fugit, sed quia ipsu
-                      consequuntur magni dolores eos qui ratione voluptatem
-                      sequi nesciunt. Nulla consequat massa quis enim.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                      Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                      natoque penatibus et magnis dis parturient montes,
-                      nascetur ridiculus mus. Donec quam felis, ultricies nec,
-                      pellentesque eu, pretium quis, sem.
-                    </p>
                   </div>
                   <Transition.Root show={openAdd} as={Fragment}>
                     <Dialog
@@ -372,7 +256,7 @@ const DetailProductPage = () => {
                                       />
                                     </div>
                                     <p className="font-medium text-xl text-center">
-                                    {detailProduct?.ten_sp}
+                                      {detailProduct?.ten_sp}
                                     </p>
                                     <div className="text-2xl text-center">
                                       {[1, 2, 3, 4, 5].map((star) => (
@@ -585,7 +469,7 @@ const DetailProductPage = () => {
           <div className="row">
             <div className="col-lg-12 text-center">
               <div className="related__title">
-                <h5>RELATED PRODUCTS</h5>
+                <h5>SẢN PHẨM TƯƠNG TỰ</h5>
               </div>
             </div>
             {listSimilarProduct &&

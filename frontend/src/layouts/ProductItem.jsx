@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import useCurrencyFormat from '../hooks/useCurrencyFormat';
 import { Link } from 'react-router-dom';
 
+import $ from 'jquery'
 const ProductItem = (
     {
         anh_sp = './src/assets/img/product/product-1.jpg',
@@ -17,6 +18,9 @@ const ProductItem = (
             const bg = element.getAttribute('data-setbg');
             element.style.backgroundImage = `url(${bg})`;
         });
+        $('.image-popup').magnificPopup({
+            type: 'image'
+        });
     }, []);
     return (
         <div className="col-lg-3 col-md-4 col-sm-6 mix women">
@@ -30,13 +34,6 @@ const ProductItem = (
                 </div>
                 <div className="product__item__text">
                     <h6><a href="#">{ten_sp}</a></h6>
-                    <div className="rating">
-                        <i className="fa fa-star" />
-                        <i className="fa fa-star" />
-                        <i className="fa fa-star" />
-                        <i className="fa fa-star" />
-                        <i className="fa fa-star" />
-                    </div>
                     <div className="product__price">{formattedAmount}</div>
                 </div>
             </div>
