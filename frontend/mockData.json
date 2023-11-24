@@ -1,0 +1,14 @@
+
+{
+    "users": [
+      {
+        "id": 1,
+        "username": "nguoidung1",
+        "password": "password1",
+        "fullName": "Nguyễn Văn A"
+
+      }
+
+    ]
+  }
+  
