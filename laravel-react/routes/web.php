@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\HinhAnhController;
 use App\Http\Controllers\Admin\SanPhamController;
 use App\Http\Controllers\Admin\TheLoaiController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MailController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,8 +55,14 @@ Route::group(['prefix'=> 'admin'], function () {
         Route::post('/capnhatsanpham/{id}', [SanphamController::class, 'cn_sanpham_']);
         Route::get('/toggleStatus', [SanphamController::class, 'toggleStatus']);
     });
-
+  
     // Hình Ảnh
     Route::get('/xoahinhanh', [HinhAnhController::class, 'xoa_hinhanh']);
 
 });// admin
+
+Route::get('/csrf-token', function() {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+Route::post('/send-email', [MailController::class, 'sendEmail']);
+

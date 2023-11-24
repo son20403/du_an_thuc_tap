@@ -14,6 +14,7 @@ import CheckoutPage from "../pages/CheckoutPage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import ListPostSearch from "../pages/ListProductSearch";
+import ForgotPassword from "../pages/ForgotPassword";
 import ListProductCategory from "../pages/ListProductCategory";
 const router = createBrowserRouter([
     {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: '/search',
                 element: <ListPostSearch></ListPostSearch>
+            },
+            {
+                path: '/forgot-password',
+                element: <ForgotPassword></ForgotPassword>
             },
         ]
     },
