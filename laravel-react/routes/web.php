@@ -61,8 +61,15 @@ Route::group(['prefix'=> 'admin'], function () {
 
 });// admin
 
+        Route::group(['prefix' => '/gio-hang'], function () {
+            Route::get('/', [GioHangController::class,'index']); 
+            Route::get('/du-lieu', [GioHangController::class,'HienThiGioHang']); // url/admin/the-loa/du-lieu
+            Route::post('/', [GioHangController::class,'ThemGioHang']); 
+            Route::get('/xoa/{id}', [GioHangController::class,'XoaGioHang']); 
+            Route::get('/cap-nhat/{id}', [GioHangController::class,'CapNhatGioHang']); 
+        });
+
 Route::get('/csrf-token', function() {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 Route::post('/send-email', [MailController::class, 'sendEmail']);
-
