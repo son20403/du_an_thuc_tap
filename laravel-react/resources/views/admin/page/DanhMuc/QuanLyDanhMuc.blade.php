@@ -21,7 +21,7 @@ Quan Ly Danh Muc
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h3 class="modal-title" id="exampleModalLabel">Cập Nhật Danh Mục</h3>
+              <h3 class="modal-title" id="exampleModalLabel">Thêm Danh Mục</h3>
               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -29,9 +29,9 @@ Quan Ly Danh Muc
 
             <div class="modal-body">
               <label class="block text-sm">
-                <label>Ngày sinh</label>
+                <label>Tên Danh Mục</label>
                 <input v-model="add_danh_muc.ten_danh_muc" type="text" class="form-control"
-                  placeholder="Nhập vào Họ và tên">
+                  placeholder="Nhập Vào Tên Danh Mục">
                 <div v-if="errors.ten_danh_muc" class="alert alert-warning">
                   @{{ errors.ten_danh_muc[0] }}
                 </div>
@@ -41,7 +41,7 @@ Quan Ly Danh Muc
             <div class="modal-footer mt-3">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button v-on:click="them_danh_muc()" type="button" class="btn btn-primary">
-                Cập Nhật Danh Mục
+              Thêm Danh Mục
               </button>
             </div>
           </div>
@@ -92,9 +92,9 @@ Quan Ly Danh Muc
 
                     <div class="modal-body">
                       <label class="block text-sm">
-                        <label>Ngày sinh</label>
+                        <label>Tên Danh Mục</label>
                         <input v-model="edit_danh_muc.ten_danh_muc" type="text" class="form-control"
-                          placeholder="Nhập vào Họ và tên">
+                          placeholder="Nhập Vào Tên Danh Mục">
                         <div v-if="errors.ten_danh_muc" class="alert alert-warning">
                           @{{ errors.ten_danh_muc[0] }}
                         </div>

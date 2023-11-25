@@ -12,7 +12,7 @@ Quan Ly The Loai
       <!-- Button trigger modal -->
       <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-        Thêm The Loai
+        Thêm Thể Loại
       </button>
       <!-- Modal them danh muc-->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -20,7 +20,7 @@ Quan Ly The Loai
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h3 class="modal-title" id="exampleModalLabel">Cập Nhật The Loai</h3>
+              <h3 class="modal-title" id="exampleModalLabel">Thêm Thể Loại</h3>
               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -28,8 +28,8 @@ Quan Ly The Loai
 
             <div class="modal-body">
               <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Tên The Loai</span>
-                <input placeholder="Nhập vào Tên The Loai" type="text" v-model="add_the_loai.ten_the_loai"
+                <span class="text-gray-700 dark:text-gray-400">Tên Thể Loại</span>
+                <input placeholder="Nhập vào Tên Thể Loại" type="text" v-model="add_the_loai.ten_the_loai"
                   class="form-control">
                 <div v-if="errors.ten_the_loai" class="alert alert-warning">
                   @{{ errors.ten_the_loai[0] }}
@@ -38,8 +38,8 @@ Quan Ly The Loai
 
 
               <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Tên Danh Muc</span>
-                <select v-model="add_the_loai.ma_danh_muc">
+                <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
+                <select v-model="add_the_loai.ma_danh_muc" class="form-control">
                   <option v-for="(danhmuc, index) in data_danhmuc" 
                     :value="danhmuc.id">@{{danhmuc.ten_danh_muc }}</option>
                 </select>
@@ -53,7 +53,7 @@ Quan Ly The Loai
             <div class="modal-footer mt-3">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button v-on:click="them_the_loai()" type="button" class="btn btn-primary">
-                Cập Nhật The Loai
+              Thêm Thể Loại
               </button>
             </div>
           </div>
@@ -102,7 +102,7 @@ Quan Ly The Loai
                 <div class="modal-dialog modal-xl" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h3 class="modal-title" id="exampleModalLabel">Cập Nhật The Loai</h3>
+                      <h3 class="modal-title" id="exampleModalLabel">Cập Nhật Thể Loại</h3>
                       <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -110,8 +110,8 @@ Quan Ly The Loai
 
                     <div class="modal-body">
                       <label class="block text-sm">
-                        <span class="text-gray-700 dark:text-gray-400">Tên The Loai</span>
-                        <input placeholder="Nhập vào Tên The Loai" type="text" v-model="edit_the_loai.ten_the_loai"
+                        <span class="text-gray-700 dark:text-gray-400">Tên Thể Loại</span>
+                        <input placeholder="Nhập vào Tên Thể Loại" type="text" v-model="edit_the_loai.ten_the_loai"
                           class="form-control">
                         <div v-if="errors.ten_the_loai" class="alert alert-warning">
                           @{{ errors.ten_the_loai[0] }}
@@ -120,8 +120,8 @@ Quan Ly The Loai
 
 
                       <label class="block text-sm">
-                        <span class="text-gray-700 dark:text-gray-400">Tên Danh Muc</span>
-                        <select v-model="edit_the_loai.ma_danh_muc">
+                        <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
+                        <select v-model="edit_the_loai.ma_danh_muc" class="form-control">
                           <option v-for="(danhmuc, index) in data_danhmuc" :checked="danhmuc.id === theloai.ma_danh_muc"
                             :value="danhmuc.id">@{{danhmuc.ten_danh_muc }}</option>
                         </select>
@@ -135,7 +135,7 @@ Quan Ly The Loai
                     <div class="modal-footer mt-3">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button v-on:click="cap_nhat_the_loai()" type="button" class="btn btn-primary">
-                        Cập Nhật The Loai
+                        Cập Nhật Thể Loại
                       </button>
                     </div>
                   </div>
