@@ -10,7 +10,9 @@ Quan Ly Sản Phẩm
   <div class="col-md-12 mb-3">
     <div class="modal-category">
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Thêm Sản Phẩm
+      <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      class=" mt-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+        Thêm Sản Phẩm
       </button>
 
       <!-- Modal -->

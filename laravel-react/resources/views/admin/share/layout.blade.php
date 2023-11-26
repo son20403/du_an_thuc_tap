@@ -21,7 +21,7 @@
           @include('admin.share.header')
         </header>
         <main class="h-full overflow-y-auto">
-          <div class="container px-6 mx-auto grid">
+          <div class="px-6 mx-auto grid">
             @yield('noidung')
           </div>
         </main>
