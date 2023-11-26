@@ -1,8 +1,19 @@
-import React from 'react'
+import React , {useState}from 'react'
 import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
-  
+  // Trạng thái cho thông tin đăng nhập và đăng ký
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
+
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+    const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    // Xử lý đăng nhập ở đây, ví dụ: gọi API đăng nhập
+    console.log('Đăng nhập', loginData);
+  };
   return (
     <div>  <section>
   
@@ -10,7 +21,7 @@ const LoginPage = () => {
       <div className="row justify-content-center ">
         <div className="col-md-6">
           <h2 className="mb-4 text-center">Đăng Nhập</h2>
-          <form>
+          <form onSubmit={ handleLoginSubmit}>
             <div className="form-group">
               <label htmlFor="username">Tên đăng nhập:</label>
               <input
@@ -18,8 +29,9 @@ const LoginPage = () => {
                 className="form-control"
                 id="username"
                 name="username"
-                required
+              
                 style={{ border: '1px solid rgb(158, 152, 152)' }}
+                value={loginData.username} onChange={handleLoginChange} 
               />
             </div>
             <div className="form-group">
@@ -29,7 +41,7 @@ const LoginPage = () => {
                 className="form-control"
                 id="password"
                 name="password"
-                required
+                value={loginData.password} onChange={handleLoginChange} 
                 style={{ border: '1px solid rgb(158, 152, 152)' }}
               />
             </div>

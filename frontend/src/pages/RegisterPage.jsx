@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const RegisterPage = () => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
-  const handleSubmit = async (e) => {
-    e.prevenDefaut();
-
-    try {
-      const reponse = await fetch("http://localhost:3001/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-      if (reponse.ok) {
-        console.log("Successfully");
-      } else {
-        console.log("Error");
-      }
-    } catch (error) {
-      console.log("error:", error);
-    }
+  const [registerData, setRegisterData] = useState({ username: '',email:'', password: '' });
+  const handleRegisterChange = (e) => {
+    const { name, value } = e.target;
+    setRegisterData({ ...registerData, [name]: value });
+  };
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    // Xử lý đăng ký ở đây, ví dụ: gọi API đăng ký
+    console.log('Đăng ký', registerData);
   };
   return (
     <section>
@@ -32,7 +19,7 @@ const RegisterPage = () => {
         <div className="row justify-content-center">
           <div className="col-md-6">
             <h2 className="mb-5 text-center">Đăng Ký</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleRegisterSubmit}>
               <div className="form-group">
                 <label >Tên đăng ký:</label>
                 <input
@@ -43,7 +30,7 @@ const RegisterPage = () => {
                   name="username"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setName(e.target.value)}
+                value={registerData.username} onChange={handleRegisterChange}
                 />
               </div>
               <div className="form-group">
@@ -55,7 +42,8 @@ const RegisterPage = () => {
                   name="email"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={registerData.email}
+                  onChange={handleRegisterChange}
                 />
               </div>
               <div className="form-group">
@@ -67,7 +55,7 @@ const RegisterPage = () => {
                   name="password"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={registerData.password} onChange={handleRegisterChange}
                 />
                 <p className="float-right">
                   <Link to="/LoginPage" className="text-danger">
