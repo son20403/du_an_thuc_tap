@@ -62,6 +62,22 @@ class SanPhamController extends Controller
 
 	}
 
+	public function HienThiSanPham()
+  {
+    $data_sanpham = SanPhamModel::all();
+    $data_theloai = TheLoaiModel::all();
+    $data_danhmuc = DanhMucModel::all();
+    $data_hinhanh = HinhAnhModel::all();
+
+    $compact = compact('data_danhmuc', 'data_theloai', 'data_sanpham', 'data_hinhanh');
+
+    if ($data_sanpham->isEmpty()) {
+      return response()->json($compact);
+    } else {
+      return response()->json($compact);
+    }
+  }
+
 	public function them_sanpham(Request $request)
 	{
 		$data = $request->all();
