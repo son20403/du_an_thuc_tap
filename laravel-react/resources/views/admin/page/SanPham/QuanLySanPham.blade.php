@@ -10,7 +10,9 @@ Quan Ly Sản Phẩm
   <div class="col-md-12 mb-3">
     <div class="modal-category">
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Thêm Sản Phẩm
+      <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      class=" mt-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+        Thêm Sản Phẩm
       </button>
 
       <!-- Modal -->
@@ -25,7 +27,7 @@ Quan Ly Sản Phẩm
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-
+              
               <div class="modal-body row">
                 <!-- ---------------- -->
                 <div class="col-md-9">
@@ -174,7 +176,7 @@ Quan Ly Sản Phẩm
               {{$sanpham->ten_danh_muc}}
             </td>
             <td class="px-4 py-3 text-sm">
-              {!!$sanpham->mo_ta!!}
+              {!!Str::limit($sanpham->mo_ta, $limit = 30, $end = '...')!!}
             </td>
             <td class="px-4 py-3 text-sm">
               <div class="form-check form-switch">
@@ -224,7 +226,7 @@ Quan Ly Sản Phẩm
                   <form id="validate_update" method="post" action="san-pham/capnhatsanpham/{{$sanpham->id}}"
                     enctype="multipart/form-data">@csrf
                     <div class="modal-header">
-                      <h3 class="modal-title" id="exampleModalLabel_update">Cap Nhat Sản Phẩm</h3>
+                      <h3 class="modal-title" id="exampleModalLabel_update">Cập Nhật Sản Phẩm</h3>
                       <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -246,7 +248,7 @@ Quan Ly Sản Phẩm
                             </div>
                             <div class="text-center">
                               <a class="btn btn-danger btn_delete"
-                                onclick="deleteImg(<?php echo $hinhanh->id; ?>)">xoa</a>
+                                onclick="deleteImg(<?php echo $hinhanh->id; ?>)">xóa</a>
                             </div>
                           </div>
                           @endif
@@ -258,7 +260,7 @@ Quan Ly Sản Phẩm
 
                     <div class="card m-3">
                       <div class="card-header text-center">
-                        <h3>Thong Tin Sản Phẩm</h3>
+                        <h3>Thông Tin Sản Phẩm</h3>
                       </div>
 
                       <div class="modal-body row">
@@ -338,7 +340,7 @@ Quan Ly Sản Phẩm
 
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                        <button type="submit" class="btn btn-submit btn-primary">Cap Nhat Sản Phẩm</button>
+                        <button type="submit" class="btn btn-submit btn-primary">Cập Nhật Sản Phẩm</button>
                       </div>
                     </div>
                   </form>
@@ -358,24 +360,36 @@ Quan Ly Sản Phẩm
 
   </div>
 
-  <!-- {{-- Hiển thị thông báo thành công --}} -->
-  @if(Session::has('success'))
-  <script>
-    toastr.success("{{ Session::get('success') }}");
-  </script>
-  @endif
+  <style>
+    /* Màu đỏ khi có lỗi */
+    .has-error {
+        color: #a94442;
+        border-color: #ebccd1;
+    }
 
-  <!-- {{-- Hiển thị thông báo lỗi --}} -->
-  @if(Session::has('error'))
-  <script>
-    toastr.error("{{ Session::get('error') }}");
-  </script>
-  @endif
-
+    /* Màu xanh khi không có lỗi */
+    .has-success {
+        color: #3c763d;
+        border-color: #d6e9c6;
+    }
+  </style>
 </main>
 @endsection
 @section('js')
 
+<!-- {{-- Hiển thị thông báo thành công --}} -->
+@if(Session::has('success'))
+<script>
+  toastr.success("{{ Session::get('success') }}");
+</script>
+@endif
+
+<!-- {{-- Hiển thị thông báo lỗi --}} -->
+@if(Session::has('error'))
+<script>
+  toastr.error("{{ Session::get('error') }}");
+</script>
+@endif
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -391,9 +405,9 @@ Quan Ly Sản Phẩm
       data: { idsta: id },
       success: function ($trangthai) {
         if ($trangthai == 1) {
-          toastr.success("Da bat trang thai!");
+          toastr.success("Đã bật trạng thái sản phẩm!");
         } else {
-          toastr.success("Da tat trang thai!");
+          toastr.success("Đã tắt trạng thái sản phẩm!");
         }
       }
     });
@@ -432,23 +446,21 @@ Quan Ly Sản Phẩm
 
 
 <!-- validation -->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
 <script>
   $(document).ready(function () {
     $('#sanphamForm').validate({
-      reles: {
+      rules: {
         'ten_san_pham': {
           required: true,
         },
-        'ma_loai': {
+        'ma_the_loai': {
           required: true,
         },
         'gia_san_pham': {
-          required: true,
-        },
-        'giam_gia_san_pham': {
           required: true,
         },
         'hinh_anh[]': {
@@ -469,14 +481,11 @@ Quan Ly Sản Phẩm
       },
       messages: {
         'ten_san_pham': "Vui lòng không được bỏ trống tên sản phẩm.",
-        'ma_loai': "Vui lòng không được bỏ trống mã loại.",
+        'ma_the_loai': "Vui lòng không được bỏ trống mã loại.",
         'gia_san_pham': "Vui lòng không được bỏ trống giá sản phẩm.",
-        'giam_gia_san_pham': "Vui lòng không được bỏ trống giảm giá sản phẩm.",
         'hinh_anh[]': "Vui lòng không được bỏ trống hình ảnh sản phẩm.",
         'so_luong': "Vui lòng không được bỏ trống số lượng sản phẩm.",
-        'luot_xem': "Vui lòng không được bỏ trống lượt xem.",
         'dat_biet': "Vui lòng không được bỏ trống đặt biệt.",
-        'mo_ta': "Vui lòng không được bỏ trống mô tả sản phẩm.",
       },
       errorElement: "em",
       errorPlacement: function (error, element) {

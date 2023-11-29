@@ -23,9 +23,9 @@ class SanPhamController extends Controller
 		$SanPhamModel = SanPhamModel::with('HinhAnhModel')->get();
 		$data_danhmuc = DanhMucModel::all();
 
-        $HinhAnh = [];
+    $HinhAnh = [];
 		foreach ($data_sanpham as $sanpham) {
-			$sanpham->mo_ta = Str::limit($sanpham->mo_ta, $limit = 30, $end = '...');
+			// $sanpham->mo_ta = Str::limit($sanpham->mo_ta, $limit = 30, $end = '...');
 			
 			$hinhAnh = HinhAnhModel::where('ma_san_pham', $sanpham->id)->first();
 			$HinhAnh[] = $hinhAnh;
@@ -87,7 +87,7 @@ class SanPhamController extends Controller
 			}
 
 			// Nếu không có lỗi, chuyển hướng với thông báo thành công
-            Session::flash('success', 'Sản phẩm đã được thêm thành công.!');
+      Session::flash('success', 'Sản phẩm đã được thêm thành công.!');
 			return redirect('admin/san-pham');
 		
 
@@ -140,7 +140,7 @@ class SanPhamController extends Controller
 		$sanpham->mo_ta = $request->mo_ta;
 
 		$sanpham->save();  
-        Session::flash('success', 'Sản phẩm đã được cập nhật thành công.!');
+    Session::flash('success', 'Sản phẩm đã được cập nhật thành công.!');
 
 		return redirect('admin/san-pham');
 		
