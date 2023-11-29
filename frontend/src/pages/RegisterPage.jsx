@@ -65,7 +65,7 @@ const RegisterPage = () => {
                 </p>
               </div>
 
-              <button type="submit" className="btn btn-danger">
+              <button type="submit" className="btn btn-danger" onClick={handleRegisterSubmit}> 
                 Đăng Ký
               </button>
             </form>
