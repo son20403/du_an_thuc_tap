@@ -3,13 +3,11 @@ import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
 import '../func/main'
-import products from '../data/products';
 import ProductItem from '../layouts/ProductItem';
+import useGetAllProducts from '../hooks/useGetAllPost';
+import Loading from '../components/loading/Loading';
 const ShopPage = () => {
-    const [dataProducts, setDataProducts] = useState([]);
-    useEffect(() => {
-        setDataProducts(products)
-    }, [products]);
+    const { dataProducts, loading } = useGetAllProducts()
     useEffect(() => {
         $('.filter__controls li').on('click', function () {
             $('.filter__controls li').removeClass('active');
@@ -41,6 +39,7 @@ const ShopPage = () => {
     }, []);
     return (
         <div>
+            {loading && <Loading></Loading>}
             <section className="shop spad">
                 <div className="container">
                     <div className="row">
@@ -48,8 +47,9 @@ const ShopPage = () => {
                             <h1 className='text-2xl font-medium mb-10'>Danh sách sản phẩm</h1>
                             <div className="row">
                                 {dataProducts?.map((prod) => (
-                                    <ProductItem key={prod.id} anh_sp={prod.anh_sp} gia={prod.gia} ten_sp={prod.ten_sp}
-                                        slug={prod.slug} />
+                                    <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham}
+                                        ten_sp={prod.ten_san_pham}
+                                        slug={prod.ten_san_pham_slug} />
                                 ))}
                             </div>
                         </div>

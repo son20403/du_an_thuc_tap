@@ -11,10 +11,10 @@ use App\Models\DanhMucModel;
 use App\Models\TheLoaiModel;
 use Illuminate\Support\Str;
 use Session;
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 class SanPhamController extends Controller
 {
-    
+
     public function sanpham()
 	{
 		$data_Loaisanpham = TheLoaiModel::all();
@@ -26,10 +26,10 @@ class SanPhamController extends Controller
     $HinhAnh = [];
 		foreach ($data_sanpham as $sanpham) {
 			// $sanpham->mo_ta = Str::limit($sanpham->mo_ta, $limit = 30, $end = '...');
-			
+
 			$hinhAnh = HinhAnhModel::where('ma_san_pham', $sanpham->id)->first();
 			$HinhAnh[] = $hinhAnh;
-			
+
 			// Kiểm tra điều kiện is_delete trong $data_danhmuc
 			$ten_danh_muc = '';
 			foreach ($data_danhmuc as $danhmuc) {
@@ -39,7 +39,7 @@ class SanPhamController extends Controller
 				}
 			}
 			$sanpham->ten_danh_muc = $ten_danh_muc;
-		} 
+		}
 
 		if ($data_sanpham->isEmpty()) {
 			return view(
@@ -62,6 +62,22 @@ class SanPhamController extends Controller
 
 	}
 
+    public function HienThiSanPham()
+  {
+    $data_sanpham = SanPhamModel::all();
+    $data_theloai = TheLoaiModel::all();
+    $data_danhmuc = DanhMucModel::all();
+    $data_hinhanh = HinhAnhModel::all();
+
+    $compact = compact('data_danhmuc', 'data_theloai', 'data_sanpham', 'data_hinhanh');
+
+    if ($data_sanpham->isEmpty()) {
+      return response()->json($compact);
+    } else {
+      return response()->json($compact);
+    }
+  }
+
 	public function them_sanpham(Request $request)
 	{
 		$data = $request->all();
@@ -75,11 +91,14 @@ class SanPhamController extends Controller
 
 			if ($get_image) {
 				foreach ($get_image as $image) {
-					$get_name_image = $image->getClientOriginalName();
-					$image->move("img/", $get_name_image);
-
+					// $get_name_image = $image->getClientOriginalName();
+					// $image->move("img/", $get_name_image);
+                    // $x->hinh_anh = $get_name_image;
+                    $uploadedImage = Cloudinary::upload($image->getRealPath(), [
+                        'folder' => 'du_an_thuc_tap'
+                    ])->getSecurePath();
 					$x = new HinhAnhModel;
-					$x->hinh_anh = $get_name_image;
+					$x->hinh_anh = $uploadedImage;
 					$x->ma_san_pham = $t_;
 
 					$x->save();
@@ -89,7 +108,7 @@ class SanPhamController extends Controller
 			// Nếu không có lỗi, chuyển hướng với thông báo thành công
       Session::flash('success', 'Sản phẩm đã được thêm thành công.!');
 			return redirect('admin/san-pham');
-		
+
 
 	}
 
@@ -117,11 +136,14 @@ class SanPhamController extends Controller
 		$get_image = $request->file('hinh_anh');
 		if ($get_image) {
 			foreach ($get_image as $image) {
-				$get_name_image = $image->getClientOriginalName();
-                $image->move("img/", $get_name_image);
-
+				// $get_name_image = $image->getClientOriginalName();
+                // $image->move("img/", $get_name_image);
+                $uploadedImage = Cloudinary::upload($image->getRealPath(), [
+                    'folder' => 'du_an_thuc_tap'
+                ])->getSecurePath();
 				$x = new HinhAnhModel;
-				$x->hinh_anh = $get_name_image;
+				// $x->hinh_anh = $get_name_image;
+				$x->hinh_anh = $uploadedImage;
 				$x->ma_san_pham = $id;
 
 				$x->save();
@@ -139,11 +161,11 @@ class SanPhamController extends Controller
 		$sanpham->dat_biet = $request->dat_biet;
 		$sanpham->mo_ta = $request->mo_ta;
 
-		$sanpham->save();  
+		$sanpham->save();
     Session::flash('success', 'Sản phẩm đã được cập nhật thành công.!');
 
 		return redirect('admin/san-pham');
-		
+
 	}
 
 	public function toggleStatus()

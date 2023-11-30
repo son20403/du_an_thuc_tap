@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import products from '../data/products';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
-import useCurrencyFormat from '../hooks/useCurrencyFormat';
 import ProductItem from '../layouts/ProductItem';
+import { getAllProduct } from '../api/connect';
+import useGetAllProducts from '../hooks/useGetAllPost';
+import Loading from '../components/loading/Loading';
 const ListPostSearch = () => {
-    const [dataProducts, setDataProducts] = useState([]);
     const [query, setQuery] = useState('');
+    const { dataProducts, loading } = useGetAllProducts()
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search).get("query");
     const listProductsSearch = dataProducts?.filter(
-        pro => pro.slug.toLowerCase().includes(query.toLowerCase())
-            || pro.ten_sp.toLowerCase().includes(query.toLowerCase()))
+        pro => pro.ten_san_pham_slug.toLowerCase().includes(query?.toLowerCase())
+            || pro.ten_san_pham.toLowerCase().includes(query?.toLowerCase()))
     useEffect(() => {
-        setDataProducts(products)
         setQuery(searchParams)
-    }, [products, searchParams]);
-
+    }, [searchParams]);
     useEffect(() => {
         $('.filter__controls li').on('click', function () {
             $('.filter__controls li').removeClass('active');
@@ -60,6 +59,7 @@ const ListPostSearch = () => {
     }, [listProductsSearch]);
     return (
         <div>
+            {loading && <Loading></Loading>}
             <section className="shop spad">
                 <div className="container">
                     <div className="row">
@@ -68,8 +68,8 @@ const ListPostSearch = () => {
                             <div className="row">
                                 {listProductsSearch && listProductsSearch.length > 0
                                     ? listProductsSearch.map((product) => (
-                                        <ProductItem key={product.id} anh_sp={product.anh_sp}
-                                            gia={product.gia} slug={product.slug} ten_sp={product.ten_sp} />
+                                        <ProductItem key={product.id} id={product.id} gia={product.gia_san_pham}
+                                            ten_sp={product.ten_san_pham} slug={product.ten_san_pham_slug} />
                                     )) : <div className='col-lg-12 text-center'>Không có sản phẩm nào</div>}
                             </div>
                         </div>

@@ -60,14 +60,7 @@ const Header = () => {
           </li>
           <li>
             <a href="#">
-              <span className="icon_heart_alt" />
-              <div className="tip">2</div>
-            </a>
-          </li>
-          <li>
-            <a href="#">
               <span className="icon_bag_alt" />
-              <div className="tip">2</div>
             </a>
           </li>
         </ul>
@@ -169,10 +162,9 @@ const Header = () => {
                     <span className="icon_search search-switch" />
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to={'/cart'}>
                       <span className="icon_bag_alt" />
-                      <div className="tip">2</div>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

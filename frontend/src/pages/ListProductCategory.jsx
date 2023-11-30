@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import products from '../data/products';
 import { useParams } from 'react-router-dom';
 import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
-import categories from '../data/category';
 import ProductItem from '../layouts/ProductItem';
+import useGetAllProducts from '../hooks/useGetAllPost';
+import useGetAllCategories from '../hooks/useGetAllCategories';
+import Loading from '../components/loading/Loading';
 const ListProductCategory = () => {
-    const [dataProducts, setDataProducts] = useState([]);
     const [listProducts, setListProducts] = useState([]);
-    const [dataCategories, setDataCategories] = useState([]);
+    const { dataProducts, loading } = useGetAllProducts()
+    const { dataCategories } = useGetAllCategories()
     const { slug } = useParams();
-    const category = dataCategories?.filter((cate) => cate.slug === slug)[0]
+    const category = dataCategories?.find((cate) => cate.ten_the_loai_slug === slug)
     useEffect(() => {
-        setListProducts(dataProducts?.filter((prod) => prod.ma_loai === category?.id))
+        setListProducts(dataProducts?.filter((prod) => prod.ma_the_loai === category?.id))
     }, [category]);
-    useEffect(() => {
-        setDataProducts(products)
-    }, [products]);
-    useEffect(() => {
-        setDataCategories(categories)
-    }, [categories]);
-
     useEffect(() => {
         $('.filter__controls li').on('click', function () {
             $('.filter__controls li').removeClass('active');
@@ -60,6 +54,7 @@ const ListProductCategory = () => {
     }, [listProducts]);
     return (
         <div>
+            {loading && <Loading></Loading>}
             <section className="shop spad">
                 <div className="container">
                     <div className="row">
@@ -68,8 +63,8 @@ const ListProductCategory = () => {
                             <div className="row">
                                 {listProducts && listProducts.length > 0
                                     ? listProducts.map((product) => (
-                                        <ProductItem key={product} anh_sp={product.anh_sp} gia={product.gia}
-                                            ten_sp={product.ten_sp} slug={product.slug} />
+                                        <ProductItem key={product.id} id={product.id} gia={product.gia_san_pham}
+                                            ten_sp={product.ten_san_pham} slug={product.ten_san_pham_slug} />
                                     )) : <div className='col-lg-12 text-center'>Không có sản phẩm nào</div>}
                             </div>
                         </div>
