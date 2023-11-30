@@ -1,66 +1,87 @@
-import React , {useState}from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginPage = () => {
-  // Trạng thái cho thông tin đăng nhập và đăng ký
-  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [email, setEmail] = useState(''); // Change from `username` to `email`
+  const [password, setPassword] = useState('');
 
-  const handleLoginChange = (e) => {
-    const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
-  };
-    const handleLoginSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Xử lý đăng nhập ở đây, ví dụ: gọi API đăng nhập
-    console.log('Đăng nhập', loginData);
-  };
-  return (
-    <div>  <section>
-  
-    <div className="container mt-5 ">
-      <div className="row justify-content-center ">
-        <div className="col-md-6">
-          <h2 className="mb-4 text-center">Đăng Nhập</h2>
-          <form onSubmit={ handleLoginSubmit}>
-            <div className="form-group">
-              <label htmlFor="username">Tên đăng nhập:</label>
-              <input
-                type="text"
-                className="form-control"
-                id="username"
-                name="username"
-              
-                style={{ border: '1px solid rgb(158, 152, 152)' }}
-                value={loginData.username} onChange={handleLoginChange} 
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Mật khẩu:</label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="password"
-                value={loginData.password} onChange={handleLoginChange} 
-                style={{ border: '1px solid rgb(158, 152, 152)' }}
-              />
-            </div>
-            <div className="form-group">
-              <p className="float-right">
-                Chưa có tài khoản?{' '}
-             
-                <Link to= '/RegisterPage' className="text-danger" > Đăng kí ngay </Link>
-              </p>
-            </div>
-            <button type="submit" className="btn btn-danger ">
-              Đăng Nhập
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section></div>
-  )
-}
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-export default LoginPage
+      // Handle successful login
+      console.log('Login successful:', response.data);
+
+      // Redirect or perform other actions
+    } catch (error) {
+      // Handle login failure
+      console.error('Login failed:', error);
+    }
+  };
+
+  return (
+    <div>
+      <section>
+        <div className="container mt-5">
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <h2 className="mb-4 text-center">Đăng Nhập</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label>Email:</label> {/* Change label from 'Tên đăng nhập' to 'Email' */}
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="email"  // Change from 'username' to 'email'
+                    name="email"  // Change from 'username' to 'email'
+                    required
+                    style={{ border: '1px solid rgb(158, 152, 152)' }}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Mật khẩu:</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    required
+                    style={{ border: '1px solid rgb(158, 152, 152)' }}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <p className="float-right">
+                    Chưa có tài khoản?{' '}
+                    <Link to="/register" className="text-danger">
+                      Đăng kí ngay
+                    </Link>
+                  </p>
+                </div>
+                <button type="submit" className="btn btn-danger " onClick={handleSubmit}>
+                  Đăng Nhập
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default LoginPage;

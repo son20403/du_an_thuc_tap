@@ -3,25 +3,73 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const RegisterPage = () => {
-  const [registerData, setRegisterData] = useState({ username: '',email:'', password: '' });
-  const handleRegisterChange = (e) => {
-    const { name, value } = e.target;
-    setRegisterData({ ...registerData, [name]: value });
-  };
-  const handleRegisterSubmit = (e) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Xử lý đăng ký ở đây, ví dụ: gọi API đăng ký
-    console.log('Đăng ký', registerData);
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("fullName", fullName);
+    formDataToSend.append("email", email);
+    formDataToSend.append("password", password);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/register",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Registration successful
+      setSuccessMessage(response.data.message);
+
+      // Clear form fields
+      setFullName("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      // Handle registration failure
+      setErrorMessage("There was an error during registration.");
+
+      // Log detailed error to console
+      console.error("Error during registration:", error);
+      
+      // If available, log the server response
+      if (error.response) {
+        console.error('Server Response:', error.response.data);
+      }
+    }
   };
+    
   return (
     <section>
       <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-md-6">
             <h2 className="mb-5 text-center">Đăng Ký</h2>
-            <form onSubmit={handleRegisterSubmit}>
+            <form onSubmit={handleSubmit}>
+              {successMessage && (
+                <div className="alert alert-success" role="alert">
+                  {successMessage}
+                </div>
+              )}
+
+              {errorMessage && (
+                <div className="alert alert-danger" role="alert">
+                  {errorMessage}
+                </div>
+              )}
+
               <div className="form-group">
-                <label >Tên đăng ký:</label>
+                <label>Tên đăng ký:</label>
                 <input
                   type="text"
                   className="form-control"
@@ -30,11 +78,11 @@ const RegisterPage = () => {
                   name="username"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                value={registerData.username} onChange={handleRegisterChange}
+                  onChange={(e) => setFullName(e.target.value)}
                 />
               </div>
               <div className="form-group">
-                <label >Email:</label>
+                <label>Email:</label>
                 <input
                   type="email"
                   className="form-control"
@@ -42,12 +90,11 @@ const RegisterPage = () => {
                   name="email"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  value={registerData.email}
-                  onChange={handleRegisterChange}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="form-group">
-                <label >Mật khẩu:</label>
+                <label>Mật khẩu:</label>
                 <input
                   type="password"
                   className="form-control"
@@ -55,17 +102,16 @@ const RegisterPage = () => {
                   name="password"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  value={registerData.password} onChange={handleRegisterChange}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="float-right">
-                  <Link to="/LoginPage" className="text-danger">
-                    {" "}
-                    Đăng Nhập{" "}
+                  <Link to="/Login" className="text-danger">
+                    Đăng Nhập
                   </Link>
                 </p>
               </div>
 
-              <button type="submit" className="btn btn-danger" onClick={handleRegisterSubmit}> 
+              <button type="submit" className="btn btn-danger">
                 Đăng Ký
               </button>
             </form>
