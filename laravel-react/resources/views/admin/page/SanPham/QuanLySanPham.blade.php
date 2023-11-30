@@ -443,10 +443,37 @@ Quan Ly Sản Phẩm
   }
 </script>
 
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      data_danhmuc: [],
+      data_theloai: [],
+      data_sanpham: [], 
+      data_hinhanh: [],    
+    },
+    created() {
+      this.GetData();
+    },
+    methods: {
+      // hien thi danh sach  Sản Phẩm
+      GetData() {
+        axios
+          .get('/admin/san-pham/du-lieu')
+          .then((res) => {
+            this.data_danhmuc = res.data.data_danhmuc;
+            this.data_theloai = res.data.data_theloai;
+            this.data_sanpham = res.data.data_sanpham;
+            this.data_hinhanh = res.data.data_hinhanh;
+          });
+      },
+    },
+  });
+</script>
 
 
 <!-- validation -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></scrip>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 

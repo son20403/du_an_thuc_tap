@@ -62,7 +62,7 @@ class SanPhamController extends Controller
 
 	}
 
-    public function HienThiSanPham()
+	public function HienThiSanPham()
   {
     $data_sanpham = SanPhamModel::all();
     $data_theloai = TheLoaiModel::all();

@@ -51,8 +51,7 @@ Route::group(['prefix'=> 'admin'], function () {
         // Route::post('/toggleStatus/{id}', [SanPhamController::class,'CapNhatSanPham']);
 
         Route::get('/', [SanphamController::class, 'sanpham']);
-        Route::post('/', [SanphamController::class, 'them_sanpham']);
-        Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']);
+        Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
         Route::get('/xoasanpham', [SanphamController::class, 'xoa_sanpham']);
         Route::post('/capnhatsanpham/{id}', [SanphamController::class, 'cn_sanpham_']);
         Route::get('/toggleStatus', [SanphamController::class, 'toggleStatus']);
