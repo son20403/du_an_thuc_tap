@@ -3,13 +3,16 @@ import useCurrencyFormat from '../hooks/useCurrencyFormat';
 const CartPage = () => {
     const [dataCart, setDataCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [totalPriceSale, setTotalPriceSale] = useState(0);
     const [totalQuantity, setTotalQuantity] = useState(0);
     const tong_gia = useCurrencyFormat(totalPrice)
+    const tong_gia_sale = useCurrencyFormat(totalPriceSale)
     useEffect(() => {
         updateCart();
     }, []);
     useEffect(() => {
         setTotalPrice(getTotalPrice(dataCart));
+        setTotalPriceSale(getTotalPriceSale(dataCart));
         setTotalQuantity(getTotalQuantity(dataCart));
     }, [dataCart]);
 
@@ -18,6 +21,9 @@ const CartPage = () => {
         setDataCart(cartData);
     }
 
+    function getTotalPriceSale(cart) {
+        return cart.reduce((total, item) => total + (item.price - (item.price * item.sale / 100)) * item.quantity, 0);
+    }
     function getTotalPrice(cart) {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     }
@@ -99,7 +105,8 @@ const CartPage = () => {
                                     <h6>Tổng giỏ hàng</h6>
                                     <ul>
                                         <li>Số lượng <span>{totalQuantity}</span></li>
-                                        <li>Giá <span>{tong_gia}</span></li>
+                                        <li>Giá gốc <span>{tong_gia}</span></li>
+                                        <li>Tổng giá <span>{tong_gia_sale}</span></li>
                                     </ul>
                                     <a href="#" className="primary-btn">Thanh toán</a>
                                 </div>
@@ -117,7 +124,11 @@ const CartItem = ({ item, minusCart = () => { }, plusCart = () => { }, removeCar
     const id = item.id
     const so_luong = item.quantity
     const gia_goc = useCurrencyFormat(gia);
+    const phan_tram = item?.sale
+    const sale = gia * (phan_tram / 100)
+    const giam_gia = gia - sale;
     const gia_tong = useCurrencyFormat(gia * so_luong);
+    const giam_gia_tong = useCurrencyFormat(giam_gia * so_luong);
     return (
         <tr className='select-none'>
             <td className="cart__product__item flex items-center gap-10 ">
@@ -139,7 +150,12 @@ const CartItem = ({ item, minusCart = () => { }, plusCart = () => { }, removeCar
                     <span className="inc qtybtn" onClick={() => plusCart(id)}>+</span>
                 </div>
             </td>
-            <td className="cart__total">{gia_tong}</td>
+            <td className=''>
+                <span className='flex flex-col px-2'>
+                    <span className=" text-gray-400 text-sm m-0 p-0 line-through" >{gia_tong}</span>
+                    <span className="cart__total m-0 p-0">{giam_gia_tong}</span>
+                </span>
+            </td>
             <td className="cart__close" onClick={() => removeCart(id)}><span className="icon_close" /></td>
         </tr>
     )
