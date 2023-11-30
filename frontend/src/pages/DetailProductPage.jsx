@@ -74,7 +74,7 @@ const DetailProductPage = () => {
     e.preventDefault()
     const qty = +inputRef.current.value
     addToCart(
-      { id: detailProduct?.id, image: anh_san_pham, name: detailProduct?.ten_san_pham, price: detailProduct?.gia_san_pham, quantity: qty })
+      { id: detailProduct?.id, image: anh_san_pham, name: detailProduct?.ten_san_pham, price: detailProduct?.gia_san_pham, quantity: qty, sale: detailProduct?.giam_gia_san_pham })
   }
   const [openAdd, setOpenAdd] = useState(false);
   const cancelButtonRef = useRef(null);
@@ -138,17 +138,17 @@ const DetailProductPage = () => {
       $button.parent().find('input').val(newVal);
     });
   }, []);
-  function addToCart({ id, name, price, image, quantity = 1 }) {
+  function addToCart({ id, name, price, image, quantity = 1, sale }) {
     let cart = JSON.parse(sessionStorage.getItem("cart"));
     if (!cart) {
       cart = [];
-      cart.push({ id, name, price, image, quantity });
+      cart.push({ id, name, price, image, quantity, sale });
     } else {
       let item = cart.find((item) => item.id === id);
       if (item) {
         item.quantity += quantity
       } else {
-        cart.push({ id, name, price, image, quantity });
+        cart.push({ id, name, price, image, quantity, sale });
       }
     }
     sessionStorage.setItem("cart", JSON.stringify(cart));
