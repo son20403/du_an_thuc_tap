@@ -3,28 +3,21 @@ import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
 import ProductItem from '../layouts/ProductItem';
-import categories from '../data/category';
-import products from '../data/products';
 import { Link } from 'react-router-dom';
 import TrendItem from '../layouts/TrendItem';
 import CategoryHomeItem from '../layouts/CategoryHomeItem';
+import useGetAllProducts from '../hooks/useGetAllPost';
+import useGetAllCategories from '../hooks/useGetAllCategories';
+import Loading from '../components/loading/Loading';
 const HomePage = () => {
-    const [dataCategories, setDataCategories] = useState([]);
-    const [dataProducts, setDataProducts] = useState([]);
-    useEffect(() => {
-        setDataCategories(categories)
-    }, [categories]);
-    useEffect(() => {
-        setDataProducts(products)
-    }, [products]);
+    const { dataProducts, loading } = useGetAllProducts()
+    const { dataCategories } = useGetAllCategories()
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
             const bg = element.getAttribute('data-setbg');
             element.style.backgroundImage = `url(${bg})`;
         });
-    }, []);
-    useEffect(() => {
         $('.filter__controls li').on('click', function () {
             $('.filter__controls li').removeClass('active');
             $(this).addClass('active');
@@ -58,6 +51,7 @@ const HomePage = () => {
     }, []);
     return (
         <div>
+            {loading && <Loading></Loading>}
             <section className="categories">
                 <div className="container-fluid">
                     <div className="row">
@@ -72,7 +66,7 @@ const HomePage = () => {
                         </div>
                         <div className="col-lg-6">
                             <div className="row">
-                                {dataCategories?.slice(1).map(((cate, index) => (
+                                {dataCategories?.slice(1, 5).map(((cate, index) => (
                                     <CategoryHomeItem key={cate.id + index} cate={cate} index={index}></CategoryHomeItem>
                                 )))
                                 }
@@ -102,8 +96,8 @@ const HomePage = () => {
                     </div>
                     <div className="row property__gallery">
                         {dataProducts.slice(0, 8)?.map((prod) => (
-                            <ProductItem key={prod.id} anh_sp={prod.anh_sp} gia={prod.gia} ten_sp={prod.ten_sp}
-                                slug={prod.slug} />
+                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                                slug={prod.ten_san_pham_slug} />
                         ))}
                     </div>
                 </div>

@@ -27,7 +27,7 @@ Quan Ly Sản Phẩm
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              
+
               <div class="modal-body row">
                 <!-- ---------------- -->
                 <div class="col-md-9">
@@ -148,7 +148,7 @@ Quan Ly Sản Phẩm
 
               @foreach ($HinhAnh as $hinhanh)
               @if ($hinhanh && $hinhanh->ma_san_pham == $sanpham->id)
-              <img height="100" src="{{ asset('img/') }}/{{$hinhanh->hinh_anh}}" title="{{$hinhanh->hinh_anh}}">
+              <img height="100" src="{{$hinhanh->hinh_anh}}" title="{{$hinhanh->hinh_anh}}">
               @php
               $hasImages = true;
               @endphp
@@ -244,7 +244,7 @@ Quan Ly Sản Phẩm
                           @if($hinhanh->ma_san_pham == $sanpham->id)
                           <div class="col-md-3">
                             <div>
-                              <img src="{{asset('img')}}/{{$hinhanh->hinh_anh}}" width="100" title="image">
+                              <img src="{{$hinhanh->hinh_anh}}" width="100" title="image">
                             </div>
                             <div class="text-center">
                               <a class="btn btn-danger btn_delete"

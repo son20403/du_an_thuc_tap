@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '../components/input';
 import customer from '../data/customer'
+import axios from 'axios'
 const ForgotPassword = () => {
     const [emailForgotPassword, setEmailForgotPassword] = useState('');
     const [dataCustomer, setDataCustomer] = useState([]);
@@ -20,23 +21,16 @@ const ForgotPassword = () => {
     }, []);
     async function fetchCsrfToken(email) {
         try {
-            const response = await fetch('http://127.0.0.1:8000/csrf-token');
-            const data = await response.json();
-            const csrfToken = data.csrf_token;
             const randomPassword = generateRandomPassword(12);
             const dataToSend = {
                 email: email,
                 password: randomPassword,
                 body: 'Đây là mật khẩu mới của bạn'
             };
-
-            const responseEmail = await fetch('http://127.0.0.1:8000/send-email', {
-                method: 'POST',
+            const responseEmail = await axios.post('http://127.0.0.1:8000/send-email', dataToSend, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify(dataToSend),
             });
 
             if (responseEmail.ok) {

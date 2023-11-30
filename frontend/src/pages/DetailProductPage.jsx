@@ -2,44 +2,82 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import Instagram from "../layouts/Instagram";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import mixitup from "mixitup";
 import $ from "jquery";
 import { useParams } from "react-router-dom";
-import products from "../data/products";
 import useCurrencyFormat from "../hooks/useCurrencyFormat";
 import ProductItem from "../layouts/ProductItem";
 import { Dialog, Transition } from "@headlessui/react";
-import categories from "../data/category";
+import useGetAllProducts from "../hooks/useGetAllPost";
+import useGetAllCategories from "../hooks/useGetAllCategories";
+import Loading from "../components/loading/Loading";
+import { toast } from 'react-toastify';
 const DetailProductPage = () => {
   const { slug } = useParams();
-  const [dataProducts, setDataProducts] = useState([]);
+  const { dataProducts, dataImages, loading } = useGetAllProducts()
+  const { dataCategories } = useGetAllCategories()
   const [detailProduct, setDetailProduct] = useState({});
-  const [dataCategories, setDataCategories] = useState([]);
   const [detailCategory, setDetailCategory] = useState({});
   const [listSimilarProduct, setListSimilarProduct] = useState([]);
-  useEffect(() => {
-    setDataProducts(products);
-  }, [products]);
+  const anh_san_pham = dataImages?.find((image) => image.ma_san_pham === detailProduct?.id)?.hinh_anh
   useEffect(() => {
     setDetailProduct(
-      dataProducts?.filter((product) => product.slug === slug)[0]
+      dataProducts?.filter((product) => product.ten_san_pham_slug === slug)[0]
     );
   }, [dataProducts, slug]);
   useEffect(() => {
     setListSimilarProduct(
       dataProducts?.filter(
-        (product) => product?.ma_loai === detailProduct?.ma_loai
+        (product) => product?.ma_the_loai === detailProduct?.ma_the_loai
       )
     );
   }, [dataProducts, detailProduct]);
+
   useEffect(() => {
-    setDataCategories(categories)
-  }, [categories]);
-  useEffect(() => {
-    setDetailCategory(dataCategories?.find((cate) => cate.id === detailProduct?.ma_loai))
+    setDetailCategory(dataCategories?.find((cate) => cate.id === detailProduct?.ma_the_loai))
   }, [dataCategories, detailProduct]);
-  const formattedAmount = useCurrencyFormat(detailProduct?.gia);
+  const gia_san_pham = detailProduct?.gia_san_pham
+  const phan_tram = detailProduct?.giam_gia_san_pham
+  const sale = gia_san_pham * (phan_tram / 100)
+  const giam_gia = gia_san_pham - sale;
+  const gia_goc = useCurrencyFormat(gia_san_pham);
+  const gia_sau_khi_giam = useCurrencyFormat(giam_gia);
+
+  const [rating, setRating] = useState(0);
+  const handleChangeStar = (value) => {
+    setRating(value);
+    setReview((prevReview) => ({
+      ...prevReview,
+      rating: value.toString(), // Chuyển đổi giá trị sang chuỗi nếu cần
+    }));
+  };
+  const [review, setReview] = useState({
+    username: "",
+    phone: "",
+    content: "",
+    rating: rating,
+  });
+  const handleChangeReview = (e) => {
+    const { name, value } = e.target;
+    setReview((prevCategory) => ({
+      ...prevCategory,
+      [name]: value,
+    }));
+    // Ở đây bạn có thể gửi giá trị rating lên server hoặc xử lý nó theo ý muốn
+  };
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    console.log(review);
+  };
+  const inputRef = useRef(null)
+  const handleSubmitAddToCart = (e) => {
+    e.preventDefault()
+    const qty = +inputRef.current.value
+    addToCart(
+      { id: detailProduct?.id, image: anh_san_pham, name: detailProduct?.ten_san_pham, price: detailProduct?.gia_san_pham, quantity: qty })
+  }
+  const [openAdd, setOpenAdd] = useState(false);
+  const cancelButtonRef = useRef(null);
   useEffect(() => {
     const setBgElements = document.querySelectorAll(".set-bg");
     setBgElements.forEach((element) => {
@@ -79,36 +117,47 @@ const DetailProductPage = () => {
       horizrailenabled: false,
     });
   }, [detailProduct]);
-  const [rating, setRating] = useState(0);
-  const handleChangeStar = (value) => {
-    setRating(value);
-    setReview((prevReview) => ({
-      ...prevReview,
-      rating: value.toString(), // Chuyển đổi giá trị sang chuỗi nếu cần
-    }));
-  };
-  const [review, setReview] = useState({
-    username: "",
-    phone: "",
-    content: "",
-    rating: rating,
-  });
-  const handleChangeReview = (e) => {
-    const { name, value } = e.target;
-    setReview((prevCategory) => ({
-      ...prevCategory,
-      [name]: value,
-    }));
-    // Ở đây bạn có thể gửi giá trị rating lên server hoặc xử lý nó theo ý muốn
-  };
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    console.log(review);
-  };
-  const [openAdd, setOpenAdd] = useState(false);
-  const cancelButtonRef = useRef(null);
+  useEffect(() => {
+    let proQty = $('.pro-qty');
+    proQty.prepend('<span class="dec qtybtn">-</span>');
+    proQty.append('<span class="inc qtybtn">+</span>');
+    proQty.on('click', '.qtybtn', function () {
+      let $button = $(this);
+      let oldValue = $button.parent().find('input').val();
+      if ($button.hasClass('inc')) {
+        var newVal = parseFloat(oldValue) + 1;
+      } else {
+        // Don't allow decrementing below zero
+        if (oldValue > 0) {
+          // eslint-disable-next-line no-redeclare
+          var newVal = parseFloat(oldValue) - 1;
+        } else {
+          newVal = 0;
+        }
+      }
+      $button.parent().find('input').val(newVal);
+    });
+  }, []);
+  function addToCart({ id, name, price, image, quantity = 1 }) {
+    let cart = JSON.parse(sessionStorage.getItem("cart"));
+    if (!cart) {
+      cart = [];
+      cart.push({ id, name, price, image, quantity });
+    } else {
+      let item = cart.find((item) => item.id === id);
+      if (item) {
+        item.quantity += quantity
+      } else {
+        cart.push({ id, name, price, image, quantity });
+      }
+    }
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+    toast.success("Thêm vào giỏ hàng thành công")
+    return true;
+  }
   return (
     <div>
+      {loading && <Loading></Loading>}
       <section className="product-details spad">
         <div className="container">
           <div className="row">
@@ -119,7 +168,7 @@ const DetailProductPage = () => {
                     <img
                       data-hash="product-1"
                       className="product__big__img"
-                      src={detailProduct?.anh_sp}
+                      src={anh_san_pham}
                       alt
                     />
                   </div>
@@ -129,24 +178,33 @@ const DetailProductPage = () => {
             <div className="col-lg-6">
               <div className="product__details__text flex flex-col gap-y-5">
                 <h3>
-                  {detailProduct?.ten_sp}{" "}
-                  <span>Loại: {detailCategory?.ten_danh_muc}</span>
+                  {detailProduct?.ten_san_pham}{" "}
+                  <span>Loại: {detailCategory?.ten_the_loai}</span>
                 </h3>
-                <div className="product__details__price">
-                  {formattedAmount} <span>{formattedAmount}</span>
+                <div className="flex items-center gap-10">
+                  <div className="product__details__price mb-0">
+                    {gia_sau_khi_giam}
+                    {giam_gia === gia_san_pham ? '' :
+                      <span>{gia_goc}</span>
+                    }
+                  </div>
+                  {phan_tram &&
+                    <span className="text-red-600 font-medium">-{phan_tram}%</span>
+                  }
                 </div>
-                <p>{detailProduct?.mota}</p>
-                <div className="product__details__button">
+                <div dangerouslySetInnerHTML={{ __html: detailProduct?.mo_ta }}
+                  className='content_post !text-xs md' />
+                <form onSubmit={handleSubmitAddToCart} className="product__details__button ">
                   <div className="quantity">
                     <span>Số lượng:</span>
                     <div className="pro-qty">
-                      <input type="text" defaultValue={1} />
+                      <input ref={inputRef} type="text" defaultValue={1} />
                     </div>
                   </div>
-                  <a href="#" className="cart-btn">
+                  <button type="submit" className="cart-btn">
                     <span className="icon_bag_alt" /> Thêm vào giỏ hàng
-                  </a>
-                </div>
+                  </button>
+                </form>
               </div>
             </div>
             <div className="col-lg-12">
@@ -474,14 +532,9 @@ const DetailProductPage = () => {
             </div>
             {listSimilarProduct &&
               listSimilarProduct.length > 0 &&
-              listSimilarProduct.map((product) => (
-                <ProductItem
-                  key={product?.id}
-                  anh_sp={product.anh_sp}
-                  gia={product.gia}
-                  ten_sp={product.ten_sp}
-                  slug={product.slug}
-                ></ProductItem>
+              listSimilarProduct.map((prod) => (
+                <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                  slug={prod.ten_san_pham_slug} />
               ))}
           </div>
         </div>
