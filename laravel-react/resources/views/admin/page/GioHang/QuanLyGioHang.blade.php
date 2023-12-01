@@ -24,7 +24,7 @@ Quản Lí Giỏ Hàng
       <table class="w-full whitespace-no-wrap">
         <thead>
           <tr
-            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
             <th class="px-4 py-3">#</th>
             <th class="px-4 py-3">Mã Khách Hàng</th>
             <th class="px-4 py-3">Mã Sản Phẩm</th>
@@ -32,10 +32,10 @@ Quản Lí Giỏ Hàng
             <th class="px-4 py-3">Thao tác </th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <tbody class="bg-white divide-y">
           @foreach ($data_giohang as $giohang)
           
-          <tr class="text-gray-700 dark:text-gray-400">
+          <tr class="text-gray-700">
             <td class="px-4 py-3">
               {{$giohang->id}}
             </td>
@@ -73,10 +73,10 @@ Quản Lí Giỏ Hàng
 
                   <div class="modal-body">
                     <label class="block text-sm">
-                      <span class="text-gray-700 dark:text-gray-400">Mã Sản Phẩm</span>
+                      <span class="text-gray-700">Mã Sản Phẩm</span>
                       <input placeholder="Nhập vào Mã Sản Phẩm" type="text" name="ma_san_pham"
                         value="{{$giohang->ma_san_pham}}"
-                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                        class="block w-full mt-1 text-sm focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input">
                       <div id="ma_san_pham_error" class="error"></div>
                       <span class="text-danger">
                         @error('ten_TL')
@@ -88,10 +88,10 @@ Quản Lí Giỏ Hàng
 
                   <div class="modal-body">
                     <label class="block text-sm">
-                      <span class="text-gray-700 dark:text-gray-400">Mã Khách Hàng</span>
+                      <span class="text-gray-700">Mã Khách Hàng</span>
                       <input placeholder="Nhập vào Mã Khách Hàng" type="text" name="ma_khach_hang"
                         value="{{$giohang->ma_khach_hang}}"
-                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                        class="block w-full mt-1 text-sm focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input">
                       <div id="ma_khach_hang_error" class="error"></div>
                       <span class="text-danger">
                         @error('ten_TL')
@@ -103,10 +103,10 @@ Quản Lí Giỏ Hàng
 
                   <div class="modal-body">
                     <label class="block text-sm">
-                      <span class="text-gray-700 dark:text-gray-400">Số Lượng</span>
+                      <span class="text-gray-700">Số Lượng</span>
                       <input placeholder="Nhập vào Số Lượng" type="text" name="so_luong"
                         value="{{$giohang->so_luong}}"
-                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                        class="block w-full mt-1 text-sm focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input">
                       <div id="so_luong_error" class="error"></div>
                       <span class="text-danger">
                         @error('ten_TL')
@@ -130,7 +130,7 @@ Quản Lí Giỏ Hàng
     </div>
 
     <div
-      class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+      class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
       <span class="flex items-center col-span-3">
         Showing 21-30 of 100
       </span>
@@ -190,9 +190,9 @@ Quản Lí Giỏ Hàng
 
           <div class="modal-body">
             <label class="block text-sm">
-              <span class="text-gray-700 dark:text-gray-400">Mã Sản Phẩm</span>
+              <span class="text-gray-700">Mã Sản Phẩm</span>
               <input placeholder="Nhập vào Mã Sản Phẩm" type="text" name="ma_san_pham"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                class="block w-full mt-1 text-sm focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input">
               <div id="ten_danh_muc_error" class="error"></div>
               <span class="text-danger">
                 @error('ten_danh_muc')
@@ -204,9 +204,9 @@ Quản Lí Giỏ Hàng
 
           <div class="modal-body">
             <label class="block text-sm">
-              <span class="text-gray-700 dark:text-gray-400">Mã Khách Hàng</span>
+              <span class="text-gray-700">Mã Khách Hàng</span>
               <input placeholder="Nhập vào Mã Khách Hàng" type="text" name="ma_khach_hang"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                class="block w-full mt-1 text-sm focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input">
               <div id="ten_danh_muc_error" class="error"></div>
               <span class="text-danger">
                 @error('ten_danh_muc')
@@ -218,9 +218,9 @@ Quản Lí Giỏ Hàng
 
           <div class="modal-body">
             <label class="block text-sm">
-              <span class="text-gray-700 dark:text-gray-400">Số Lượng</span>
+              <span class="text-gray-700">Số Lượng</span>
               <input placeholder="Nhập vào Số Lượng" type="text" name="so_luong"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                class="block w-full mt-1 text-sm focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input">
               <div id="ten_danh_muc_error" class="error"></div>
               <span class="text-danger">
                 @error('ten_danh_muc')

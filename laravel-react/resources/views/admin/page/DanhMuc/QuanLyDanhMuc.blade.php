@@ -56,15 +56,15 @@ Quan Ly Danh Muc
       <table class="w-full whitespace-no-wrap">
         <thead>
           <tr
-            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
             <th class="px-4 py-3">#</th>
             <th class="px-4 py-3">Tên danh mục</th>
             <th class="px-4 py-3">Thao tác</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <tbody class="bg-white divide-y">
 
-          <tr v-for="(value, key) in data_danhmuc" class="text-gray-700 dark:text-gray-400" v-if="value.is_delete == 0">
+          <tr v-for="(value, key) in data_danhmuc" class="text-gray-700" v-if="value.is_delete == 0">
             <!-- <div v-if="value.is_delete !== 0"> -->
 
             <td class="px-4 py-3">

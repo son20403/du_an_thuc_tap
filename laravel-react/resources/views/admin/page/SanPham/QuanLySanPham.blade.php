@@ -112,7 +112,7 @@ Quan Ly Sản Phẩm
       <table class="w-full whitespace-no-wrap">
         <thead>
           <tr
-            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
             <th class="px-4 py-3">#</th>
             <th class="px-4 py-3">Tên Sản Phẩm</th>
             <th class="px-4 py-3">Hình Ảnh</th>
@@ -125,15 +125,15 @@ Quan Ly Sản Phẩm
             <th class="px-4 py-3">Thao tác</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <tbody class="bg-white divide-y">
           @if($data_sanpham->isEmpty())
-          <tr class="text-gray-700 dark:text-gray-400">
+          <tr class="text-gray-700">
             <td class="align-middle text-center text-nowrap" colspan="11">Không có dữ liệu</td>
           </tr>
           @else
           @foreach($data_sanpham as $sanpham)
           @if ($sanpham->is_delete == 0)
-          <tr class="text-gray-700 dark:text-gray-400">
+          <tr class="text-gray-700">
             <td class="px-4 py-3">
               {{$sanpham->id}}
             </td>

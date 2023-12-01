@@ -28,7 +28,7 @@ Quan Ly The Loai
 
             <div class="modal-body">
               <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Tên Thể Loại</span>
+                <span class="text-gray-700">Tên Thể Loại</span>
                 <input placeholder="Nhập vào Tên Thể Loại" type="text" v-model="add_the_loai.ten_the_loai"
                   class="form-control">
                 <div v-if="errors.ten_the_loai" class="alert alert-warning">
@@ -38,7 +38,7 @@ Quan Ly The Loai
 
 
               <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
+                <span class="text-gray-700">Tên Danh Mục</span>
                 <select v-model="add_the_loai.ma_danh_muc" class="form-control">
                   <option v-for="(danhmuc, index) in data_danhmuc" 
                     :value="danhmuc.id">@{{danhmuc.ten_danh_muc }}</option>
@@ -68,16 +68,16 @@ Quan Ly The Loai
       <table class="w-full whitespace-no-wrap">
         <thead>
           <tr
-            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
             <th class="px-4 py-3">#</th>
             <th class="px-4 py-3">Tên Thể Loại</th>
             <th class="px-4 py-3">Tên Danh Mục</th>
             <th class="px-4 py-3">Thao tác</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <tbody class="bg-white divide-y">
 
-          <tr v-for="(theloai, key) in data_theloai" class="text-gray-700 dark:text-gray-400"
+          <tr v-for="(theloai, key) in data_theloai" class="text-gray-700"
             v-if="theloai.is_delete == 0">
             <td class="px-4 py-3">
               @{{ key + 1 }}
@@ -110,7 +110,7 @@ Quan Ly The Loai
 
                     <div class="modal-body">
                       <label class="block text-sm">
-                        <span class="text-gray-700 dark:text-gray-400">Tên Thể Loại</span>
+                        <span class="text-gray-700">Tên Thể Loại</span>
                         <input placeholder="Nhập vào Tên Thể Loại" type="text" v-model="edit_the_loai.ten_the_loai"
                           class="form-control">
                         <div v-if="errors.ten_the_loai" class="alert alert-warning">
@@ -120,7 +120,7 @@ Quan Ly The Loai
 
 
                       <label class="block text-sm">
-                        <span class="text-gray-700 dark:text-gray-400">Tên Danh Mục</span>
+                        <span class="text-gray-700">Tên Danh Mục</span>
                         <select v-model="edit_the_loai.ma_danh_muc" class="form-control">
                           <option v-for="(danhmuc, index) in data_danhmuc" :checked="danhmuc.id === theloai.ma_danh_muc"
                             :value="danhmuc.id">@{{danhmuc.ten_danh_muc }}</option>
