@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -34,25 +34,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->all();
+        // dd($data);
         $validator = Validator::make(
             $data,
             [
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
                 'password' => ['required', 'string', 'min:8', 'max:255'],
             ]
         );
 
         if ($validator->fails()) {
             $arr = [
+                'data_err' => $data,
                 'success' => false,
                 'message' => 'Lỗi kiểm tra dữ liệu',
                 'data' => $validator->errors()
             ];
             return response()->json($arr, 200);
         }
-        $data = $request->all();
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -97,7 +99,7 @@ class UserController extends Controller
         }
         $user = User::where('id', $request->id)->first();
         $user->name = $data['password'];
-        
+
         $user->save();
         $arr = [
             'status' => true,
@@ -152,7 +154,7 @@ class UserController extends Controller
     public function destroy()
     {
         //
-        
+
     }
     public function logout_token(Request $request)
     {
@@ -163,7 +165,7 @@ class UserController extends Controller
             ], 200);
         }
         // $request->user()->currentAccessToken()->delete();
-        
+
     }
 
     public function login_token(Request $request)
@@ -207,4 +209,6 @@ class UserController extends Controller
     {
         return $request->user();
     }
+
+
 }

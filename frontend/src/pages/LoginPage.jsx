@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { login } from '../api/connect';
 
 const LoginPage = () => {
   const [email, setEmail] = useState(''); // Change from `username` to `email`
@@ -8,22 +9,11 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const info = { email, password }
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/login",
-        {
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      // Handle successful login
-      console.log('Login successful:', response.data);
+      const data = await login(info)
+      const dataCus = await data.data
+      console.log("🚀 ~ file: LoginPage.jsx:16 ~ handleSubmit ~ dataCus:", dataCus)
 
       // Redirect or perform other actions
     } catch (error) {

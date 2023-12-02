@@ -17,3 +17,20 @@ export async function getAllCategories() {
         console.log(error);
     }
 }
+export async function login(entity) {
+    try {
+        const response = await axios.post(`${ENDPOINT}/api/login`, entity);
+        return response.data
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function register(entity) {
+    console.log("🚀 ~ file: connect.jsx:29 ~ register ~ entity:", entity)
+    try {
+        const response = await axios.post(`${ENDPOINT}/api/register`, entity);
+        return response.data
+    } catch (error) {
+        console.log(error);
+    }
+}
