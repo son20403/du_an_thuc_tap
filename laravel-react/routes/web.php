@@ -76,8 +76,26 @@ Route::middleware([
     });// admin
 });
 
-
-
+// route lay api cho client
+Route::group(['prefix'=> 'admin'], function () {
+    Route::group(['prefix' => '/danh-muc'], function () {
+        Route::get('/du-lieu', [DanhMucController::class,'HienThiDanhMuc']); // url/admin/danh-muc/du-lieu
+    });
+    Route::group(['prefix' => '/the-loai'], function () {
+        
+        Route::get('/du-lieu', [TheLoaiController::class,'HienThiTheLoai']); // url/admin/the-loa/du-lieu
+    });
+    Route::group(['prefix' => '/san-pham'], function () {
+    
+        Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
+        
+    });
+    Route::group(['prefix' => '/gio-hang'], function () {
+    
+        Route::get('/du-lieu', [GioHangController::class,'HienThiGioHang']); // url/admin/giohang
+        
+    });
+});// admin
 
     
 

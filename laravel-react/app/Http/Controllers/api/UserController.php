@@ -77,15 +77,40 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request)
     {
-        //
+        $data = $request->all();
+        $validator = Validator::make(
+            $data,
+            [
+                'password' => ['required', 'string', 'min:8', 'max:255'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            $arr = [
+                'success' => false,
+                'message' => 'Lỗi kiểm tra dữ liệu',
+                'data' => $validator->errors()
+            ];
+            return response()->json($arr, 200);
+        }
+        $user = User::where('id', $request->id)->first();
+        $user->name = $data['password'];
+        
+        $user->save();
+        $arr = [
+            'status' => true,
+            'message' => 'user cập nhật thành công',
+            'data' => new UserResources($user)
+        ];
+        return response()->json($arr, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
         //
         $data = $request->all();
@@ -107,10 +132,11 @@ class UserController extends Controller
             ];
             return response()->json($arr, 200);
         }
+        $user = User::where('id', $request->id)->first();
         $user->name = $data['name'];
-        $user->price = $data['address'];
-        $user->price = $data['phone'];
-        $user->price = $data['gender'];
+        $user->address = $data['address'];
+        $user->phone = $data['phone'];
+        $user->gender = $data['gender'];
         $user->save();
         $arr = [
             'status' => true,
@@ -123,10 +149,23 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
         //
+        
     }
+    public function logout_token(Request $request)
+    {
+        //
+        if($request->user()->currentAccessToken()->delete()){
+            return response()->json([
+                'message' => 'logout'
+            ], 200);
+        }
+        // $request->user()->currentAccessToken()->delete();
+        
+    }
+
     public function login_token(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
@@ -156,6 +195,8 @@ class UserController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
         $arr = [
+            'access_token' => $token,
+            'token_type' => 'Bearer',
             'status' => true,
             'message' => "User đã đăng nhập thành công",
             'data' => new UserResources($user)
