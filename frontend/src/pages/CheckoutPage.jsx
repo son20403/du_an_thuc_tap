@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const CheckoutPage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,32 @@ const CheckoutPage = () => {
     paypal: false,
   });
 
+  const [cartItems, setCartItems] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    // Thực hiện yêu cầu API để lấy dữ liệu giỏ hàng từ Laravel
+    fetch("/api/cart")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Yêu cầu API thất bại với mã lỗi: ${response.status}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCartItems(data.cartItems);
+        setSubtotal(data.subtotal);
+        setTotal(data.total);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy dữ liệu giỏ hàng:", error.message);
+        // Xử lý lỗi, có thể thông báo cho người dùng hoặc thực hiện các bước phù hợp
+      });
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -21,23 +48,6 @@ const CheckoutPage = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log("Biểu mẫu đã được gửi!");
-    console.log("Dữ liệu biểu mẫu:", formData);
-  };
-
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Chain buck bag", price: 300.0 },
-    { id: 2, name: "Zip-pockets pebbled tote briefcase", price: 170.0 },
-    { id: 3, name: "Black jean", price: 170.0 },
-    { id: 4, name: "Cotton shirt", price: 110.0 },
-  ]);
-
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
-  const total = subtotal;
 
   const handlePlaceOrder = () => {
     // Thêm logic xử lý khi đặt hàng
@@ -57,9 +67,11 @@ const CheckoutPage = () => {
   };
 
   const handlePlaceOrderClick = () => {
-    // Gọi hàm xử lý khi đặt hàng ở đây...
+    if (!formData.checkPayment && !formData.paypal) {
+      console.log("Vui lòng chọn phương thức thanh toán!");
+      return;
+    }
     handlePlaceOrder();
-    // Nếu cần thêm hành động khác khi nhấp vào nút "Đặt hàng", thêm ở đây
     console.log("Người dùng đã nhấp vào nút Đặt hàng!");
   };
 
@@ -70,12 +82,12 @@ const CheckoutPage = () => {
           <div className="col-lg-12">
             <h6 className="coupon__link">
               <span className="icon_tag_alt"></span>
-              <a href="#"> Có phiếu giảm giá?</a> Nhấn vào đây để nhập mã của
-              bạn.
+              <Link to="#"> Có phiếu giảm giá?</Link> Nhấn vào đây để nhập mã
+              của bạn.
             </h6>
           </div>
         </div>
-        <form action="#" className="checkout__form" onSubmit={handleSubmit}>
+        <form action="#" className="checkout__form" onSubmit={handlePlaceOrder}>
           <div className="row">
             <div className="col-lg-8">
               <h5>Billing detail</h5>
@@ -217,13 +229,15 @@ const CheckoutPage = () => {
                     <span className="checkmark"></span>
                   </label>
                 </div>
-                <button
-                  type="submit"
-                  className="site-btn"
-                  onClick={handlePlaceOrderClick}
-                >
-                  Đặt hàng
-                </button>
+                <Link to="/confirmation">
+                  <button
+                    type="submit"
+                    className="site-btn"
+                    onClick={handlePlaceOrderClick}
+                  >
+                    Đặt hàng
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

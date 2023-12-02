@@ -1,31 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const RegisterPage = () => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
-    e.prevenDefaut();
+    e.preventDefault();
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("fullName", fullName);
+    formDataToSend.append("email", email);
+    formDataToSend.append("password", password);
 
     try {
-      const reponse = await fetch("http://localhost:3001/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-      if (reponse.ok) {
-        console.log("Successfully");
-      } else {
-        console.log("Error");
-      }
+      const response = await axios.post(
+        "http://localhost:8000/api/register",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Registration successful
+      setSuccessMessage(response.data.message);
+
+      // Clear form fields
+      setFullName("");
+      setEmail("");
+      setPassword("");
     } catch (error) {
-      console.log("error:", error);
+      // Handle registration failure
+      setErrorMessage("There was an error during registration.");
+
+      // Log detailed error to console
+      console.error("Error during registration:", error);
+      
+      // If available, log the server response
+      if (error.response) {
+        console.error('Server Response:', error.response.data);
+      }
     }
   };
+    
   return (
     <section>
       <div className="container mt-5">
@@ -33,8 +56,20 @@ const RegisterPage = () => {
           <div className="col-md-6">
             <h2 className="mb-5 text-center">Đăng Ký</h2>
             <form onSubmit={handleSubmit}>
+              {successMessage && (
+                <div className="alert alert-success" role="alert">
+                  {successMessage}
+                </div>
+              )}
+
+              {errorMessage && (
+                <div className="alert alert-danger" role="alert">
+                  {errorMessage}
+                </div>
+              )}
+
               <div className="form-group">
-                <label >Tên đăng ký:</label>
+                <label>Tên đăng ký:</label>
                 <input
                   type="text"
                   className="form-control"
@@ -43,11 +78,11 @@ const RegisterPage = () => {
                   name="username"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setFullName(e.target.value)}
                 />
               </div>
               <div className="form-group">
-                <label >Email:</label>
+                <label>Email:</label>
                 <input
                   type="email"
                   className="form-control"
@@ -59,7 +94,7 @@ const RegisterPage = () => {
                 />
               </div>
               <div className="form-group">
-                <label >Mật khẩu:</label>
+                <label>Mật khẩu:</label>
                 <input
                   type="password"
                   className="form-control"
@@ -70,9 +105,8 @@ const RegisterPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="float-right">
-                  <Link to="/LoginPage" className="text-danger">
-                    {" "}
-                    Đăng Nhập{" "}
+                  <Link to="/Login" className="text-danger">
+                    Đăng Nhập
                   </Link>
                 </p>
               </div>
