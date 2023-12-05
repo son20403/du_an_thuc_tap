@@ -9,48 +9,52 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const isEmailValid = (email) => {
+    // Regular expression for basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMessage("");
+    setErrorMessage("");
 
+
+    if (!fullName || !email || !password) {
+      setErrorMessage("Vui lòng điền đầy đủ thông tin.");
+      return;
+    }  if (password.length < 8) {
+      setErrorMessage('Mật khẩu phải có ít nhất 8 ký tự.');
+      return;
+    }
+    if (!isEmailValid(email)) {
+      setErrorMessage('Địa chỉ email không hợp lệ.');
+      return;
+    }
     const info = { name: fullName, email, password }
     // return
     try {
-      const data = await register(info)
-      const dataCus = await data.data
-      console.log("🚀 ~ file: RegisterPage.jsx:25 ~ handleGetCustomer ~ dataCus:", dataCus)
+      const response = await register(info);
 
-      // const response = await axios.post(
-      //   "http://localhost:8000/api/register",
-      //   formDataToSend,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   }
-      // );
+      // Check if registration was successful
+      if (response && response.data) {
+        setSuccessMessage(response.data.message || "Đăng ký thành công!");
+        window.location.href = "/login";
 
-      // // Registration successful
-      // setSuccessMessage(response.data.message);
-
-      // // Clear form fields
-      // setFullName("");
-      // setEmail("");
-      // setPassword("");
-
+        // Clear form fields
+        setFullName("");
+        setEmail("");
+        setPassword("");
+      } else {
+        setErrorMessage(response.data.message || "Đăng ký thất bại.");
+      }
     } catch (error) {
       // Handle registration failure
-      setErrorMessage("There was an error during registration.");
-
-      // Log detailed error to console
-      console.error("Error during registration:", error);
-
-      // If available, log the server response
-      if (error.response) {
-        console.error('Server Response:', error.response.data);
-      }
+      setErrorMessage("Đăng ký thất bại.");
+      console.error("Registration failed:", error);
     }
   };
+
 
   return (
     <section>
@@ -91,7 +95,7 @@ const RegisterPage = () => {
                   className="form-control"
                   id="email"
                   name="email"
-                  required
+          
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
                   onChange={(e) => setEmail(e.target.value)}
                 />

@@ -48,6 +48,10 @@ const Header = () => {
       $(".offcanvas-menu-overlay").removeClass("active");
     });
   }, []);
+  const handleLogout = () => {
+    // Add logic to handle logout, such as clearing tokens or user data
+    setIsLoggedIn(false);
+  };
   return (
     <div>
       <Search></Search>
@@ -100,12 +104,7 @@ const Header = () => {
 
         </div>
         <div className="offcanvas__auth">
-          {!isLoggedIn ? (
-            <>
-              <Link to={"/login"}>Đăng nhập</Link>
-              <Link to={"/register"}>Đăng ký</Link>
-            </>
-          ) : null}
+  
         </div>
       </div>
       <header className="header">
@@ -150,12 +149,26 @@ const Header = () => {
             <div className="col-lg-3">
               <div className="header__right">
                 <div className="header__right__auth">
-                  {!isLoggedIn ? (
-                    <>
-                      <Link to={"/login"}>Đăng nhập</Link>
-                      <Link to={"/register"}>Đăng ký</Link>
-                    </>
-                  ) : null}
+                {isLoggedIn ? (
+          <>
+            <Link to="#" onClick={handleLogout}>
+              Đăng xuất
+            </Link>
+            <Link to="/profile">
+              <img
+                src="path_to_user_avatar_image" // Replace with the actual path or URL to the user's avatar image
+                alt="User Avatar"
+                className="user-avatar"
+              />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Đăng nhập</Link>
+            <Link to="/register">Đăng ký</Link>
+            
+          </>
+        )}
                 </div>
                 <ul className="header__right__widget">
                   <li>

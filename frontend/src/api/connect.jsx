@@ -1,5 +1,6 @@
 const ENDPOINT = 'http://127.0.0.1:8000';
 import axios from 'axios'
+import { data } from 'jquery';
 export async function getAllProduct() {
     try {
         const response = await axios.get(`${ENDPOINT}/admin/san-pham/du-lieu`);
@@ -20,9 +21,10 @@ export async function getAllCategories() {
 export async function login(entity) {
     try {
         const response = await axios.post(`${ENDPOINT}/api/login`, entity);
+        
         return response.data
     } catch (error) {
-        console.log(error);
+      console.log("Đăng nhập thất bại" , error);
     }
 }
 export async function register(entity) {
