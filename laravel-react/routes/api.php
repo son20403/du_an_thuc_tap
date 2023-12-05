@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\AuthController;
-
+use App\Actions\Fortify\CreateNewUser;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
 });
+Route::post('/register', [CreateNewUser::class, 'create']);
+// routes/api.php
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::post('/register', [RegisterController::class, 'methodName']);
-
-Route::post('/login', [AuthController::class, 'login']);
