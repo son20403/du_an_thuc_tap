@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { register } from "../api/connect";
 
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
@@ -12,43 +13,45 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("fullName", fullName);
-    formDataToSend.append("email", email);
-    formDataToSend.append("password", password);
-
+    const info = { name: fullName, email, password }
+    // return
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/register",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const data = await register(info)
+      const dataCus = await data.data
+      console.log("🚀 ~ file: RegisterPage.jsx:25 ~ handleGetCustomer ~ dataCus:", dataCus)
 
-      // Registration successful
-      setSuccessMessage(response.data.message);
+      // const response = await axios.post(
+      //   "http://localhost:8000/api/register",
+      //   formDataToSend,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
 
-      // Clear form fields
-      setFullName("");
-      setEmail("");
-      setPassword("");
+      // // Registration successful
+      // setSuccessMessage(response.data.message);
+
+      // // Clear form fields
+      // setFullName("");
+      // setEmail("");
+      // setPassword("");
+
     } catch (error) {
       // Handle registration failure
       setErrorMessage("There was an error during registration.");
 
       // Log detailed error to console
       console.error("Error during registration:", error);
-      
+
       // If available, log the server response
       if (error.response) {
         console.error('Server Response:', error.response.data);
       }
     }
   };
-    
+
   return (
     <section>
       <div className="container mt-5">

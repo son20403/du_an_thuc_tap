@@ -9,12 +9,7 @@ const ForgotPassword = () => {
         setEmailForgotPassword(e.target.value)
     }
     const handleSendMail = async () => {
-        const isEmail = dataCustomer.filter((cus) => cus.email === emailForgotPassword)[0]
-        if (isEmail?.email) {
-            await fetchCsrfToken(isEmail?.email)
-        } else {
-            console.log('Không tồn tại');
-        }
+        await fetchCsrfToken(emailForgotPassword)
     }
     useEffect(() => {
         setDataCustomer(customer)
