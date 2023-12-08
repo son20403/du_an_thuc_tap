@@ -109,7 +109,7 @@ Quan Ly Sản Phẩm
 
   <div class="w-full overflow-hidden rounded-lg shadow-xs">
     <div class="w-full overflow-x-auto">
-      <table class="w-full whitespace-no-wrap">
+      <table class="w-full">
         <thead>
           <tr
             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
@@ -148,7 +148,7 @@ Quan Ly Sản Phẩm
 
               @foreach ($HinhAnh as $hinhanh)
               @if ($hinhanh && $hinhanh->ma_san_pham == $sanpham->id)
-              <img height="100" src="{{$hinhanh->hinh_anh}}" title="{{$hinhanh->hinh_anh}}">
+              <img height="100" width='100' src="{{$hinhanh->hinh_anh}}" title="{{$hinhanh->hinh_anh}}">
               @php
               $hasImages = true;
               @endphp
@@ -449,8 +449,8 @@ Quan Ly Sản Phẩm
     data: {
       data_danhmuc: [],
       data_theloai: [],
-      data_sanpham: [], 
-      data_hinhanh: [],    
+      data_sanpham: [],
+      data_hinhanh: [],
     },
     created() {
       this.GetData();

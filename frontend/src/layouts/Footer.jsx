@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -8,44 +9,43 @@ const Footer = () => {
                     <div className="col-lg-4 col-md-6 col-sm-7">
                         <div className="footer__about">
                             <div className="footer__logo">
-                                <a href="./index.html"><img src="../src/assets/img/logo.png" alt /></a>
+                                <Link to={'/'}><img src="../src/assets/img/logo.png" /></Link>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                cilisis.</p>
+                            <p></p>
                             <div className="footer__payment">
-                                <a href="#"><img src="../src/assets/img/payment/payment-1.png" alt /></a>
-                                <a href="#"><img src="../src/assets/img/payment/payment-2.png" alt /></a>
-                                <a href="#"><img src="../src/assets/img/payment/payment-3.png" alt /></a>
-                                <a href="#"><img src="../src/assets/img/payment/payment-4.png" alt /></a>
-                                <a href="#"><img src="../src/assets/img/payment/payment-5.png" alt /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-1.png" /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-2.png" /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-3.png" /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-4.png" /></a>
+                                <a href="#"><img src="../src/assets/img/payment/payment-5.png" /></a>
                             </div>
                         </div>
                     </div>
                     <div className="col-lg-2 col-md-3 col-sm-5">
                         <div className="footer__widget">
-                            <h6>Quick links</h6>
+                            <h6>Menu</h6>
                             <ul>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Blogs</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Về chúng tôi</a></li>
+                                <li><a href="#">Bài viết</a></li>
+                                <li><a href="#">Liên hệ</a></li>
+                                <li><a href="#">Câu hỏi</a></li>
                             </ul>
                         </div>
                     </div>
                     <div className="col-lg-2 col-md-3 col-sm-4">
                         <div className="footer__widget">
-                            <h6>Account</h6>
+                            <h6>Tài khoản</h6>
                             <ul>
-                                <li><a href="#">My Account</a></li>
-                                <li><a href="#">Orders Tracking</a></li>
-                                <li><a href="#">Checkout</a></li>
-                                <li><a href="#">Wishlist</a></li>
+                                <li><a href="#">Tài khoản của tôi</a></li>
+                                <li><a href="#">Giỏ hàng</a></li>
+                                <li><a href="#">Thanh toán</a></li>
+                                <li><a href="#">Danh sách</a></li>
                             </ul>
                         </div>
                     </div>
                     <div className="col-lg-4 col-md-8 col-sm-8">
                         <div className="footer__newslatter">
-                            <h6>NEWSLETTER</h6>
+                            <h6>Liên hệ với chúng tôi</h6>
                             <form action="#">
                                 <input type="text" placeholder="Email" />
                                 <button type="submit" className="site-btn">Subscribe</button>

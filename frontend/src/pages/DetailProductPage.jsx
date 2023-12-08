@@ -169,7 +169,7 @@ const DetailProductPage = () => {
                       data-hash="product-1"
                       className="product__big__img"
                       src={anh_san_pham}
-                      alt
+                      alt={detailProduct?.ten_san_pham}
                     />
                   </div>
                 </div>
@@ -234,7 +234,9 @@ const DetailProductPage = () => {
                 <div className="tab-content">
                   <div className="tab-pane active" id="tabs-1" role="tabpanel">
                     <h6>Mô tả</h6>
-                    <p>{detailProduct?.mota}</p>
+                    <div dangerouslySetInnerHTML={{ __html: detailProduct?.mo_ta }}
+                      className='content_post !text-xs md' />
+                    {/* <p>{detailProduct?.mo_ta}</p> */}
                   </div>
                   <Transition.Root show={openAdd} as={Fragment}>
                     <Dialog

@@ -49,13 +49,6 @@ Route::middleware([
         });
 
         Route::group(['prefix' => '/san-pham'], function () {
-            // Route::get('/', [SanPhamController::class,'index']);
-            // Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
-            // Route::post('/', [SanPhamController::class,'ThemSanPham']);
-            // Route::post('/xoa', [SanPhamController::class,'XoaSanPham']);
-            // Route::post('/cap-nhat', [SanPhamController::class,'CapNhatSanPham']);
-            // Route::post('/toggleStatus/{id}', [SanPhamController::class,'CapNhatSanPham']);
-
             Route::get('/', [SanphamController::class, 'sanpham']);
             Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
             Route::get('/xoasanpham', [SanphamController::class, 'xoa_sanpham']);
@@ -91,13 +84,6 @@ Route::group(['prefix'=> 'admin'], function () {
     });
 
     Route::group(['prefix' => '/san-pham'], function () {
-        // Route::get('/', [SanPhamController::class,'index']);
-        // Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
-        // Route::post('/', [SanPhamController::class,'ThemSanPham']);
-        // Route::post('/xoa', [SanPhamController::class,'XoaSanPham']);
-        // Route::post('/cap-nhat', [SanPhamController::class,'CapNhatSanPham']);
-        // Route::post('/toggleStatus/{id}', [SanPhamController::class,'CapNhatSanPham']);
-
         Route::get('/du-lieu', [SanPhamController::class,'HienThiSanPham']); // url/admin/the-loa/du-lieu
     });
 

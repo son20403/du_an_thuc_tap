@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { detailUser, updateProfile } from "../api/connect";
+import { toast } from "react-toastify";
 
 const UpdateUserPage = () => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [phonenumber, setPhonenumber] = useState();
-
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [info, setInfo] = useState([]);
+  const navigate = useNavigate();
+  const [infoUser, setInfoUser] = useState([]);
+  const id = infoUser?.id
+  async function getInfoUser(id) {
+    const data = await detailUser({ id })
+    if (data) {
+      setInfo(data?.data)
+    }
+  }
+  useEffect(() => {
+    getInfoUser(id)
+  }, [id]);
+  useEffect(() => {
+    setInfoUser(JSON.parse(localStorage.getItem('user')))
+  }, []);
   const handleSubmit = async (e) => {
-    e.prevenDefaut();
-
+    e.preventDefault();
     try {
-      const reponse = await fetch("http://localhost:3001/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password, phonenumber }),
-      });
-      if (reponse.ok) {
-        console.log("Successfully");
+      const formData = new FormData();
+      formData.append('name', name || info?.name);
+      formData.append('image', image);
+      formData.append('id', id);
+      const response = await updateProfile(formData)
+      if (response && response?.status) {
+        toast.success('Cập nhật tài khoản thành công')
+        localStorage.setItem('user', JSON.stringify(response?.data))
+        navigate('/')
       } else {
-        console.log("Error");
+        toast.error('Không được để trống')
       }
     } catch (error) {
       console.log("error:", error);
@@ -35,75 +49,40 @@ const UpdateUserPage = () => {
             <h2 className="mb-5 text-center">Cập nhật thông tin tài khoản</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label >Tên đăng nhập:</label>
+                <label >Họ và tên:</label>
                 <input
                   type="text"
                   className="form-control"
                   placeholder=""
                   id="username"
                   name="username"
+                  defaultValue={info?.name}
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setName(e.target.value || info?.name)}
                 />
               </div>
               <div className="form-group">
-                <label >Email:</label>
+                <label >Hình ảnh:</label>
                 <input
-                  type="email"
+                  type="file"
                   className="form-control"
-                  id="email"
-                  name="email"
+                  placeholder=""
+                  id="image"
+                  name="image"
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setImage(e.target.files[0])}
                 />
               </div>
-              <div className="form-group">
-                <label >Mật khẩu hiện tại:</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  required
-                  style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-               
+              <div className="flex items-center justify-between">
+                <button type="submit" className="btn btn-danger">
+                  Cập nhật
+                </button>
+                <Link to={'/update-password'}>Đổi mật khẩu</Link>
               </div>
-              <div className="form-group">
-                <label >Mật khẩu mới:</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  required
-                  style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-               
-              </div>
-              <div className="form-group">
-                <label >Số điện thoại:</label>
-                <input
-                  type="phonenumber"
-                  className="form-control"
-                  id="phonenumber"
-                  name="phonenumber"
-                  required
-                  style={{ border: "1px solid rgb(158, 152, 152)" }}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-               
-              </div>
-
-              <button type="submit" className="btn btn-danger">
-                Cập nhật
-              </button>
             </form>
-          </div>    
+          </div>
         </div>
       </div>
     </section>

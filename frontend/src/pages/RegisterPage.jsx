@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { register } from "../api/connect";
-
+import { toast } from 'react-toastify'
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const isEmailValid = (email) => {
@@ -14,6 +15,7 @@ const RegisterPage = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage("");
@@ -23,8 +25,12 @@ const RegisterPage = () => {
     if (!fullName || !email || !password) {
       setErrorMessage("Vui lòng điền đầy đủ thông tin.");
       return;
-    }  if (password.length < 8) {
+    } if (password.length < 8) {
       setErrorMessage('Mật khẩu phải có ít nhất 8 ký tự.');
+      return;
+    }
+    if (password !== rePassword) {
+      setErrorMessage('Mật khẩu không trùng khớp!');
       return;
     }
     if (!isEmailValid(email)) {
@@ -32,21 +38,19 @@ const RegisterPage = () => {
       return;
     }
     const info = { name: fullName, email, password }
-    // return
     try {
       const response = await register(info);
 
-      // Check if registration was successful
-      if (response && response.data) {
-        setSuccessMessage(response.data.message || "Đăng ký thành công!");
-        window.location.href = "/login";
-
-        // Clear form fields
+      if (response && response.status) {
+        toast.success(response.message)
+        navigate('/login')
         setFullName("");
         setEmail("");
         setPassword("");
+        setRePassword("");
       } else {
-        setErrorMessage(response.data.message || "Đăng ký thất bại.");
+        setErrorMessage(response.message || "Đăng ký thất bại.");
+        console.log('err');
       }
     } catch (error) {
       // Handle registration failure
@@ -76,13 +80,14 @@ const RegisterPage = () => {
               )}
 
               <div className="form-group">
-                <label>Tên đăng ký:</label>
+                <label>Họ và tên:</label>
                 <input
                   type="text"
                   className="form-control"
                   placeholder=""
-                  id="username"
-                  name="username"
+                  id="full_name"
+                  name="full_name"
+                  defaultValue={fullName}
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
                   onChange={(e) => setFullName(e.target.value)}
@@ -95,7 +100,8 @@ const RegisterPage = () => {
                   className="form-control"
                   id="email"
                   name="email"
-          
+                  defaultValue={email}
+
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -107,9 +113,23 @@ const RegisterPage = () => {
                   className="form-control"
                   id="password"
                   name="password"
+                  defaultValue={password}
                   required
                   style={{ border: "1px solid rgb(158, 152, 152)" }}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Nhập lại mật khẩu:</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  defaultValue={rePassword}
+                  required
+                  style={{ border: "1px solid rgb(158, 152, 152)" }}
+                  onChange={(e) => setRePassword(e.target.value)}
                 />
                 <p className="float-right">
                   <Link to="/Login" className="text-danger">

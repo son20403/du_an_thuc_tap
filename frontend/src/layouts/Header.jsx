@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Search from "./Search";
 import $ from "jquery";
+import { toast } from "react-toastify";
 const navLink = [
   {
     title: "Trang Chủ",
     to: "/",
   },
   {
-    title: "Thời Trang Nam",
-    id: "#men",
-    to: "/#men",
+    title: "Cửa hàng Áo",
+    id: "#ao",
+    to: "/#type=ao",
   },
   {
-    title: "Thời Trang Nữ",
-    id: "#women",
-    to: "/#women",
+    title: "Cửa hàng Quần",
+    id: "#quan",
+    to: "/#type=quan",
   },
   {
     title: "Cửa hàng",
@@ -28,6 +29,10 @@ const navLink = [
 ];
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [infoUser, setInfoUser] = useState([]);
+  console.log("🚀 ~ file: Header.jsx:33 ~ Header ~ infoUser:", infoUser)
   useEffect(() => {
     $(".search-switch").on("click", function () {
       $(".search-model").fadeIn(400);
@@ -49,9 +54,15 @@ const Header = () => {
     });
   }, []);
   const handleLogout = () => {
-    // Add logic to handle logout, such as clearing tokens or user data
     setIsLoggedIn(false);
+    localStorage.setItem('user', null)
+    setInfoUser(null)
+    toast.success("Đăng xuất thành công")
+    navigate('/')
   };
+  useEffect(() => {
+    setInfoUser(JSON.parse(localStorage.getItem('user')))
+  }, [location.pathname]);
   return (
     <div>
       <Search></Search>
@@ -104,7 +115,7 @@ const Header = () => {
 
         </div>
         <div className="offcanvas__auth">
-  
+
         </div>
       </div>
       <header className="header">
@@ -149,26 +160,31 @@ const Header = () => {
             <div className="col-lg-3">
               <div className="header__right">
                 <div className="header__right__auth">
-                {isLoggedIn ? (
-          <>
-            <Link to="#" onClick={handleLogout}>
-              Đăng xuất
-            </Link>
-            <Link to="/profile">
-              <img
-                src="path_to_user_avatar_image" // Replace with the actual path or URL to the user's avatar image
-                alt="User Avatar"
-                className="user-avatar"
-              />
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Đăng nhập</Link>
-            <Link to="/register">Đăng ký</Link>
-            
-          </>
-        )}
+                  {infoUser ? (
+                    <div className=" flex items-center gap-2">
+                      <Link to="#" onClick={handleLogout}>
+                        Đăng xuất
+                      </Link>
+                      <Link to="/update">
+                        <img
+                          src={infoUser?.profile_photo_path || infoUser?.profile_photo_url}
+                          alt="User Avatar"
+                          className="user-avatar"
+                          style={{
+                            width: '25px',
+                            height: '25px',
+                            borderRadius: '100%'
+                          }}
+                        />
+                      </Link>
+                    </div>
+                  ) : (
+                    <>
+                      <Link to="/login">Đăng nhập</Link>
+                      <Link to="/register">Đăng ký</Link>
+
+                    </>
+                  )}
                 </div>
                 <ul className="header__right__widget">
                   <li>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { login } from '../api/connect';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState(''); // Change from `username` to `email`
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -17,21 +19,19 @@ const LoginPage = () => {
       setErrorMessage('Vui lòng điền đầy đủ thông tin.');
       return;
     }
-  
+
     const info = { email, password }
     try {
       const data = await login(info);
       const dataCus = await data.data;
-
-      // Check if login was successful
+      console.log("🚀 ~ file: LoginPage.jsx:25 ~ handleSubmit ~ dataCus:", dataCus)
       if (dataCus) {
-        setSuccessMessage('Đăng nhập thành công!');
-        window.location.href = 'http://localhost:4000/';
-        window.localStorage.setItem('accessToken', dataCus);
-     
-          // Add logic to handle logout, such as clearing tokens or user data
-          setIsLoggedIn(true);
-   
+        toast.success('Đăng nhập thành công!');
+        localStorage.setItem('user', JSON.stringify(dataCus));
+        navigate('/')
+
+        setIsLoggedIn(true);
+
       } else {
         setErrorMessage('Đăng nhập thất bại. Kiểm tra thông tin đăng nhập.');
       }
@@ -50,17 +50,17 @@ const LoginPage = () => {
             <div className="col-md-6">
               <h2 className="mb-4 text-center">Đăng Nhập</h2>
               <form onSubmit={handleSubmit}>
-              {successMessage && (
-                <div className="alert alert-success" role="alert">
-                  {successMessage}
-                </div>
-              )}
+                {successMessage && (
+                  <div className="alert alert-success" role="alert">
+                    {successMessage}
+                  </div>
+                )}
 
-              {errorMessage && (
-                <div className="alert alert-danger" role="alert">
-                  {errorMessage}
-                </div>
-              )}
+                {errorMessage && (
+                  <div className="alert alert-danger" role="alert">
+                    {errorMessage}
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label>Email:</label> {/* Change label from 'Tên đăng nhập' to 'Email' */}
@@ -86,17 +86,24 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
-                  <p className="float-right">
-                    Chưa có tài khoản?{' '}
-                    <Link to="/register" className="text-danger">
-                      Đăng kí ngay
-                    </Link>
-                  </p>
+                <div className='flex items-center justify-between'>
+                  <button type="submit" className="btn btn-danger " onClick={handleSubmit}>
+                    Đăng Nhập
+                  </button>
+                  <div className='flex flex-col items-end '>
+                    <p className=" p-0 m-0">
+                      Chưa có tài khoản?{' '}
+                      <Link to="/register" className="text-danger">
+                        Đăng kí ngay
+                      </Link>
+                    </p>
+                    <p className="">
+                      <Link to="/forgot-password" className="text-danger">
+                        Quên mật khẩu
+                      </Link>
+                    </p>
+                  </div>
                 </div>
-                <button type="submit" className="btn btn-danger " onClick={handleSubmit}>
-                  Đăng Nhập
-                </button>
               </form>
             </div>
           </div>
