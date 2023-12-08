@@ -49,20 +49,49 @@ const CheckoutPage = () => {
     }));
   };
 
-  const handlePlaceOrder = () => {
-    // Thêm logic xử lý khi đặt hàng
-    console.log("Đơn đặt hàng đã được xác nhận!");
-    console.log("Danh sách sản phẩm:", cartItems);
-    console.log("Tổng cộng:", total);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    if (formData.checkPayment) {
-      console.log("Đã chọn thanh toán Séc");
-      //...
-    }
+  const handlePlaceOrder = async () => {
+    try {
+      // Kiểm tra tính hợp lệ của dữ liệu trước khi gửi yêu cầu API
+      if (!formData.checkPayment && !formData.paypal) {
+        console.log("Vui lòng chọn phương thức thanh toán!");
+        return;
+      }
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (formData.paypal) {
-      console.log("Đã chọn thanh toán PayPal");
-      // ...
+      if (!response.ok) {
+        throw new Error(`Yêu cầu API thất bại với mã lỗi: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Đơn đặt hàng đã được xác nhận!");
+      console.log("ID đơn hàng:", responseData.order_id);
+
+      if (formData.checkPayment) {
+        console.log("Đã chọn thanh toán Séc");
+        //...
+      }
+
+      if (formData.paypal) {
+        console.log("Đã chọn thanh toán PayPal");
+        // ...
+      }
+
+      // Thực hiện các bước tiếp theo nếu cần
+    } catch (error) {
+      console.error("Đã có lỗi khi đặt hàng:", error.message);
+      setError("Đã có lỗi khi xử lý đơn hàng. Vui lòng thử lại sau.");
+      // Xử lý lỗi, có thể thông báo cho người dùng hoặc thực hiện các bước phù hợp
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -229,12 +258,10 @@ const CheckoutPage = () => {
                     <span className="checkmark"></span>
                   </label>
                 </div>
-                <Link to="/confirmation">
-                  <button
-                    type="submit"
-                    className="site-btn"
-                    onClick={handlePlaceOrderClick}
-                  >
+                {loading && <p>Đang xử lý...</p>}
+                {error && <p style={{ color: "red" }}>{error}</p>}
+                <Link to="/confirmation" onClick={handlePlaceOrderClick}>
+                  <button type="submit" className="site-btn" disabled={loading}>
                     Đặt hàng
                   </button>
                 </Link>

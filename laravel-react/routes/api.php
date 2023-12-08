@@ -6,6 +6,8 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\AuthController;
 use App\Actions\Fortify\CreateNewUser;
+use App\Http\Controllers\CheckoutController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,6 +37,8 @@ Route::post('/register', [UserController::class, 'store']);
 Route::post('/update-user', [UserController::class, 'update']);
 // login nhận dữ liệu user
 Route::post('/login', [UserController::class, 'login']);
+
+// login nhận toker
 Route::post('/detail', [UserController::class, 'detail']);
 // login nhận toker
 Route::post('/login-token', [UserController::class, 'login_token']);
@@ -46,3 +50,5 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/logout-token', [UserController::class, 'logout_token']);
 });
 
+//checkout
+Route::post('/api/checkout', [CheckoutController::class, 'processCheckout']);
