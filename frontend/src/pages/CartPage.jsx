@@ -1,158 +1,163 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import useCurrencyFormat from '../hooks/useCurrencyFormat';
 const CartPage = () => {
+    const [dataCart, setDataCart] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalPriceSale, setTotalPriceSale] = useState(0);
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const tong_gia = useCurrencyFormat(totalPrice)
+    const tong_gia_sale = useCurrencyFormat(totalPriceSale)
+    useEffect(() => {
+        updateCart();
+    }, []);
+    useEffect(() => {
+        setTotalPrice(getTotalPrice(dataCart));
+        setTotalPriceSale(getTotalPriceSale(dataCart));
+        setTotalQuantity(getTotalQuantity(dataCart));
+    }, [dataCart]);
+
+    function updateCart() {
+        const cartData = JSON.parse(sessionStorage.getItem('cart')) || [];
+        setDataCart(cartData);
+    }
+
+    function getTotalPriceSale(cart) {
+        return cart.reduce((total, item) => total + (item.price - (item.price * item.sale / 100)) * item.quantity, 0);
+    }
+    function getTotalPrice(cart) {
+        return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    }
+
+    function getTotalQuantity(cart) {
+        return cart.reduce((total, item) => total + item.quantity, 0);
+    }
+
+    function minusCart(id) {
+        const updatedCart = dataCart.map((item) => {
+            if (item.id === id) {
+                item.quantity--;
+                if (item.quantity <= 0) {
+                    return null;
+                }
+            }
+            return item;
+        }).filter(Boolean); // Filter out marked items
+        updateStorage(updatedCart);
+    }
+
+    function plusCart(id) {
+        const updatedCart = dataCart.map((item) => {
+            if (item.id === id) {
+                item.quantity++;
+            }
+            return item;
+        });
+        updateStorage(updatedCart);
+    }
+
+    function removeCart(id) {
+        const updatedCart = dataCart.filter((item) => item.id !== id);
+        updateStorage(updatedCart);
+    }
+
+    function updateStorage(cart) {
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+        setDataCart(cart);
+    }
+
     return (
         <div>
             <section className="shop-cart spad">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">
+                            <h1 className='text-2xl font-medium mb-10'>Giỏ hàng</h1>
                             <div className="shop__cart__table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th />
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="cart__product__item">
-                                                <img src="./src/assets/img/shop-cart/cp-1.jpg" alt />
-                                                <div className="cart__product__item__title">
-                                                    <h6>Chain bucket bag</h6>
-                                                    <div className="rating">
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="cart__price">$ 150.0</td>
-                                            <td className="cart__quantity">
-                                                <div className="pro-qty">
-                                                    <input type="text" defaultValue={1} />
-                                                </div>
-                                            </td>
-                                            <td className="cart__total">$ 300.0</td>
-                                            <td className="cart__close"><span className="icon_close" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="cart__product__item">
-                                                <img src="./src/assets/img/shop-cart/cp-2.jpg" alt />
-                                                <div className="cart__product__item__title">
-                                                    <h6>Zip-pockets pebbled tote briefcase</h6>
-                                                    <div className="rating">
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="cart__price">$ 170.0</td>
-                                            <td className="cart__quantity">
-                                                <div className="pro-qty">
-                                                    <input type="text" defaultValue={1} />
-                                                </div>
-                                            </td>
-                                            <td className="cart__total">$ 170.0</td>
-                                            <td className="cart__close"><span className="icon_close" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="cart__product__item">
-                                                <img src="./src/assets/img/shop-cart/cp-3.jpg" alt />
-                                                <div className="cart__product__item__title">
-                                                    <h6>Black jean</h6>
-                                                    <div className="rating">
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="cart__price">$ 85.0</td>
-                                            <td className="cart__quantity">
-                                                <div className="pro-qty">
-                                                    <input type="text" defaultValue={1} />
-                                                </div>
-                                            </td>
-                                            <td className="cart__total">$ 170.0</td>
-                                            <td className="cart__close"><span className="icon_close" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="cart__product__item">
-                                                <img src="./src/assets/img/shop-cart/cp-4.jpg" alt />
-                                                <div className="cart__product__item__title">
-                                                    <h6>Cotton Shirt</h6>
-                                                    <div className="rating">
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="cart__price">$ 55.0</td>
-                                            <td className="cart__quantity">
-                                                <div className="pro-qty">
-                                                    <input type="text" defaultValue={1} />
-                                                </div>
-                                            </td>
-                                            <td className="cart__total">$ 110.0</td>
-                                            <td className="cart__close"><span className="icon_close" /></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                {dataCart?.length > 0 ? (
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Sản phẩm</th>
+                                                <th>Giá</th>
+                                                <th>Số lượng</th>
+                                                <th>Tổng giá</th>
+                                                <th />
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {dataCart?.map((item) =>
+                                                <CartItem key={item.id}
+                                                    item={item} cart={dataCart} updateCart={updateCart}
+                                                    minusCart={minusCart} plusCart={plusCart} removeCart={removeCart}
+                                                ></CartItem>
+                                            )}
+                                        </tbody>
+                                    </table>
+
+                                ) : (<div className='text-center'>Chưa có sản phẩm nào</div>)}
                             </div>
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-lg-6 col-md-6 col-sm-6">
-                            <div className="cart__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6">
-                            <div className="cart__btn update__btn">
-                                <a href="#"><span className="icon_loading" /> Update cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="discount__content">
-                                <h6>Discount codes</h6>
-                                <form action="#">
-                                    <input type="text" placeholder="Enter your coupon code" />
-                                    <button type="submit" className="site-btn">Apply</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div className="col-lg-4 offset-lg-2">
-                            <div className="cart__total__procced">
-                                <h6>Cart total</h6>
-                                <ul>
-                                    <li>Subtotal <span>$ 750.0</span></li>
-                                    <li>Total <span>$ 750.0</span></li>
-                                </ul>
-                                <a href="#" className="primary-btn">Proceed to checkout</a>
-                            </div>
+                        <div className="col-lg-12">
+                            {dataCart?.length > 0 &&
+                                <div className="cart__total__procced">
+                                    <h6>Tổng giỏ hàng</h6>
+                                    <ul>
+                                        <li>Số lượng <span>{totalQuantity}</span></li>
+                                        <li>Giá gốc <span>{tong_gia}</span></li>
+                                        <li>Tổng giá <span>{tong_gia_sale}</span></li>
+                                    </ul>
+                                    <a href="#" className="primary-btn">Thanh toán</a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
             </section>
-
         </div>
     );
 };
+const CartItem = ({ item, minusCart = () => { }, plusCart = () => { }, removeCart = () => { } }) => {
 
+    const gia = item.price
+    const id = item.id
+    const so_luong = item.quantity
+    const gia_goc = useCurrencyFormat(gia);
+    const phan_tram = item?.sale
+    const sale = gia * (phan_tram / 100)
+    const giam_gia = gia - sale;
+    const gia_tong = useCurrencyFormat(gia * so_luong);
+    const giam_gia_tong = useCurrencyFormat(giam_gia * so_luong);
+    return (
+        <tr className='select-none'>
+            <td className="cart__product__item flex items-center gap-10 ">
+                <img src={item.image} alt={item.name}
+                    style={{
+                        width: '100px',
+                        height: '100px',
+                        objectFit: 'cover'
+                    }} />
+                <div className="cart__product__item__title p-0 m-0">
+                    <h6>{item.name}</h6>
+                </div>
+            </td>
+            <td className="cart__price">{gia_goc}</td>
+            <td className="cart__quantity ">
+                <div className="pro-qty flex items-center gap-10">
+                    <span className="dec qtybtn " onClick={() => minusCart(id)}>-</span>
+                    <input type="text" value={so_luong} />
+                    <span className="inc qtybtn" onClick={() => plusCart(id)}>+</span>
+                </div>
+            </td>
+            <td className=''>
+                <span className='flex flex-col px-2'>
+                    <span className=" text-gray-400 text-sm m-0 p-0 line-through" >{gia_tong}</span>
+                    <span className="cart__total m-0 p-0">{giam_gia_tong}</span>
+                </span>
+            </td>
+            <td className="cart__close" onClick={() => removeCart(id)}><span className="icon_close" /></td>
+        </tr>
+    )
+}
 export default CartPage;

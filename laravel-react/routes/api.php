@@ -7,6 +7,7 @@ use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\AuthController;
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\CheckoutController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,8 +37,12 @@ Route::post('/register', [UserController::class, 'store']);
 Route::post('/update-user', [UserController::class, 'update']);
 // login nhận dữ liệu user
 Route::post('/login', [UserController::class, 'login']);
+
+// login nhận toker
+Route::post('/detail', [UserController::class, 'detail']);
 // login nhận toker
 Route::post('/login-token', [UserController::class, 'login_token']);
+Route::post('/edit', [UserController::class, 'edit']);
 // detail-user để lấy dữ liệu user
 Route::post('/detail-user', [UserController::class, 'detailUser'])->middleware('auth:sanctum');
 

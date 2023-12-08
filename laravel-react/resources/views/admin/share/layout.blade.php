@@ -2,13 +2,15 @@
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
 
 <head>
+
 <title>@yield('tieudetrang')</title>
+@vite([ 'resources/js/app.js'])
 @include('admin.share.css')
     @yield('css')
 </head>
 
 <body>
-  <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
+  <div class="flex h-screen bg-gray-50" :class="{ 'overflow-hidden': isSideMenuOpen }">
     <!-- Desktop sidebar -->
     <div class="sidebar">
 
@@ -16,12 +18,12 @@
     </div>
     
       <div class="flex flex-col flex-1 w-full">
-        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+        <header class="z-10 py-4 bg-white shadow-md">
 
           @include('admin.share.header')
         </header>
         <main class="h-full overflow-y-auto">
-          <div class="container px-6 mx-auto grid">
+          <div class="px-6 mx-auto grid">
             @yield('noidung')
           </div>
         </main>
