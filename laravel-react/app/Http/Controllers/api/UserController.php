@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Jetstream;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 class UserController extends Controller
 {
     /**
@@ -49,8 +49,8 @@ class UserController extends Controller
         if ($validator->fails()) {
             $arr = [
                 'data_err' => $data,
-                'success' => false,
-                'message' => 'Lỗi kiểm tra dữ liệu',
+                'status' => false,
+                'message' => 'Email đã được đăng ký!',
                 'data' => $validator->errors()
             ];
             return response()->json($arr, 200);
@@ -62,7 +62,7 @@ class UserController extends Controller
         ]);
         $arr = [
             'status' => true,
-            'message' => "User đã đăng kí thành công",
+            'message' => "Đăng kí thành công",
             'data' => new UserResources($user)
         ];
         return response()->json($arr, 201);
@@ -81,11 +81,17 @@ class UserController extends Controller
      */
     public function edit(Request $request)
     {
+        if (!Auth::attempt($request->only('email','password'))) {
+            return response()->json([
+                'message' => 'Mật khẩu không chính xác!'
+            ], 401);
+        }
         $data = $request->all();
         $validator = Validator::make(
             $data,
             [
                 'password' => ['required', 'string', 'min:8', 'max:255'],
+                'newPassword' => ['required', 'string', 'min:8', 'max:255'],
             ]
         );
 
@@ -98,12 +104,11 @@ class UserController extends Controller
             return response()->json($arr, 200);
         }
         $user = User::where('id', $request->id)->first();
-        $user->name = $data['password'];
-
+        $user->password=Hash::make($request->newPassword);
         $user->save();
         $arr = [
             'status' => true,
-            'message' => 'user cập nhật thành công',
+            'message' => 'Cập nhật thành công',
             'data' => new UserResources($user)
         ];
         return response()->json($arr, 200);
@@ -120,32 +125,44 @@ class UserController extends Controller
             $data,
             [
                 'name' => ['required', 'string', 'max:255'],
-                'address' => ['required', 'string', 'max:255'],
-                'phone' => ['required', 'string', 'max:12'],
-                'gender' => ['required', 'string', 'max:50'],
+                'id' => ['required', 'string', 'max:255'],
+                'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validate file hình ảnh
             ]
         );
 
         if ($validator->fails()) {
             $arr = [
-                'success' => false,
+                'status' => false,
                 'message' => 'Lỗi kiểm tra dữ liệu',
                 'data' => $validator->errors()
             ];
             return response()->json($arr, 200);
         }
-        $user = User::where('id', $request->id)->first();
-        $user->name = $data['name'];
-        $user->address = $data['address'];
-        $user->phone = $data['phone'];
-        $user->gender = $data['gender'];
-        $user->save();
-        $arr = [
-            'status' => true,
-            'message' => 'user cập nhật thành công',
-            'data' => new UserResources($user)
-        ];
-        return response()->json($arr, 200);
+
+        if ($request->hasFile('image')){
+            $get_image = $request->file('image');
+            $id = $request->input('id');
+            $user = User::where('id', $id)->first();
+            if($user){
+                $uploadedImage = Cloudinary::upload($get_image->getRealPath(), [
+                    'folder' => 'du_an_thuc_tap'
+                ])->getSecurePath();
+                $user->name = $data['name'];
+                $user->profile_photo_path = $uploadedImage;
+                $user->save();
+                $arr = [
+                    'status' => true,
+                    'message' => 'Cập nhật thành công',
+                    'data' => new UserResources($user)
+                ];
+                return response()->json($arr, 200);
+            }
+    }
+    $arr = [
+        'success' => false,
+        'message' => 'Không có hình ảnh được gửi lên',
+    ];
+    return response()->json($arr, 200);
     }
 
     /**
@@ -201,6 +218,15 @@ class UserController extends Controller
             'token_type' => 'Bearer',
             'status' => true,
             'message' => "User đã đăng nhập thành công",
+            'data' => new UserResources($user)
+        ];
+        return response()->json($arr, 201);
+    }
+    public function detail(Request $request)
+    {
+        $user = User::where('id', $request['id'])->firstOrFail();
+        $arr = [
+            'status' => true,
             'data' => new UserResources($user)
         ];
         return response()->json($arr, 201);

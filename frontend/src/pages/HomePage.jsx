@@ -3,7 +3,7 @@ import Instagram from '../layouts/Instagram';
 import $ from 'jquery'
 import mixitup from 'mixitup'
 import ProductItem from '../layouts/ProductItem';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import TrendItem from '../layouts/TrendItem';
 import CategoryHomeItem from '../layouts/CategoryHomeItem';
 import useGetAllProducts from '../hooks/useGetAllPost';
@@ -12,6 +12,32 @@ import Loading from '../components/loading/Loading';
 const HomePage = () => {
     const { dataProducts, loading } = useGetAllProducts()
     const { dataCategories } = useGetAllCategories()
+    const listProductsTShirt = dataProducts?.filter(
+        pro => pro.ten_san_pham_slug.toLowerCase().includes('ao'.toLowerCase()))
+    const listProductsTrousers = dataProducts?.filter(
+        pro => pro.ten_san_pham_slug.toLowerCase().includes('quan'.toLowerCase()))
+
+    const location = useLocation();
+    const hashValue = new URLSearchParams(location.hash.substring(1)).get('type');
+    useEffect(() => {
+        const scrollToCenter = () => {
+            if (hashValue) {
+                const element = document.getElementById(hashValue);
+                if (element) {
+                    const elementRect = element.getBoundingClientRect();
+                    const className = element.getAttribute('class')
+                    window.scrollTo({ top: elementRect.top, behavior: 'smooth' });
+                    element.className = `${className} bg-primary/10 transition-all rounded-lg`
+                    setTimeout(() => {
+                        element.className = `${className} relative`
+                    }, 1500);
+                }
+            }
+        };
+        if (hashValue) {
+            setTimeout(scrollToCenter, 1200);
+        }
+    }, [hashValue]);
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
@@ -84,18 +110,31 @@ const HomePage = () => {
                             </div>
                         </div>
                         <div className="col-lg-8 col-md-8">
-                            <ul className="filter__controls">
-                                <li className="active" data-filter="*">Tất cả</li>
-                                <li data-filter=".women">Women’s</li>
-                                <li data-filter=".men">Men’s</li>
-                                <li data-filter=".kid">Kid’s</li>
-                                <li data-filter=".accessories">Accessories</li>
-                                <li data-filter=".cosmetic">Cosmetics</li>
-                            </ul>
+
                         </div>
                     </div>
                     <div className="row property__gallery">
                         {dataProducts.slice(0, 8)?.map((prod) => (
+                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                                slug={prod.ten_san_pham_slug} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+            <section className="product spad" id='ao'>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-4 col-md-4">
+                            <div className="section-title">
+                                <h4>Chuyên mục áo</h4>
+                            </div>
+                        </div>
+                        <div className="col-lg-8 col-md-8">
+
+                        </div>
+                    </div>
+                    <div className="row property__gallery">
+                        {listProductsTShirt.slice(0, 8)?.map((prod) => (
                             <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
                                 slug={prod.ten_san_pham_slug} />
                         ))}
@@ -110,7 +149,7 @@ const HomePage = () => {
                                 <div className="section-title">
                                     <h4>Nổi bật</h4>
                                 </div>
-                                {dataProducts.slice(8, 11)?.map((prod) => (
+                                {dataProducts.slice(8, 10)?.map((prod) => (
                                     <TrendItem key={prod.id} product={prod} />
                                 ))}
                             </div>
@@ -120,7 +159,7 @@ const HomePage = () => {
                                 <div className="section-title">
                                     <h4>Giảm giá</h4>
                                 </div>
-                                {dataProducts.slice(11, 14)?.map((prod) => (
+                                {dataProducts.slice(10, 12)?.map((prod) => (
                                     <TrendItem key={prod.id} product={prod} />
                                 ))}
                             </div>
@@ -130,11 +169,31 @@ const HomePage = () => {
                                 <div className="section-title">
                                     <h4>Yêu thích</h4>
                                 </div>
-                                {dataProducts.slice(14, 17)?.map((prod) => (
+                                {dataProducts.slice(12, 15)?.map((prod) => (
                                     <TrendItem key={prod.id} product={prod} />
                                 ))}
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+            <section className="product spad" id='quan'>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-4 col-md-4">
+                            <div className="section-title">
+                                <h4>Chuyên mục quần</h4>
+                            </div>
+                        </div>
+                        <div className="col-lg-8 col-md-8">
+
+                        </div>
+                    </div>
+                    <div className="row property__gallery">
+                        {listProductsTrousers.slice(0, 8)?.map((prod) => (
+                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                                slug={prod.ten_san_pham_slug} />
+                        ))}
                     </div>
                 </div>
             </section>

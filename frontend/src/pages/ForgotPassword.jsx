@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Input } from '../components/input';
 import customer from '../data/customer'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
     const [emailForgotPassword, setEmailForgotPassword] = useState('');
     const [dataCustomer, setDataCustomer] = useState([]);
+    const navigate = useNavigate();
+
     const handleOnChangeEmail = (e) => {
         setEmailForgotPassword(e.target.value)
     }
@@ -28,8 +32,9 @@ const ForgotPassword = () => {
                 },
             });
 
-            if (responseEmail.ok) {
-                console.log('Email đã được gửi thành công.');
+            if (responseEmail?.data.success) {
+                toast.success('Email đã được gửi thành công.');
+                navigate('/login')
             } else {
                 console.error('Có lỗi xảy ra khi gửi email.');
             }

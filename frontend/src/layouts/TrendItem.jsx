@@ -10,7 +10,7 @@ const TrendItem = ({ product }) => {
     return (
         <Link to={`/detail/${product?.ten_san_pham_slug}`} className='trend__item block'>
             <div className="trend__item__pic border">
-                <img style={{ width: '90px', height: '90px', objectFit: 'cover' }} src={anh_san_pham} alt />
+                <img style={{ width: '90px', height: '90px', objectFit: 'cover' }} src={anh_san_pham} alt={product.ten_san_pham} />
             </div>
             <div className="trend__item__text">
                 <h6 className='mb-4'>{product?.ten_san_pham}</h6>

@@ -25,7 +25,7 @@
                     <tr>
                         <td style="text-align:center;">
                           <a href="#" title="logo" target="_blank">
-                            <img width="60" src="https://i.ibb.co/hL4XZp2/android-chrome-192x192.png"
+                            <img width="150" src="https://res.cloudinary.com/dumtfciwr/image/upload/v1702056451/du_an_thuc_tap/logo_vge0pq.png"
                             title="logo" alt="logo">
                           </a>
                         </td>
