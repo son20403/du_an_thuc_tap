@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import mixitup from "mixitup";
 import $ from "jquery";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useCurrencyFormat from "../hooks/useCurrencyFormat";
 import ProductItem from "../layouts/ProductItem";
 import { Dialog, Transition } from "@headlessui/react";
@@ -15,15 +15,20 @@ import { toast } from 'react-toastify';
 const DetailProductPage = () => {
   const { slug } = useParams();
   const { dataProducts, dataImages, loading } = useGetAllProducts()
+  const navigate = useNavigate();
   const { dataCategories } = useGetAllCategories()
   const [detailProduct, setDetailProduct] = useState({});
   const [detailCategory, setDetailCategory] = useState({});
   const [listSimilarProduct, setListSimilarProduct] = useState([]);
   const anh_san_pham = dataImages?.find((image) => image.ma_san_pham === detailProduct?.id)?.hinh_anh
   useEffect(() => {
+    const data = dataProducts?.filter((product) => product.ten_san_pham_slug === slug)[0]
     setDetailProduct(
-      dataProducts?.filter((product) => product.ten_san_pham_slug === slug)[0]
+      data
     );
+    // if (!data) {
+    //   navigate('/')
+    // }
   }, [dataProducts, slug]);
   useEffect(() => {
     setListSimilarProduct(
@@ -188,7 +193,7 @@ const DetailProductPage = () => {
                       <span>{gia_goc}</span>
                     }
                   </div>
-                  {phan_tram &&
+                  {phan_tram !== 0 &&
                     <span className="text-red-600 font-medium">-{phan_tram}%</span>
                   }
                 </div>
@@ -536,7 +541,7 @@ const DetailProductPage = () => {
               listSimilarProduct.length > 0 &&
               listSimilarProduct.map((prod) => (
                 <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
-                  slug={prod.ten_san_pham_slug} />
+                  slug={prod.ten_san_pham_slug} giam_gia={prod?.giam_gia_san_pham} />
               ))}
           </div>
         </div>

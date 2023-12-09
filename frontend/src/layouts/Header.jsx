@@ -32,7 +32,6 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [infoUser, setInfoUser] = useState([]);
-  console.log("🚀 ~ file: Header.jsx:33 ~ Header ~ infoUser:", infoUser)
   useEffect(() => {
     $(".search-switch").on("click", function () {
       $(".search-model").fadeIn(400);
@@ -177,6 +176,12 @@ const Header = () => {
                           }}
                         />
                       </Link>
+                      {
+                        infoUser?.check_admin === 1 &&
+                        <a href="http://127.0.0.1:8000/admin/danh-muc">
+                          Dashboard
+                        </a>
+                      }
                     </div>
                   ) : (
                     <>

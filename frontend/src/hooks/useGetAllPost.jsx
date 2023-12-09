@@ -11,7 +11,8 @@ export default function useGetAllProducts() {
             const data = await getAllProduct()
             const dataProducts = await data.data_sanpham
             const dataImages = await data.data_hinhanh
-            const dataProductsValid = dataProducts?.filter((prod) => prod.is_delete === 0)
+            const dataProductsDelete = dataProducts?.filter((prod) => prod.is_delete === 0)
+            const dataProductsValid = dataProductsDelete?.filter((prod) => prod.trang_thai === 1)
             setDataProducts(dataProductsValid)
             setDataImages(dataImages)
         } catch (error) {

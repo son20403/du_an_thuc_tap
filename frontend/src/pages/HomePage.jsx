@@ -115,7 +115,7 @@ const HomePage = () => {
                     </div>
                     <div className="row property__gallery">
                         {dataProducts.slice(0, 8)?.map((prod) => (
-                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham} giam_gia={prod?.giam_gia_san_pham}
                                 slug={prod.ten_san_pham_slug} />
                         ))}
                     </div>
@@ -135,7 +135,7 @@ const HomePage = () => {
                     </div>
                     <div className="row property__gallery">
                         {listProductsTShirt.slice(0, 8)?.map((prod) => (
-                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham} giam_gia={prod?.giam_gia_san_pham}
                                 slug={prod.ten_san_pham_slug} />
                         ))}
                     </div>
@@ -191,7 +191,7 @@ const HomePage = () => {
                     </div>
                     <div className="row property__gallery">
                         {listProductsTrousers.slice(0, 8)?.map((prod) => (
-                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham}
+                            <ProductItem key={prod.id} id={prod.id} gia={prod.gia_san_pham} ten_sp={prod.ten_san_pham} giam_gia={prod?.giam_gia_san_pham}
                                 slug={prod.ten_san_pham_slug} />
                         ))}
                     </div>
