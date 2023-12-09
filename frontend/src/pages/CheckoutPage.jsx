@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useCurrencyFormat from "../hooks/useCurrencyFormat";
 
 const CheckoutPage = () => {
   const [formData, setFormData] = useState({
@@ -13,11 +14,46 @@ const CheckoutPage = () => {
     checkPayment: false,
     paypal: false,
   });
+  const [dataCart, setDataCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPriceSale, setTotalPriceSale] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [infoUser, setInfoUser] = useState([]);
+
+  const tong_gia = useCurrencyFormat(totalPrice)
+  const tong_gia_sale = useCurrencyFormat(totalPriceSale)
 
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
 
+  useEffect(() => {
+    updateCart();
+  }, []);
+  useEffect(() => {
+    setInfoUser(JSON.parse(localStorage.getItem('user')))
+  }, [location.pathname]);
+  useEffect(() => {
+    setTotalPrice(getTotalPrice(dataCart));
+    setTotalPriceSale(getTotalPriceSale(dataCart));
+    setTotalQuantity(getTotalQuantity(dataCart));
+  }, [dataCart]);
+
+  function getTotalPriceSale(cart) {
+    return cart.reduce((total, item) => total + (item.price - (item.price * item.sale / 100)) * item.quantity, 0);
+  }
+  function getTotalPrice(cart) {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  }
+
+  function getTotalQuantity(cart) {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  function updateCart() {
+    const cartData = JSON.parse(sessionStorage.getItem('cart')) || [];
+    setDataCart(cartData);
+  }
   useEffect(() => {
     // Thực hiện yêu cầu API để lấy dữ liệu giỏ hàng từ Laravel
     fetch("/api/cart")
@@ -42,7 +78,6 @@ const CheckoutPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
@@ -78,33 +113,12 @@ const CheckoutPage = () => {
   return (
     <section className="checkout spad">
       <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
-            <h6 className="coupon__link">
-              <span className="icon_tag_alt"></span>
-              <Link to="#"> Có phiếu giảm giá?</Link> Nhấn vào đây để nhập mã
-              của bạn.
-            </h6>
-          </div>
-        </div>
         <form action="#" className="checkout__form" onSubmit={handlePlaceOrder}>
           <div className="row">
             <div className="col-lg-8">
-              <h5>Billing detail</h5>
+              <h5>Thanh toán</h5>
               <div className="row">
-                <div className="col-lg-6 col-md-6 col-sm-6">
-                  <div className="checkout__form__input">
-                    <p>
-                      Họ<span>*</span>
-                    </p>
-                    <input
-                      type="text"
-                      name="lastName"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6 col-md-6 col-sm-6">
+                <div className="col-lg-12 col-md-12 col-sm-12">
                   <div className="checkout__form__input">
                     <p>
                       Tên <span>*</span>
@@ -112,6 +126,7 @@ const CheckoutPage = () => {
                     <input
                       type="text"
                       name="firstName"
+                      defaultValue={infoUser?.name}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -159,6 +174,7 @@ const CheckoutPage = () => {
                     <input
                       type="text"
                       name="email"
+                      defaultValue={infoUser?.email}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -174,62 +190,23 @@ const CheckoutPage = () => {
                       <span className="top__text">Sản phẩm</span>
                       <span className="top__text__right">Thành tiền</span>
                     </li>
-                    {cartItems.map((item) => (
-                      <li key={item.id}>
-                        {item.name} <span>${item.price}</span>
-                      </li>
-                    ))}
+                    {dataCart.map((item) => (
+                      <ItemCart key={item?.id} item={item}></ItemCart>
+                    )
+                    )}
                   </ul>
                 </div>
                 <div className="checkout__order__total">
                   <ul>
                     <li>
-                      Tổng phụ <span>${subtotal.toFixed(2)}</span>
+                      Tổng phụ <span>{tong_gia}</span>
                     </li>
                     <li>
-                      Thành tiền <span>${total.toFixed(2)}</span>
+                      Thành tiền <span>{tong_gia_sale}</span>
                     </li>
                   </ul>
                 </div>
-
-                <div className="checkout__order__widget">
-                  <label htmlFor="o-acc">
-                    Tạo một tài khoản?
-                    <input
-                      type="checkbox"
-                      id="o-acc"
-                      name="createAccount"
-                      onChange={handleInputChange}
-                    />
-                    <span className="checkmark"></span>
-                  </label>
-                  <p>
-                    Tạo tài khoản am bằng cách nhập thông tin bên dưới. nếu bạn
-                    là thông tin đăng nhập của khách hàng thường xuyên ở đầu
-                    trang.
-                  </p>
-                  <label htmlFor="check-payment">
-                    Thanh toán séc
-                    <input
-                      type="checkbox"
-                      id="check-payment"
-                      name="checkPayment" // Kết nối với formData
-                      onChange={handleInputChange}
-                    />
-                    <span className="checkmark"></span>
-                  </label>
-                  <label htmlFor="paypal">
-                    PayPal
-                    <input
-                      type="checkbox"
-                      id="paypal"
-                      name="paypal" // Kết nối với formData
-                      onChange={handleInputChange}
-                    />
-                    <span className="checkmark"></span>
-                  </label>
-                </div>
-                <Link to="/confirmation">
+                <Link to="#">
                   <button
                     type="submit"
                     className="site-btn"
@@ -248,3 +225,11 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+const ItemCart = ({ item }) => {
+  const gia = useCurrencyFormat(item?.price)
+  return (
+    <li key={item.id}>
+      {item.name} <span>{gia} x <span> {item.quantity}</span></span>
+    </li>
+  )
+}

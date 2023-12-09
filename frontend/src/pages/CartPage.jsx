@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useCurrencyFormat from '../hooks/useCurrencyFormat';
+import { Link } from 'react-router-dom';
 const CartPage = () => {
     const [dataCart, setDataCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -108,7 +109,7 @@ const CartPage = () => {
                                         <li>Giá gốc <span>{tong_gia}</span></li>
                                         <li>Tổng giá <span>{tong_gia_sale}</span></li>
                                     </ul>
-                                    <a href="#" className="primary-btn">Thanh toán</a>
+                                    <Link to={'/checkout'} className="primary-btn">Thanh toán</Link>
                                 </div>
                             }
                         </div>

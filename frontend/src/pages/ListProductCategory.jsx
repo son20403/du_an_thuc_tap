@@ -64,7 +64,7 @@ const ListProductCategory = () => {
                                 {listProducts && listProducts.length > 0
                                     ? listProducts.map((product) => (
                                         <ProductItem key={product.id} id={product.id} gia={product.gia_san_pham}
-                                            ten_sp={product.ten_san_pham} slug={product.ten_san_pham_slug} />
+                                            ten_sp={product.ten_san_pham} giam_gia={product?.giam_gia_san_pham} slug={product.ten_san_pham_slug} />
                                     )) : <div className='col-lg-12 text-center'>Không có sản phẩm nào</div>}
                             </div>
                         </div>

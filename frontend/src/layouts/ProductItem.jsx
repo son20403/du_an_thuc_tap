@@ -10,12 +10,19 @@ const ProductItem = (
         ten_sp = 'Buttons tweed blazer',
         gia = 0,
         slug = '',
-        id = ''
+        id = '',
+        giam_gia = 0
     }
 ) => {
     const { dataImages } = useGetAllProducts()
     const anh_san_pham = dataImages?.find((image) => image.ma_san_pham === id)?.hinh_anh
     const formattedAmount = useCurrencyFormat(gia);
+    const gia_san_pham = gia
+    const phan_tram = giam_gia
+    const sale = gia_san_pham * (phan_tram / 100)
+    const giam_gia_sp = gia_san_pham - sale;
+    const gia_goc = useCurrencyFormat(gia_san_pham);
+    const gia_sau_khi_giam = useCurrencyFormat(giam_gia_sp);
     useEffect(() => {
         const setBgElements = document.querySelectorAll('.set-bg');
         setBgElements.forEach(element => {
@@ -39,7 +46,10 @@ const ProductItem = (
                 </div>
                 <div className="product__item__text">
                     <h6><a href="#">{ten_sp}</a></h6>
-                    <div className="product__price">{formattedAmount}</div>
+                    <div className={`product__price ${giam_gia !== 0 ? 'text-sm line-through text-gray-500' : ''}`}>{formattedAmount} {giam_gia !== 0 && <span>- {giam_gia}%</span>}</div>
+                    {giam_gia !== 0 &&
+                        <div className="product__price">{gia_sau_khi_giam}</div>
+                    }
                 </div>
             </div>
         </div>
